@@ -1,0 +1,166 @@
+import { useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router';
+import HexGlyph from '@/registry/loaders/hex-glyph';
+import Badge from './Badge';
+
+const LINKS = [
+  { to: '/docs/introduction', label: 'INTRODUCTION' },
+  { to: '/docs/usage', label: 'USAGE' },
+  { to: '/docs/manual-setup', label: 'MANUAL SETUP' },
+  { to: '/playground', label: 'PLAYGROUND' },
+  { to: '/showcase', label: 'SHOWCASE' },
+];
+
+const MENU_LINKS = [
+  { to: '/', label: 'HOME' },
+  { to: '/docs/introduction', label: 'INTRODUCTION' },
+  { to: '/docs/architecture', label: 'ARCHITECTURE' },
+  { to: '/docs/usage', label: 'USAGE' },
+  { to: '/docs/manual-setup', label: 'MANUAL SETUP' },
+  { to: '/playground', label: 'PLAYGROUND' },
+  { to: '/showcase', label: 'SHOWCASE' },
+];
+
+function GitHubMark() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
+/** Half-black / half-white square — the INVERT toggle icon. */
+function InvertIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <rect x="0.5" y="0.5" width="13" height="13" fill="none" stroke="currentColor" />
+      <rect x="0.5" y="0.5" width="6.5" height="13" fill="currentColor" />
+    </svg>
+  );
+}
+
+export default function Navbar() {
+  const [logoValue, setLogoValue] = useState(63);
+  const [hover, setHover] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [inverted, setInverted] = useState(false);
+
+  // Living logo: on hover, step through random states every 120ms (steps(1)).
+  useEffect(() => {
+    if (!hover) {
+      setLogoValue(63);
+      return;
+    }
+    const id = window.setInterval(() => setLogoValue(Math.floor(Math.random() * 64)), 120);
+    return () => window.clearInterval(id);
+  }, [hover]);
+
+  const toggleInvert = () => {
+    const next = !inverted;
+    setInverted(next);
+    document.documentElement.toggleAttribute('data-invert', next);
+  };
+
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-hexl-fg bg-hexl-bg text-hexl-fg">
+      <div className="flex h-14 items-stretch justify-between">
+        <Link
+          to="/"
+          className="flex items-center gap-3 px-4 hover:bg-hexl-fg hover:text-hexl-bg"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        >
+          <HexGlyph value={logoValue} size={20} aria-hidden="true" />
+          <span className="font-mono text-mono-label uppercase">HEXLOADERS</span>
+          <Badge>v0.1.0</Badge>
+        </Link>
+
+        <nav className="hidden items-stretch lg:flex" aria-label="Primary">
+          {LINKS.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              className={({ isActive }) =>
+                `flex items-center border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+                  isActive ? ' bg-hexl-fg text-hexl-bg' : ''
+                }`
+              }
+            >
+              {l.label}
+            </NavLink>
+          ))}
+          <a
+            href="https://github.com/yon2x2/hexloaders"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="flex items-center border-l border-hexl-fg px-4 hover:bg-hexl-fg hover:text-hexl-bg"
+          >
+            <GitHubMark />
+          </a>
+          <button
+            type="button"
+            onClick={toggleInvert}
+            aria-pressed={inverted}
+            aria-label="Invert page colors"
+            className="flex items-center gap-2 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+          >
+            <InvertIcon />
+            INVERT
+          </button>
+        </nav>
+
+        <div className="flex items-stretch lg:hidden">
+          <button
+            type="button"
+            onClick={toggleInvert}
+            aria-pressed={inverted}
+            aria-label="Invert page colors"
+            className="flex items-center border-l border-hexl-fg px-4 hover:bg-hexl-fg hover:text-hexl-bg"
+          >
+            <InvertIcon />
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-label="Menu"
+            className="flex items-center border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+          >
+            {open ? '−' : '+'}
+          </button>
+        </div>
+      </div>
+
+      {open && (
+        <nav
+          className="fixed inset-0 top-14 z-50 flex flex-col border-t border-hexl-fg bg-hexl-bg lg:hidden"
+          aria-label="Mobile"
+        >
+          {MENU_LINKS.map((l, i) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              onClick={() => setOpen(false)}
+              className="hexl-reveal is-on flex items-center justify-between border-b border-hexl-fg px-6 py-5 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+              style={{ transitionDelay: `${i * 40}ms` }}
+            >
+              <span>{l.label}</span>
+              <span className="text-mono-micro">0{i + 1}</span>
+            </NavLink>
+          ))}
+          <a
+            href="https://github.com/yon2x2/hexloaders"
+            target="_blank"
+            rel="noreferrer"
+            className="hexl-reveal is-on flex items-center justify-between border-b border-hexl-fg px-6 py-5 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+            style={{ transitionDelay: `${MENU_LINKS.length * 40}ms` }}
+          >
+            <span>GITHUB</span>
+            <GitHubMark />
+          </a>
+        </nav>
+      )}
+    </header>
+  );
+}

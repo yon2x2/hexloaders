@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+
+# Local exports and build-workspace artifacts
+*.zip
+*.skill
+*.csv
+.loaders-backup.tar.gz
+eval-workspace/

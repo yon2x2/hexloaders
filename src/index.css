@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --hexl-bg: #FFFFFF;
+    --hexl-fg: #000000;
+    --hexl-bg-inv: #000000;
+    --hexl-fg-inv: #FFFFFF;
+    --hexl-dim: 0.15;
+    --hexl-mid: 0.45;
+    --hexl-step: 120ms; /* base clock — all durations are integer multiples */
+    --hexl-scale: 1; /* global loader scale */
+    --hexl-line-h: 8px;
+    --hexl-gap: 4px;
+    --ease-step-1: steps(1, end);
+    --ease-step-2: steps(2, end);
+    --ease-step-4: steps(4, end);
+    --ease-step-6: steps(6, end);
+    --ease-step-8: steps(8, end);
+    --ease-step-12: steps(12, end);
+    color-scheme: light;
+  }
+
+  /* INVERSION — not a theme. Instant 0ms swap, no transition anywhere. */
+  [data-invert],
+  .hexl-invert {
+    --hexl-bg: #000000;
+    --hexl-fg: #FFFFFF;
+    --hexl-bg-inv: #FFFFFF;
+    --hexl-fg-inv: #000000;
+  }
+
+  html {
+    background: var(--hexl-bg);
+    overflow-x: clip;
+    scroll-behavior: auto; /* native scroll only — a ledger does not glide */
+  }
+
+  body {
+    @apply bg-hexl-bg text-hexl-fg font-grotesk antialiased;
+    font-variant-numeric: tabular-nums;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: #000000;
+    color: #ffffff;
+  }
+  [data-invert] ::selection {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--hexl-bg);
+    border-left: 1px solid var(--hexl-fg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--hexl-fg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --hexl-step: 0ms;
+    }
+    /* Tickers stop; reveals become instant; loaders park on a static frame. */
+    .hexl-ticker-track,
+    .hexl-cursor,
+    .hexl-motion {
+      animation: none !important;
+    }
+    .hexl-reveal {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
+
+@layer components {
+  /* Stepped marquee + block cursor keyframes (referenced by inline animations). */
+  @keyframes hexl-ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes hexl-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Snap-in reveal — opacity 0→1 + translateY(8px→0), steps(2,end), 240ms. */
+  .hexl-reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 240ms steps(2, end),
+      transform 240ms steps(2, end);
+  }
+  .hexl-reveal.is-on {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stepped marquee track — content duplicated ×2, translateX 0→-50%. */
+  .hexl-ticker-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+  .hexl-ticker:hover .hexl-ticker-track {
+    animation-play-state: paused; /* hard stop, no deceleration */
+  }
+
+  /* Terminal block cursor ▮ — blinks steps(1) 480ms. */
+  .hexl-cursor {
+    animation: hexl-blink 480ms steps(1, end) infinite;
+  }
+
+  /* Matrix cell — hover/focus/flash = instant invert (var swap, 0ms). */
+  .hexl-cell {
+    background: var(--hexl-bg);
+    color: var(--hexl-fg);
+  }
+  .hexl-cell:hover,
+  .hexl-cell:focus-visible,
+  .hexl-cell-flash {
+    --hexl-bg: var(--hexl-bg-inv);
+    --hexl-fg: var(--hexl-fg-inv);
+    background: var(--hexl-bg-inv);
+    color: var(--hexl-fg-inv);
+  }
+
+  /* MechanicCell glyphs scale fluidly inside matrix cells. */
+  .hexl-mech svg {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Inline hero glyph rides at cap-height. */
+  .hexl-hero-glyph svg {
+    height: 0.68em;
+    width: auto;
+    display: inline-block;
+  }
+
+  /* Optional hairline graph grid (1px lines at 24px, opacity 0.06). SVG, not gradient. */
+  .hexl-graph-grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 .5H.5V24' fill='none' stroke='black' stroke-opacity='0.12'/%3E%3C/svg%3E");
+  }
+  [data-invert] .hexl-graph-grid,
+  .hexl-invert .hexl-graph-grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 .5H.5V24' fill='none' stroke='white' stroke-opacity='0.12'/%3E%3C/svg%3E");
+  }
+}
