@@ -50,16 +50,14 @@ interface Row {
   dx: number;
 }
 
-function frame(mechanic: Mechanic, value: number, t: number): { v: number; rows: Row[]; scan: number } {
+function frame(mechanic: Mechanic, value: number, t: number): { v: number; rows: Row[] } {
   let v = value & 63;
-  let scan = -1;
   const rows: Row[] = [];
   for (let i = 0; i < 6; i++) rows.push({ bit: i, o: 1, dx: 0 });
 
   switch (mechanic) {
     case 'SCAN': {
       const active = 5 - (t % 6);
-      scan = active;
       rows.forEach((r) => (r.o = r.bit === active ? 1 : DIM));
       break;
     }
@@ -98,7 +96,7 @@ function frame(mechanic: Mechanic, value: number, t: number): { v: number; rows:
       break;
     }
   }
-  return { v, rows, scan };
+  return { v, rows };
 }
 
 function MechanicCell({ value, mechanic, size = 56, invert = false, active = true, className }: MechanicCellProps) {
@@ -110,7 +108,7 @@ function MechanicCell({ value, mechanic, size = 56, invert = false, active = tru
     return () => window.clearInterval(id);
   }, [active, mechanic]);
 
-  const { v, rows, scan } = frame(mechanic, value, t);
+  const { v, rows } = frame(mechanic, value, t);
 
   return (
     <span
@@ -132,9 +130,6 @@ function MechanicCell({ value, mechanic, size = 56, invert = false, active = tru
             </g>
           );
         })}
-        {scan >= 0 && (
-          <rect x={0} y={rowY(scan) - 2} width={W} height={2} fill="var(--hexl-fg, #000000)" />
-        )}
       </svg>
     </span>
   );

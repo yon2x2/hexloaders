@@ -41,8 +41,8 @@ const WHEN_MANUAL: string[] = [
 
 const CHECKLIST: string[] = [
   'The glyph renders STATE 26 — pattern 011010, top to bottom.',
-  'The scanline crosses six rows in discrete jumps, not a glide.',
-  'Lines snap to full opacity as the scanline passes.',
+  'One row snaps to full opacity per tick, moving top to bottom.',
+  'The six-step cycle uses hard cuts, never a glide.',
   'data-invert on a parent flips the color space instantly.',
   'With reduced motion, the glyph renders statically.',
 ];

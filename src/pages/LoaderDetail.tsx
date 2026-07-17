@@ -109,7 +109,7 @@ const FLAGSHIP_STATE: Record<string, number | undefined> = {
 
 const FLAGSHIP_BODY: Record<string, string> = {
   'bit-scanner':
-    'A static hexagram in a technical ledger. A 1px scanline crosses it in six discrete steps; every line it touches snaps from dim to full. A readout, not an ornament.',
+    'A static hexagram in a technical ledger. One row snaps from dim to full per tick, moving top to bottom in six discrete steps. A readout, not an ornament.',
   'mutating-matrix':
     'A bank of glyphs stepping through the state space on a shared clock. Each cell is offset by its index, so configurations sweep the bank diagonally. A system visibly computing.',
   'inversion-pulse':
@@ -118,7 +118,7 @@ const FLAGSHIP_BODY: Record<string, string> = {
 
 /** Generation-note formula: [Mechanic verb] applied to [state pattern]. [One structural sentence]. */
 const MECHANIC_BODY: Record<Mechanic, string> = {
-  SCAN: 'Scan applied to {b}. A scanline crosses the glyph in six discrete steps; every line it touches snaps from dim to full.',
+  SCAN: 'Scan applied to {b}. One row snaps from dim to full per tick, moving top to bottom in six discrete steps.',
   SEQUENCE: 'Sequence applied to {b}. The glyph walks the King Wen order one position per tick — the historical permutation as a clock.',
   INVERT: 'Inversion applied to {b}. Every line negates on the clock — Yang opens, Yin closes, zero transition.',
   SHIFT: 'Shift applied to {b}. Lines rotate like a register, one position per clock tick.',

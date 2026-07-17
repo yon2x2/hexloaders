@@ -3,9 +3,9 @@
  * n° 26 · binary 011010 · mechanic: SCAN
  * registry: @hexloaders/bit-scanner
  *
- * A static hexagram inside a technical ledger block. A 1px scanline travels
- * top→bottom in 6 discrete row-steps (steps(6,end)); each line it crosses snaps
- * opacity dim → 1 for exactly one step, then back. Right rail prints metadata.
+ * A static hexagram inside a technical ledger block. The active row travels
+ * top→bottom in 6 discrete steps; each row snaps opacity dim → 1 for exactly
+ * one step, then back. Right rail prints metadata.
  *
  * Cycle: 6 steps × var(--hexl-step) = 720ms sweep + 240ms hold + instant reset.
  * Zero dependencies. Single file. MIT License.
@@ -43,16 +43,6 @@ const CSS = `
   padding: calc(var(--hexl-gap, 4px) * 4);
 }
 .hexl-bs svg { display: block; }
-.hexl-bs-scanline {
-  position: absolute;
-  left: calc(var(--hexl-gap, 4px) * 4);
-  right: calc(var(--hexl-gap, 4px) * 4);
-  top: calc(var(--hexl-gap, 4px) * 4);
-  height: 1px;
-  background: var(--hexl-fg, #000000);
-  will-change: transform;
-  animation: hexl-bs-scan var(--hexl-bs-cycle) steps(6, end) infinite;
-}
 .hexl-bs-row {
   opacity: var(--hexl-dim, 0.15);
   animation: hexl-bs-row var(--hexl-bs-cycle) steps(1, end) infinite;
@@ -75,18 +65,12 @@ const CSS = `
   opacity: var(--hexl-dim, 0.15);
   animation: hexl-bs-row var(--hexl-bs-cycle) steps(1, end) infinite;
 }
-@keyframes hexl-bs-scan {
-  0% { transform: translateY(0); }
-  75% { transform: translateY(calc(5 * (var(--hexl-line-h, 8px) + var(--hexl-gap, 4px)))); }
-  100% { transform: translateY(calc(5 * (var(--hexl-line-h, 8px) + var(--hexl-gap, 4px)))); }
-}
 @keyframes hexl-bs-row {
   0% { opacity: 1; }
   12.5% { opacity: var(--hexl-dim, 0.15); }
   100% { opacity: var(--hexl-dim, 0.15); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hexl-bs-scanline { animation: none; transform: translateY(0); }
   .hexl-bs-row, .hexl-bs-tag { animation: none; opacity: 1; }
 }
 `;
@@ -150,7 +134,6 @@ export default function BitScanner({
             );
           })}
         </svg>
-        <div className="hexl-bs-scanline" aria-hidden="true" />
       </div>
       {showMeta && (
         <div className="hexl-bs-rail" aria-hidden="true">

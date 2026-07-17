@@ -4,8 +4,8 @@
  * serves states 07 09 15 23 31 39 47 55 (+ 01 via the bespoke flagship bit-scanner)
  * registry: @hexloaders/scan
  *
- * A 1px scanline crosses the hexagram top→bottom in six discrete row-steps;
- * every line it touches snaps from dim to full for exactly one step, then back.
+ * The active row crosses the hexagram top→bottom in six discrete steps;
+ * every row snaps from dim to full for exactly one step, then back.
  * Cycle: 6 sweep steps + 2 hold steps = 8 × var(--hexl-step) = 960ms @ 120ms.
  *
  * Parameterized — one file serves 8 states.
@@ -41,15 +41,6 @@ const CSS = `
 .hexl-g-scan-stage > svg { display: block; }
 .hexl-g-layer { position: absolute; inset: 0; display: block; }
 .hexl-g-layer > svg { display: block; }
-.hexl-g-scanline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--hexl-fg, #000000);
-  will-change: transform;
-}
 `;
 
 /* Glyph geometry: 64×68 units — row r (0 = bottom) spans y 60−12r … 68−12r. */
@@ -80,7 +71,7 @@ export default function ScanLoader({
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    if (still) return; // reduced motion: static glyph, scanline parked at row 0
+    if (still) return; // reduced motion: static glyph
     const id = window.setInterval(() => setTick((t) => t + 1), step);
     return () => window.clearInterval(id);
   }, [step, still]);
@@ -88,7 +79,6 @@ export default function ScanLoader({
   const v = value & 63;
   const frame = tick % 8; // 0–5 sweep (top→bottom) · 6–7 hold · instant reset
   const active = !still && frame < 6 ? 5 - frame : -1;
-  const scanY = still ? 0 : active >= 0 ? ((60 - 12 * active) / 64) * size : -1;
 
   const rootStyle: CSSProperties = {
     ['--hexl-step' as string]: `${step}ms`,
@@ -110,13 +100,6 @@ export default function ScanLoader({
           <span className="hexl-g-layer" style={{ clipPath: rowClip(active) }} aria-hidden="true">
             <HexGlyph value={v} size={size} />
           </span>
-        )}
-        {scanY >= 0 && (
-          <span
-            className="hexl-g-scanline"
-            style={{ transform: `translateY(${scanY}px)` }}
-            aria-hidden="true"
-          />
         )}
       </div>
     </div>

@@ -98,7 +98,7 @@ const INVERT_HTML = `<section data-invert> <!-- everything inside renders negati
 const REDUCED_CSS = `@media (prefers-reduced-motion: reduce) { :root { --hexl-step: 0ms; } }`;
 
 const STATIC_FRAMES: string[][] = [
-  ['Bit-Scanner', 'full glyph, scanline parked at R0'],
+  ['Bit-Scanner', 'full glyph, no active row'],
   ['Mutating Matrix', 'first sequence state'],
   ['Inversion Pulse', 'normal colorspace, full progress'],
 ];

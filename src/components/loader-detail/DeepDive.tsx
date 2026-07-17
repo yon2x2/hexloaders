@@ -35,9 +35,8 @@ function ReducedFrame({ children, caption }: { children: ReactNode; caption: str
 
 /* ------------------------------- bit-scanner ------------------------------ */
 
-function ScanFrame({ active, scanline }: { active: number; scanline: 'row' | 'top' | 'none' }) {
+function ScanFrame({ active }: { active: number }) {
   const size = 32;
-  const scanY = scanline === 'top' ? 0 : active >= 0 ? ((60 - 12 * active) / 64) * size : -1;
   return (
     <span style={{ position: 'relative', display: 'block', width: size, height: (size * 68) / 64 }}>
       <HexGlyph value={26} size={size} dim={0.15} />
@@ -45,20 +44,6 @@ function ScanFrame({ active, scanline }: { active: number; scanline: 'row' | 'to
         <span style={{ position: 'absolute', inset: 0, display: 'block', clipPath: rowClip(active) }} aria-hidden="true">
           <HexGlyph value={26} size={size} />
         </span>
-      )}
-      {scanline !== 'none' && scanY >= 0 && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 1,
-            background: 'var(--hexl-fg, #000000)',
-            transform: `translateY(${scanY}px)`,
-          }}
-        />
       )}
     </span>
   );
@@ -68,10 +53,10 @@ function BitScannerDeepDive() {
   const frames = [
     ...[0, 1, 2, 3, 4, 5].map((k) => ({
       label: `T${k} · R${5 - k}`,
-      node: <ScanFrame active={5 - k} scanline="row" />,
+      node: <ScanFrame active={5 - k} />,
     })),
-    { label: 'T6 · HOLD', node: <ScanFrame active={-1} scanline="none" /> },
-    { label: 'T7 · RESET', node: <ScanFrame active={-1} scanline="top" /> },
+    { label: 'T6 · HOLD', node: <ScanFrame active={-1} /> },
+    { label: 'T7 · RESET', node: <ScanFrame active={-1} /> },
   ];
   return (
     <div className="space-y-8">
@@ -92,14 +77,8 @@ function BitScannerDeepDive() {
       </div>
       <div>
         <SubLabel>{'// REDUCED-MOTION FRAME'}</SubLabel>
-        <ReducedFrame caption="static glyph, scanline parked at row 0, all lines full opacity.">
-          <span style={{ position: 'relative', display: 'block' }}>
-            <HexGlyph value={26} size={48} dim={1} />
-            <span
-              aria-hidden="true"
-              style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'var(--hexl-fg, #000000)' }}
-            />
-          </span>
+        <ReducedFrame caption="static glyph, all lines full opacity.">
+          <HexGlyph value={26} size={48} dim={1} />
         </ReducedFrame>
       </div>
     </div>

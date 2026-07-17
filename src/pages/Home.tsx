@@ -702,7 +702,7 @@ const FLAGSHIPS: {
     name: 'BIT-SCANNER',
     mech: 'SCAN',
     spec: 'STATE 26 · BINARY 011010 · CYCLE 960MS · DEPS 0 · SIZE 1.8KB',
-    body: 'A static hexagram in a ledger block. A 1px scanline crosses it in six discrete steps; every line it touches snaps from dim to full. A readout, not an ornament.',
+    body: 'A static hexagram in a ledger block. One row snaps from dim to full per tick, moving top to bottom in six discrete steps. A readout, not an ornament.',
     render: (size) => <BitScanner size={size} showMeta />,
   },
   {
