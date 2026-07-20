@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { MECHANICS, LOADERS } from '@/lib/registry';
 import type { Mechanic } from '@/lib/registry';
 import MechanicCell from '@/components/loaders/MechanicCell';
-import { Reveal } from './Reveal';
+import Reveal from '@/components/docs-foundation/Reveal';
 
 const SPECS: Record<Mechanic, string> = {
   SCAN: 'A 1px line crosses the glyph in steps(6); crossed lines snap to full opacity.',

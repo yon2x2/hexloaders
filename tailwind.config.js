@@ -32,30 +32,6 @@ module.exports = {
           'bg-inv': 'var(--hexl-bg-inv)',
           'fg-inv': 'var(--hexl-fg-inv)',
         },
-        /* shadcn semantic aliases snapped to the ledger: any surfaced
-           primitive renders pure B/W, driven by the same inversion vars. */
-        border: 'var(--hexl-fg)',
-        input: 'var(--hexl-fg)',
-        ring: 'var(--hexl-fg)',
-        background: 'var(--hexl-bg)',
-        foreground: 'var(--hexl-fg)',
-        primary: { DEFAULT: 'var(--hexl-fg)', foreground: 'var(--hexl-bg)' },
-        secondary: { DEFAULT: 'var(--hexl-bg)', foreground: 'var(--hexl-fg)' },
-        destructive: { DEFAULT: 'var(--hexl-fg)', foreground: 'var(--hexl-bg)' },
-        muted: { DEFAULT: 'var(--hexl-bg)', foreground: 'var(--hexl-fg)' },
-        accent: { DEFAULT: 'var(--hexl-fg)', foreground: 'var(--hexl-bg)' },
-        popover: { DEFAULT: 'var(--hexl-bg)', foreground: 'var(--hexl-fg)' },
-        card: { DEFAULT: 'var(--hexl-bg)', foreground: 'var(--hexl-fg)' },
-        sidebar: {
-          DEFAULT: 'var(--hexl-bg)',
-          foreground: 'var(--hexl-fg)',
-          primary: 'var(--hexl-fg)',
-          'primary-foreground': 'var(--hexl-bg)',
-          accent: 'var(--hexl-fg)',
-          'accent-foreground': 'var(--hexl-bg)',
-          border: 'var(--hexl-fg)',
-          ring: 'var(--hexl-fg)',
-        },
       },
       fontFamily: {
         grotesk: ['Archivo', 'Helvetica Neue', 'Helvetica', 'Akzidenz-Grotesk', 'Arial', 'sans-serif'],
@@ -94,5 +70,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [],
 };

@@ -13,7 +13,7 @@ import CodeBlock from '@/components/CodeBlock';
 import BitEditor from '@/components/BitEditor';
 import hexagramsRaw from '@/lib/hexagrams.ts?raw';
 import { registryEntryFor } from '@/lib/sources';
-import { Reveal } from '@/components/docs-system/Reveal';
+import Reveal from '@/components/docs-foundation/Reveal';
 import {
   SectionHead,
   LedgerNote,

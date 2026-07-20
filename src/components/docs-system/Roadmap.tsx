@@ -11,7 +11,8 @@ import type { ReactNode } from 'react';
 import Badge from '@/components/Badge';
 import { copyText } from '@/components/CodeBlock';
 import { GlyphList } from './DocsBlocks';
-import { Reveal, reducedMotion } from './Reveal';
+import Reveal from '@/components/docs-foundation/Reveal';
+import { reducedMotion } from '@/components/docs-foundation/motion';
 
 /* ------------------------------ PhaseConnector ---------------------------- */
 

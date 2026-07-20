@@ -11,7 +11,8 @@ import { Link } from 'react-router';
 import CodeBlock from '@/components/CodeBlock';
 import type { CodeBlockProps } from '@/components/CodeBlock';
 import HexGlyph from '@/registry/loaders/hex-glyph';
-import { Reveal, reducedMotion } from './Reveal';
+import Reveal from '@/components/docs-foundation/Reveal';
+import { reducedMotion } from '@/components/docs-foundation/motion';
 
 /* ------------------------------- SectionHead ------------------------------ */
 

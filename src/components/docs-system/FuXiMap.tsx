@@ -13,7 +13,7 @@ import { HEXAGRAMS } from '@/lib/hexagrams';
 import { LOADERS } from '@/lib/registry';
 import HexGlyph from '@/registry/loaders/hex-glyph';
 import { copyText } from '@/components/CodeBlock';
-import { reducedMotion } from './Reveal';
+import { reducedMotion } from '@/components/docs-foundation/motion';
 
 const AXIS = Array.from({ length: 8 }, (_, i) => i.toString(2).padStart(3, '0'));
 

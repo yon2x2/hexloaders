@@ -11,7 +11,7 @@ import Kicker from '@/components/Kicker';
 import CodeBlock from '@/components/CodeBlock';
 import PropsTable from '@/components/PropsTable';
 import { CSS_TOKENS_BLOCK } from '@/lib/sources';
-import { Reveal } from '@/components/docs-system/Reveal';
+import Reveal from '@/components/docs-foundation/Reveal';
 import {
   SectionHead,
   LedgerNote,

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
 
 type Pm = 'npm' | 'pnpm' | 'yarn' | 'bun';
 const PMS: Pm[] = ['npm', 'pnpm', 'yarn', 'bun'];
@@ -105,7 +104,7 @@ export default function CodeBlock({
   };
 
   return (
-    <div className={cn('border border-hexl-fg bg-hexl-bg text-hexl-fg', className)}>
+    <div className={`border border-hexl-fg bg-hexl-bg text-hexl-fg${className ? ` ${className}` : ''}`}>
       <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
         <div className="flex items-center gap-3 px-3 font-mono text-mono-micro uppercase">
           {packageManager ? (
