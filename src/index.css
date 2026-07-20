@@ -137,6 +137,7 @@
   }
   .hexl-cell:hover,
   .hexl-cell:focus-visible,
+  .hexl-cell:focus-within,
   .hexl-cell-flash {
     --hexl-bg: var(--hexl-bg-inv);
     --hexl-fg: var(--hexl-fg-inv);
@@ -155,14 +156,5 @@
     height: 0.68em;
     width: auto;
     display: inline-block;
-  }
-
-  /* Optional hairline graph grid (1px lines at 24px, opacity 0.06). SVG, not gradient. */
-  .hexl-graph-grid {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 .5H.5V24' fill='none' stroke='black' stroke-opacity='0.12'/%3E%3C/svg%3E");
-  }
-  [data-invert] .hexl-graph-grid,
-  .hexl-invert .hexl-graph-grid {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M24 .5H.5V24' fill='none' stroke='white' stroke-opacity='0.12'/%3E%3C/svg%3E");
   }
 }

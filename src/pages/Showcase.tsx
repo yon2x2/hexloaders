@@ -6,7 +6,6 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
 import { MECHANICS } from '@/lib/registry';
 import type { Mechanic } from '@/lib/registry';
 import Kicker from '@/components/Kicker';
@@ -52,7 +51,7 @@ const FILTERS: Filter[] = ['ALL', ...MECHANICS];
 
 function CommunityStrip() {
   const [ref, visible] = useVisible<HTMLElement>(0.3);
-  const [blink, setBlink] = useState(-1); // reserved frames blink in sequence once
+  const [blink, setBlink] = useState(-1); // specimen slots blink in sequence once
 
   useEffect(() => {
     if (!visible || blink >= 4) return;
@@ -67,24 +66,24 @@ function CommunityStrip() {
           <h2 className="font-grotesk text-display-md uppercase">YOUR BUILD HERE.</h2>
           <div>
             <p className="max-w-[62ch] text-body-sm">
-              Shipped something with a hexloader? Open a PR with a screenshot and a link. The best specimens join this
-              page — mechanic-tagged and credited.
+              Shipped something with a hexloader? Propose it with a screenshot and a link. Selected specimens join
+              this page — mechanic-tagged and credited.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
               <a
-                href="https://github.com/yon2x2/hexloaders"
+                href="https://github.com/yon2x2/hexloaders/issues/new?title=Showcase%20specimen%3A%20"
                 target="_blank"
                 rel="noreferrer"
                 className="border border-hexl-fg px-6 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
               >
-                SUBMIT A SPECIMEN
+                PROPOSE A SPECIMEN
               </a>
-              <Link
-                to="/"
+              <a
+                href="/#matrix"
                 className="border border-hexl-fg px-6 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
               >
                 BROWSE THE 64
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -97,7 +96,7 @@ function CommunityStrip() {
                 blink === i ? ' bg-hexl-fg text-hexl-bg' : ''
               }`}
             >
-              RESERVED — n°{String(n).padStart(2, '0')}
+              SPECIMEN SLOT {String(n).padStart(2, '0')}
             </div>
           ))}
         </div>

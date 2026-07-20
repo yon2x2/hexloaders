@@ -165,7 +165,7 @@ export default function DocsIntroduction() {
             <span className="font-mono text-mono-micro uppercase">
               BIT-SCANNER — STATE 26 · 011010 · 0 DEPS
             </span>
-            <CopyChip command={INSTALL_CMD} label="INSTALL" />
+            <CopyChip command={INSTALL_CMD} />
           </div>
         </Reveal>
       </DocSection>

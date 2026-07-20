@@ -235,10 +235,10 @@ export function DocsFooterStrip() {
   );
 }
 
-/* --------------------------------- install chip --------------------------------- */
+/* ---------------------------------- copy chip ---------------------------------- */
 
 /** Inline copy chip — label hard-swaps to COPIED for 1200ms. */
-export function CopyChip({ command, label = 'INSTALL' }: { command: string; label?: string }) {
+export function CopyChip({ command, label = 'COPY COMMAND' }: { command: string; label?: string }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<number | undefined>(undefined);
   useEffect(() => () => window.clearTimeout(timer.current), []);

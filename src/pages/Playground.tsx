@@ -210,7 +210,7 @@ export default function Playground() {
   const [blip, setBlip] = useState(false);
   const [ruler, setRuler] = useState(0);
   const [shared, setShared] = useState(false);
-  const [captured, setCaptured] = useState<'COPIED' | 'SAVED' | null>(null);
+  const [captured, setCaptured] = useState<'COPIED' | 'DOWNLOADED' | null>(null);
 
   const [open, setOpen] = useState({ loader: true, state: true, stage: true, params: true, output: true });
   const togglePanel = (k: keyof typeof open) => setOpen((o) => ({ ...o, [k]: !o[k] }));
@@ -378,16 +378,16 @@ export default function Playground() {
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
       if (!blob) throw new Error('no png');
-      let feedback: 'COPIED' | 'SAVED' = 'SAVED';
+      let feedback: 'COPIED' | 'DOWNLOADED' = 'DOWNLOADED';
       if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && 'write' in navigator.clipboard) {
         try {
           await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
           feedback = 'COPIED';
         } catch {
-          feedback = 'SAVED';
+          feedback = 'DOWNLOADED';
         }
       }
-      if (feedback === 'SAVED') {
+      if (feedback === 'DOWNLOADED') {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = `hexloaders-${slug}-state-${value}.png`;
@@ -734,7 +734,7 @@ export default function Playground() {
               className="border-l border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
               aria-live="polite"
             >
-              {captured ?? 'CAPTURE'}
+              {captured ?? 'EXPORT PNG'}
             </button>
           </div>
         </div>
@@ -772,7 +772,7 @@ export default function Playground() {
                 RESET
               </MicroButton>
               <MicroButton onClick={share} ariaLabel="Copy deep-link URL">
-                {shared ? 'LINK COPIED' : 'SHARE'}
+                {shared ? 'LINK COPIED' : 'COPY LINK'}
               </MicroButton>
             </div>
             <div className="pointer-events-none absolute bottom-2 right-2 hidden font-mono text-mono-micro uppercase opacity-[0.45] md:block">

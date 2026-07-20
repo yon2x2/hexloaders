@@ -15,14 +15,13 @@ export interface PreviewCardProps {
 }
 
 /**
- * shadcn-pattern ledger block: PREVIEW | CODE tabs (instant swap), invert
- * toggle, S/M/L size stepper, hairline graph-grid toggle. Crosshair cursor.
+ * Ledger block: PREVIEW | CODE tabs when source is available, plus invert
+ * and S/M/L preview controls.
  */
 export default function PreviewCard({ preview, code, filename, language = 'tsx', className }: PreviewCardProps) {
   const [tab, setTab] = useState<'PREVIEW' | 'CODE'>('PREVIEW');
   const [invert, setInvert] = useState(false);
   const [size, setSize] = useState<SizeKey>('M');
-  const [grid, setGrid] = useState(false);
 
   const tabBtn = (t: 'PREVIEW' | 'CODE') =>
     `px-4 py-2 font-mono text-mono-label uppercase${tab === t ? ' bg-hexl-fg text-hexl-bg' : ''}`;
@@ -31,26 +30,19 @@ export default function PreviewCard({ preview, code, filename, language = 'tsx',
   return (
     <div className={`border border-hexl-fg bg-hexl-bg text-hexl-fg${className ? ` ${className}` : ''}`}>
       <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
-        <div className="flex items-stretch" role="tablist">
-          <button type="button" role="tab" aria-selected={tab === 'PREVIEW'} onClick={() => setTab('PREVIEW')} className={`${tabBtn('PREVIEW')} border-r border-hexl-fg`}>
-            PREVIEW
-          </button>
-          {code !== undefined && (
+        {code === undefined ? (
+          <span className="border-r border-hexl-fg px-4 py-2 font-mono text-mono-label uppercase">PREVIEW</span>
+        ) : (
+          <div className="flex items-stretch" role="tablist">
+            <button type="button" role="tab" aria-selected={tab === 'PREVIEW'} onClick={() => setTab('PREVIEW')} className={`${tabBtn('PREVIEW')} border-r border-hexl-fg`}>
+              PREVIEW
+            </button>
             <button type="button" role="tab" aria-selected={tab === 'CODE'} onClick={() => setTab('CODE')} className={`${tabBtn('CODE')} border-r border-hexl-fg`}>
               CODE
             </button>
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex items-stretch">
-          <button
-            type="button"
-            onClick={() => setGrid(!grid)}
-            aria-pressed={grid}
-            aria-label="Toggle graph grid"
-            className={`${ctl}${grid ? ' bg-hexl-fg text-hexl-bg' : ''}`}
-          >
-            GRID
-          </button>
           <button
             type="button"
             onClick={() => setInvert(!invert)}
@@ -78,7 +70,7 @@ export default function PreviewCard({ preview, code, filename, language = 'tsx',
 
       {tab === 'PREVIEW' ? (
         <div
-          className={`flex min-h-[320px] cursor-crosshair items-center justify-center${invert ? ' hexl-invert bg-hexl-bg text-hexl-fg' : ''}${grid ? ' hexl-graph-grid' : ''}`}
+          className={`flex min-h-[320px] items-center justify-center${invert ? ' hexl-invert bg-hexl-bg text-hexl-fg' : ''}`}
         >
           {typeof preview === 'function' ? preview({ size: SIZES[size], invert }) : preview}
         </div>

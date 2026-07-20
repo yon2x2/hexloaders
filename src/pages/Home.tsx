@@ -275,55 +275,58 @@ const MatrixCell = memo(function MatrixCell({
   useEffect(() => () => ioRef.current?.disconnect(), []);
 
   const [copied, setCopied] = useState(false);
-  const copy = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const copy = async () => {
     await copyText(meta.install);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1200);
   };
 
   return (
-    <Link
-      ref={setRefs}
-      to={`/loaders/${meta.slug}`}
+    <div
       role="gridcell"
-      tabIndex={tabIx}
-      onFocus={() => onFocus(order)}
-      data-cell={meta.value}
-      aria-label={`n°${meta.value} ${meta.name} — ${meta.mechanic}. ${meta.install}`}
-      className={`hexl-cell group relative aspect-square cursor-crosshair${
+      aria-label={`n°${meta.value} ${meta.name} — ${meta.mechanic}`}
+      className={`hexl-cell group relative aspect-square${
         meta.flagship ? ' border-2 border-hexl-fg' : ''
       }${flash ? ' hexl-cell-flash' : ''}`}
       style={{ opacity: !revealed ? 0 : matched ? 1 : 0.08 }}
     >
-      <span className="absolute left-1.5 top-1.5 font-mono text-mono-micro">
-        n°{String(meta.value).padStart(2, '0')}
-        {meta.flagship ? ' ★' : ''}
-      </span>
-      <span className="absolute bottom-1.5 left-1.5 font-mono text-mono-micro">{meta.binary}</span>
-      <span className="absolute bottom-1.5 right-1.5 font-mono text-mono-micro">{meta.mechanic}</span>
-      <span className="flex h-full w-full items-center justify-center">
-        {meta.flagship ? (
-          <FlagshipLive slug={meta.slug} />
-        ) : (
-          <span className="hexl-mech block w-[45%] max-w-[64px]">
-            <MechanicCell value={meta.value} mechanic={meta.mechanic} size={64} active={visible && matched && revealed} />
-          </span>
-        )}
-      </span>
-      <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 py-1 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100">
+      <Link
+        ref={setRefs}
+        to={`/loaders/${meta.slug}`}
+        tabIndex={tabIx}
+        onFocus={() => onFocus(order)}
+        data-cell={meta.value}
+        aria-label={`Open n°${meta.value} ${meta.name} details — ${meta.mechanic}`}
+        className="absolute inset-0 cursor-pointer"
+      >
+        <span className="absolute left-1.5 top-1.5 font-mono text-mono-micro">
+          n°{String(meta.value).padStart(2, '0')}
+          {meta.flagship ? ' ★' : ''}
+        </span>
+        <span className="absolute bottom-1.5 left-1.5 font-mono text-mono-micro">{meta.binary}</span>
+        <span className="absolute bottom-1.5 right-1.5 font-mono text-mono-micro">{meta.mechanic}</span>
+        <span className="flex h-full w-full items-center justify-center">
+          {meta.flagship ? (
+            <FlagshipLive slug={meta.slug} />
+          ) : (
+            <span className="hexl-mech block w-[45%] max-w-[64px]">
+              <MechanicCell value={meta.value} mechanic={meta.mechanic} size={64} active={visible && matched && revealed} />
+            </span>
+          )}
+        </span>
+      </Link>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 py-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
         <span className="truncate font-mono text-mono-micro">{meta.install}</span>
         <button
           type="button"
           onClick={copy}
           aria-label={`Copy install command for ${meta.name}`}
-          className="shrink-0 border border-hexl-fg px-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+          className="pointer-events-auto shrink-0 border border-hexl-fg px-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
         >
           {copied ? 'COPIED' : 'COPY'}
         </button>
-      </span>
-    </Link>
+      </div>
+    </div>
   );
 });
 
@@ -483,45 +486,56 @@ function Matrix() {
       </div>
 
       <div className="mx-auto max-w-[1440px] px-6 py-12 md:px-10">
-        {/* top axis — lower trigram bits */}
-        <div className="hidden lg:grid lg:grid-cols-[32px_repeat(8,1fr)]">
-          <span className="border-b border-hexl-fg" />
-          {axisLabels.map((l) => (
-            <span key={l} className="flex h-8 items-center justify-center border-b border-l border-hexl-fg font-mono text-mono-micro">
-              {l}
-            </span>
-          ))}
-        </div>
-        <div className="lg:grid lg:grid-cols-[32px_1fr]">
-          {/* left axis — upper trigram bits */}
-          <div className="hidden lg:flex lg:flex-col">
-            {axisLabels.map((l) => (
-              <span key={l} className="flex flex-1 items-center justify-center border-b border-hexl-fg font-mono text-mono-micro">
-                {l}
+        <div
+          role="grid"
+          aria-label={sort === 'fuxi' ? 'The 64 loaders, Fu Xi arrangement' : `The 64 loaders, sorted by ${sort}`}
+          onKeyDown={onKeyDown}
+          className={`relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg sm:grid-cols-4${
+            sort === 'fuxi' ? ' lg:grid-cols-[32px_repeat(8,minmax(0,1fr))]' : ' lg:grid-cols-8'
+          }`}
+        >
+          {sort === 'fuxi'
+            ? [
+                <span key="axis-corner" className="hidden h-8 bg-hexl-bg lg:block" aria-hidden="true" />,
+                ...axisLabels.map((label) => (
+                  <span
+                    key={`column-${label}`}
+                    role="columnheader"
+                    className="hidden h-8 items-center justify-center bg-hexl-bg font-mono text-mono-micro lg:flex"
+                  >
+                    {label}
+                  </span>
+                )),
+              ]
+            : null}
+          {Array.from({ length: 8 }, (_, row) => row).flatMap((row) => [
+            sort === 'fuxi' ? (
+              <span
+                key={`row-${row}`}
+                role="rowheader"
+                className="hidden items-center justify-center bg-hexl-bg font-mono text-mono-micro lg:flex"
+              >
+                {axisLabels[row]}
               </span>
-            ))}
-          </div>
-          <div
-            role="grid"
-            aria-label="The 64 loaders, Fu Xi arrangement"
-            onKeyDown={onKeyDown}
-            className="relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg p-px sm:grid-cols-4 lg:grid-cols-8 lg:border-l-0"
-          >
-            {order.current.map((m, i) => (
-              <MatrixCell
-                key={m.slug}
-                meta={m}
-                order={i}
-                revealed={i < revealedCount}
-                matched={matches(m)}
-                flash={flashValue === m.value && flashOn}
-                tabIx={i === focusIx ? 0 : -1}
-                registerRef={registerRef}
-                onFocus={setFocusIx}
-              />
-            ))}
-            {blank && <div className="absolute inset-0 bg-hexl-fg" aria-hidden="true" />}
-          </div>
+            ) : null,
+            ...order.current.slice(row * 8, row * 8 + 8).map((m, column) => {
+              const i = row * 8 + column;
+              return (
+                <MatrixCell
+                  key={m.slug}
+                  meta={m}
+                  order={i}
+                  revealed={i < revealedCount}
+                  matched={matches(m)}
+                  flash={flashValue === m.value && flashOn}
+                  tabIx={i === focusIx ? 0 : -1}
+                  registerRef={registerRef}
+                  onFocus={setFocusIx}
+                />
+              );
+            }),
+          ])}
+          {blank && <div className="absolute inset-0 bg-hexl-fg" aria-hidden="true" />}
         </div>
 
         <div className="mt-6 flex flex-col items-stretch justify-between gap-4 border border-hexl-fg px-4 py-3 font-mono text-mono-data sm:flex-row sm:items-center">
@@ -531,7 +545,7 @@ function Matrix() {
             rel="noreferrer"
             className="uppercase hover:bg-hexl-fg hover:text-hexl-bg"
           >
-            MISSING A STATE? → PROPOSE A LOADER
+            IMPROVE A LOADER → OPEN AN ISSUE
           </a>
           <label className="flex items-center gap-2 text-mono-label uppercase">
             SORT:
@@ -1200,7 +1214,7 @@ function Cta() {
             }}
             className="flex h-14 items-center justify-center border border-hexl-fg bg-hexl-fg px-6 font-mono text-mono-label uppercase text-hexl-bg group-hover:border-hexl-bg group-hover:bg-hexl-bg group-hover:text-hexl-fg hover:!bg-hexl-fg hover:!text-hexl-bg"
           >
-            {copied ? 'COPIED' : 'INSTALL BIT-SCANNER'}
+            {copied ? 'COPIED' : 'COPY INSTALL COMMAND'}
           </button>
           <button
             type="button"

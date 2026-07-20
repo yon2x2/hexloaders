@@ -39,7 +39,7 @@ export default function ExampleCell({ title, caption, jsx, dark = false, childre
         dark ? ' hexl-invert' : ''
       }${className ? ` ${className}` : ''}`}
     >
-      <div className="flex aspect-[1/1.1] cursor-crosshair items-center justify-center overflow-hidden p-4">
+      <div className="flex aspect-[1/1.1] items-center justify-center overflow-hidden p-4">
         {children}
       </div>
       <div className="flex h-12 items-stretch justify-between border-t border-hexl-fg">

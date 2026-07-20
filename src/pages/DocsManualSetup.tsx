@@ -62,7 +62,7 @@ function LiveSpecimen() {
         <span>LIVE SPECIMEN</span>
         <span>STATE 26 · 011010</span>
       </div>
-      <div className="flex cursor-crosshair items-center justify-center p-6">
+      <div className="flex items-center justify-center p-6">
         <BitScanner size={96} />
       </div>
     </div>
