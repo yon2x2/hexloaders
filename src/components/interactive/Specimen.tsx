@@ -53,7 +53,7 @@ export default function Specimen({ title, context, slug, dimmed = false, childre
   const active = visible && !dimmed;
 
   const onCopy = async () => {
-    if (!meta) return;
+    if (!meta?.install) return;
     await copyText(meta.install);
     setCopied(true);
     window.clearTimeout(timer.current);
@@ -74,12 +74,13 @@ export default function Specimen({ title, context, slug, dimmed = false, childre
       <button
         type="button"
         onClick={onCopy}
-        title="Copy install command"
+        disabled={!meta?.install}
+        title={meta?.install ? 'Copy install command' : 'Manual source available on the loader page'}
         aria-live="polite"
-        className="flex h-9 shrink-0 items-center justify-between gap-3 border-t border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+        className="flex h-9 shrink-0 items-center justify-between gap-3 border-t border-hexl-fg px-3 font-mono text-mono-micro uppercase enabled:hover:bg-hexl-fg enabled:hover:text-hexl-bg"
       >
         <span className="shrink-0">{copied ? 'COPIED' : slug}</span>
-        <span className="truncate opacity-[0.45]">{meta?.install}</span>
+        <span className="truncate opacity-[0.45]">{meta?.install ?? 'MANUAL SOURCE'}</span>
       </button>
     </figure>
   );

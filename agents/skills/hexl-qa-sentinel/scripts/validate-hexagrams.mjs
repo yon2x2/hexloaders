@@ -35,4 +35,22 @@ if (tableMatch) {
   check(bad.length === 0, bad.length ? `unknown mechanics: ${[...new Set(bad)].join(',')}` : 'all mechanics valid (8 known)');
 }
 
+// ── registry.json — public GitHub source registry ──
+const publicRegistry = JSON.parse(fs.readFileSync('registry.json', 'utf8'));
+check(publicRegistry.$schema === 'https://ui.shadcn.com/schema/registry.json', 'public registry uses the shadcn schema');
+check(publicRegistry.name === 'hexloaders', 'public registry name is hexloaders');
+const publicItems = Array.isArray(publicRegistry.items) ? publicRegistry.items : [];
+check(publicItems.length === 1, `public registry has one verified item (got ${publicItems.length})`);
+const bitScanner = publicItems.find((item) => item.name === 'bit-scanner');
+check(!!bitScanner, 'public registry contains bit-scanner');
+const bitScannerFile = bitScanner?.files?.[0];
+check(
+  bitScannerFile?.path === 'src/registry/loaders/bit-scanner.tsx' && fs.existsSync(bitScannerFile.path),
+  'bit-scanner registry source exists',
+);
+check(
+  bitScannerFile?.target === '@components/loaders/bit-scanner.tsx',
+  'bit-scanner installs through the consumer components alias',
+);
+
 process.exit(fail);

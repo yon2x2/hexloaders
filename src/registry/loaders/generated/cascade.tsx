@@ -2,7 +2,7 @@
  * HEXLOADERS — cascade (generated mechanic template)
  * mechanic: CASCADE
  * serves states 02 03 06 10 13 22 29 37
- * registry: @hexloaders/cascade
+ * registry: pending
  *
  * Propagation wave: a front travels bottom→top one row per clock tick —
  * rows behind the front are full, the leading row rides at mid opacity,

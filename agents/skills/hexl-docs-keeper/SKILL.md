@@ -60,4 +60,5 @@ markers (`//`, `n°`, `■`). States print as `STATE 26 · 011010`.
 
 - Grep pages for hardcoded `011010`/`STATE 26` strings that should derive from helpers.
 - Confirm every `<CodeBlock code=` traces to `sources.ts`/raw import, not a literal.
-- Confirm install lines match `npx shadcn@latest add @hexloaders/<slug>` everywhere.
+- Confirm published items use `npx shadcn@latest add yon2x2/hexloaders/<slug>`.
+- Confirm unpublished items say `MANUAL SOURCE` and never expose a copyable CLI command.

@@ -2,7 +2,7 @@
  * HEXLOADERS — shift (generated mechanic template)
  * mechanic: SHIFT
  * serves states 36 44 46 52 53 54 60 62
- * registry: @hexloaders/shift
+ * registry: pending
  *
  * Barrel rotation: the 6-bit register rotates left one position per clock
  * tick — bit 5 wraps to bit 0 — a hard cut per frame, like a relay bank

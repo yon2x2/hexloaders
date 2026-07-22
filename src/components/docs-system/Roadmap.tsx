@@ -199,12 +199,12 @@ export default function Roadmap() {
   return (
     <div>
       <Reveal>
-        <PhaseBand head="PHASE 1 — SHIPPED · shadcn registry" chip="NOW" blink>
+        <PhaseBand head="PHASE 1 — SHIPPED · GitHub registry proof" chip="NOW" blink>
           <GlyphList
             items={[
-              'Static registry at r.hexloaders.dev/{name}.json, schema-compatible with shadcn.',
-              'npx shadcn@latest add @hexloaders/<slug> for all 64 states.',
-              'cssVars auto-injected into globals.css when missing.',
+              'Public GitHub source registry, schema-compatible with shadcn.',
+              'Bit-Scanner is verified in a clean Vite consumer.',
+              'The remaining loaders stay manual-only until they pass the same gate.',
             ]}
           />
         </PhaseBand>

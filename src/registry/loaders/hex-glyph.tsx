@@ -1,7 +1,7 @@
 /**
  * HEXLOADERS — hex-glyph
  * n° 00–63 · binary 000000–111111 · mechanic: PRIMITIVE
- * registry: @hexloaders/hex-glyph
+ * registry: pending
  *
  * The pure-SVG 6-bit glyph every loader is composed from. Zero dependencies.
  * Sized by CSS custom properties (--hexl-line-h, --hexl-gap) or the `size` prop.

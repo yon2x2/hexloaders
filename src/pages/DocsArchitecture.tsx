@@ -86,7 +86,7 @@ const ADD_STEPS: { title: string; text: string }[] = [
 ];
 
 /* loader-template.tsx — the condensed contract (architecture.md). */
-const LOADER_TEMPLATE = `/** STATE 26 · 011010 · MECHANIC: SCAN · @hexloaders/my-loader */
+const LOADER_TEMPLATE = `/** STATE 26 · 011010 · MECHANIC: SCAN · registry: pending */
 import { bitsOf } from "./hexagrams";
 
 export function MyLoader({ state = 26, size = 96, invert = false, className, ...rest }) {
@@ -173,7 +173,7 @@ export default function DocsArchitecture() {
         </Reveal>
         <Reveal delay={160} className="mt-6">
           <CodeBlock
-            filename="registry/index.json — @hexloaders/bit-scanner"
+            filename="registry-status.json — bit-scanner"
             language="json"
             code={BIT_SCANNER_ENTRY}
           />

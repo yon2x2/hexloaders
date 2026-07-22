@@ -31,13 +31,6 @@ const TOC = [
   { id: 'cli-roadmap', label: 'CLI roadmap' },
 ];
 
-/* components.json — registry registration (usage.md). */
-const COMPONENTS_JSON = `{
-  "registries": {
-    "@hexloaders": "https://r.hexloaders.dev/{name}.json"
-  }
-}`;
-
 /* tailwind.config.ts — excerpt (design.md §9). */
 const TAILWIND_EXCERPT = `// tailwind.config.ts — excerpt
 export default {
@@ -79,13 +72,13 @@ const CSS_VARS: string[][] = [
 ];
 
 /* app.tsx — using a loader inside a pending button (usage.md). */
-const APP_TSX = `import { BitScanner } from "@/components/loaders/bit-scanner";
+const APP_TSX = `import BitScanner from "@/components/loaders/bit-scanner";
 
 export function SubmitButton() {
   const [pending, setPending] = useState(false);
   return (
     <button disabled={pending}>
-      {pending ? <BitScanner state={26} size={24} showMeta={false} /> : "SUBMIT"}
+      {pending ? <BitScanner value={26} size={24} showMeta={false} /> : "SUBMIT"}
     </button>
   );
 }`;
@@ -116,8 +109,9 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-body">
-            Install one loader, copy the code, and make it yours. The registry is shadcn-compatible;
-            the CLI copies source files into your repository. There is no package to depend on.
+            Install one loader, copy the code, and make it yours. Bit-Scanner is the first verified
+            GitHub registry item; the CLI copies its source into your repository without adding a
+            HEXLOADERS package dependency.
           </p>
         </Reveal>
       </header>
@@ -126,21 +120,19 @@ export default function DocsUsage() {
       <section id="install-a-loader" className="mt-16 scroll-mt-20">
         <SectionHead index={1} title="INSTALL A LOADER" />
         <Reveal delay={100} className="mt-6">
-          <TypedCodeBlock packageManager language="bash" code="shadcn@latest add @hexloaders/bit-scanner" />
+          <TypedCodeBlock packageManager language="bash" code="shadcn@latest add yon2x2/hexloaders/bit-scanner" />
         </Reveal>
         <Reveal delay={200}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            The command resolves the registry item, copies loaders/bit-scanner.tsx into your
-            components directory, and reports the CSS variables the loader reads. Nothing is added
-            to node_modules.
+            The command reads the public GitHub registry and copies bit-scanner.tsx into your
+            configured components directory. The installed file imports React only; HEXLOADERS is
+            not added to node_modules.
           </p>
         </Reveal>
         <Reveal delay={300} className="mt-6">
-          <CodeBlock filename="components.json" language="json" code={COMPONENTS_JSON} />
-        </Reveal>
-        <Reveal delay={400} className="mt-6">
           <LedgerNote>
-            ONE COMMAND PER LOADER. Sixty-four states, sixty-four files. Install only what you ship.
+            REGISTRY ROLLOUT — Bit-Scanner is installable now. The other loaders remain available
+            through their manual source panels until each registry entry passes the same consumer test.
           </LedgerNote>
         </Reveal>
       </section>

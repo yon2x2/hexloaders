@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "hexloaders",
+  "homepage": "https://github.com/yon2x2/hexloaders",
+  "items": [
+    {
+      "name": "bit-scanner",
+      "type": "registry:component",
+      "title": "Bit Scanner",
+      "description": "A zero-extra-dependency React loader that scans a six-bit hexagram in discrete steps.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/bit-scanner.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/bit-scanner.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/bit-scanner file. The component requires React and includes its own CSS, reduced-motion behavior, and accessible status semantics."
+    }
+  ]
+}

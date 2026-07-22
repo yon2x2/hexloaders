@@ -28,11 +28,13 @@ export interface LoaderMeta {
   flagship: boolean;
   binary: string; // top→bottom print string of value
   hexagram: Hexagram; // dictionary entry for value
-  registry: string; // e.g. "@hexloaders/bit-scanner"
-  install: string; // e.g. "npx shadcn@latest add @hexloaders/bit-scanner"
+  registry: string | null; // Published GitHub registry address, null while manual-only.
+  install: string | null; // Exact public command, null while manual-only.
 }
 
 const FLAGSHIP_SLUGS = new Set(['bit-scanner', 'mutating-matrix', 'inversion-pulse']);
+const PUBLISHED_REGISTRY_SLUGS = new Set(['bit-scanner']);
+export const GITHUB_REGISTRY = 'yon2x2/hexloaders';
 
 /** [name, slug, mechanic] in value order 0–63 (row = upper 000→111, col = lower 000→111). */
 const TABLE: readonly (readonly [string, string, Mechanic])[] = [
@@ -104,7 +106,7 @@ const TABLE: readonly (readonly [string, string, Mechanic])[] = [
 
 export const LOADERS: readonly LoaderMeta[] = TABLE.map(([name, slug, mechanic], value) => {
   const hexagram = HEXAGRAMS[value];
-  const registry = `@hexloaders/${slug}`;
+  const registry = PUBLISHED_REGISTRY_SLUGS.has(slug) ? `${GITHUB_REGISTRY}/${slug}` : null;
   return {
     value,
     name,
@@ -114,7 +116,7 @@ export const LOADERS: readonly LoaderMeta[] = TABLE.map(([name, slug, mechanic],
     binary: hexagram.binary,
     hexagram,
     registry,
-    install: `npx shadcn@latest add ${registry}`,
+    install: registry ? `npx shadcn@latest add ${registry}` : null,
   };
 });
 
