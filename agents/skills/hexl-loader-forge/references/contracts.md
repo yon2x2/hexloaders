@@ -27,7 +27,7 @@ export interface LoaderProps {
 {
   value: number;              // 0–63 — also the 8×8 grid position (row=upper, col=lower)
   name: string;               // "Barrel Shift"
-  slug: string;               // "barrel-shift" — used in /loaders/[slug] and @hexloaders/<slug>
+  slug: string;               // "barrel-shift" — used in /loaders/[slug] and the GitHub registry item
   mechanic: Mechanic;         // one of the 8 (see mechanics.md)
   flagship?: boolean;         // only the 3 bespoke loaders
 }
@@ -52,7 +52,8 @@ keeps shown source identical to shipped source.
 ```tsx
 /**
  * HEXLOADERS — <Name> · STATE <n> · <binary top→bottom> · mechanic <MECHANIC>
- * Registry: @hexloaders/<slug> · Files: [<file>, hex-glyph.tsx] · 0 dependencies
+ * Registry: pending until consumer proof · Files: [<file>, hex-glyph.tsx]
+ * Zero additional runtime dependencies beyond React.
  * License: MIT — install one, copy the code, make it yours.
  */
 ```

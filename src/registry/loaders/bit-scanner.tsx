@@ -1,14 +1,14 @@
 /**
  * HEXLOADERS — bit-scanner
  * n° 26 · binary 011010 · mechanic: SCAN
- * registry: @hexloaders/bit-scanner
+ * registry: yon2x2/hexloaders/bit-scanner
  *
  * A static hexagram inside a technical ledger block. The active row travels
  * top→bottom in 6 discrete steps; each row snaps opacity dim → 1 for exactly
  * one step, then back. Right rail prints metadata.
  *
  * Cycle: 6 steps × var(--hexl-step) = 720ms sweep + 240ms hold + instant reset.
- * Zero dependencies. Single file. MIT License.
+ * Zero additional runtime dependencies beyond React. Single file. MIT License.
  */
 
 import type { CSSProperties, HTMLAttributes } from 'react';

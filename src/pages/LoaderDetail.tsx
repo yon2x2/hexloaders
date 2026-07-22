@@ -448,7 +448,7 @@ export default function LoaderDetail() {
         <div className={`flex min-h-40 flex-wrap items-center justify-between gap-6 p-6${reveal(1)}`}>
           <div className="min-w-0">
             <div className="font-mono text-mono-micro uppercase opacity-[0.45]">
-              n°{pad(meta.value)} · {meta.registry}
+              n°{pad(meta.value)} · {meta.registry ?? 'MANUAL SOURCE'}
             </div>
             <h1 className="mt-1 font-grotesk text-display-md uppercase">{meta.name}</h1>
             <p className="mt-3 font-mono text-mono-data">{specLineFor(meta, kw)}</p>
@@ -462,7 +462,13 @@ export default function LoaderDetail() {
         </div>
 
         <div className={`border-t border-hexl-fg${reveal(2)}`}>
-          <InstallStrip command={`shadcn@latest add ${meta.registry}`} />
+          {meta.install ? (
+            <InstallStrip command={meta.install.replace(/^npx /, '')} />
+          ) : (
+            <div className="flex h-14 items-center px-4 font-mono text-mono-label uppercase">
+              MANUAL SOURCE AVAILABLE · REGISTRY ROLLOUT PENDING
+            </div>
+          )}
         </div>
       </header>
 
@@ -496,15 +502,17 @@ export default function LoaderDetail() {
       <section id="installation" className="mt-16 scroll-mt-20">
         <Kicker>■ INSTALLATION</Kicker>
         <div className="mt-6 space-y-8">
-          <div>
-            <SubLabel>{'// CLI — SHADCN REGISTRY'}</SubLabel>
-            <CodeBlock
-              code={`shadcn@latest add ${meta.registry}`}
-              packageManager
-              language="bash"
-              showLineNumbers={false}
-            />
-          </div>
+          {meta.install && (
+            <div>
+              <SubLabel>{'// CLI — GITHUB REGISTRY'}</SubLabel>
+              <CodeBlock
+                code={meta.install.replace(/^npx /, '')}
+                packageManager
+                language="bash"
+                showLineNumbers={false}
+              />
+            </div>
+          )}
           <div>
             <SubLabel>{'// MANUAL — COPY-PASTE, OWN THE FILE'}</SubLabel>
             <div className="border border-hexl-fg">
@@ -529,8 +537,8 @@ export default function LoaderDetail() {
             </div>
           </div>
           <div>
-            <SubLabel>{'// REGISTRY ENTRY — registry/index.json'}</SubLabel>
-            <CodeBlock code={registryEntryFor(meta.slug)} filename="registry/index.json" language="json" />
+            <SubLabel>{'// DISTRIBUTION MANIFEST'}</SubLabel>
+            <CodeBlock code={registryEntryFor(meta.slug)} filename="registry-status.json" language="json" />
           </div>
         </div>
       </section>

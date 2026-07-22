@@ -2,7 +2,7 @@
  * HEXLOADERS — count (generated mechanic template)
  * mechanic: COUNT
  * serves states 18 26 34 42 45 50 57 59
- * registry: @hexloaders/count
+ * registry: pending
  *
  * Binary counting: the state increments by one per clock tick —
  * (value + tick) mod 64 — rolling over at 64 like a six-bit odometer.

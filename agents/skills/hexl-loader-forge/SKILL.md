@@ -45,7 +45,7 @@ matrix and the Fu Xi map.
 ```tsx
 /**
  * HEXLOADERS — <name> · STATE <n> · <binary> · mechanic <MECHANIC>
- * @hexloaders/<slug> · zero dependencies · MIT
+ * Registry: pending until consumer proof · zero additional dependencies beyond React · MIT
  */
 // props: value: number (0–63), size?, step? (ms, ≥120), invert?, className?
 // styling ONLY via --hexl-* CSS vars (+ inline style from size prop)

@@ -507,6 +507,7 @@ export default function Playground() {
     feedbackTimer.current = window.setTimeout(() => setCopiedJsx(false), 1200);
   };
   const copyInstall = async () => {
+    if (!meta.install) return;
     await copyText(meta.install);
     setCopiedInstall(true);
     window.clearTimeout(feedbackTimer.current);
@@ -911,17 +912,23 @@ export default function Playground() {
 
           {/* INSTALL */}
           <div className="border-b border-hexl-fg">
-            <div className="flex h-10 items-center border-b border-hexl-fg px-3 font-mono text-mono-micro uppercase">INSTALL</div>
+            <div className="flex h-10 items-center border-b border-hexl-fg px-3 font-mono text-mono-micro uppercase">
+              {meta.install ? 'INSTALL' : 'DISTRIBUTION'}
+            </div>
             <div className="flex items-stretch justify-between">
-              <code className="truncate px-3 py-3 font-mono text-mono-data">{meta.install}</code>
-              <button
-                type="button"
-                onClick={copyInstall}
-                className="shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-                aria-live="polite"
-              >
-                {copiedInstall ? 'COPIED' : 'COPY'}
-              </button>
+              <code className="truncate px-3 py-3 font-mono text-mono-data">
+                {meta.install ?? 'MANUAL SOURCE · REGISTRY ROLLOUT PENDING'}
+              </code>
+              {meta.install && (
+                <button
+                  type="button"
+                  onClick={copyInstall}
+                  className="shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+                  aria-live="polite"
+                >
+                  {copiedInstall ? 'COPIED' : 'COPY'}
+                </button>
+              )}
             </div>
             <Link
               to={`/loaders/${slug}`}

@@ -97,6 +97,7 @@ export function registryEntryFor(slug: string): string {
     mechanic: meta.mechanic,
     family: { upper: meta.hexagram.upper, lower: meta.hexagram.lower },
     registry: meta.registry,
+    distribution: meta.registry ? 'github-registry' : 'manual-source',
     files: meta.flagship
       ? [`loaders/${meta.slug}.tsx`]
       : [`loaders/${meta.slug}.tsx`, 'loaders/hex-glyph.tsx'],

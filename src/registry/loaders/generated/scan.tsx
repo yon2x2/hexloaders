@@ -2,7 +2,7 @@
  * HEXLOADERS — scan (generated mechanic template)
  * mechanic: SCAN
  * serves states 07 09 15 23 31 39 47 55 (+ 01 via the bespoke flagship bit-scanner)
- * registry: @hexloaders/scan
+ * registry: pending
  *
  * The active row crosses the hexagram top→bottom in six discrete steps;
  * every row snaps from dim to full for exactly one step, then back.

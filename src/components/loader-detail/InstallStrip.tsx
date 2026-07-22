@@ -23,7 +23,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export interface InstallStripProps {
-  /** Bare command after the PM prefix, e.g. "shadcn@latest add @hexloaders/bit-scanner". */
+  /** Bare command after the PM prefix, e.g. "shadcn@latest add owner/repo/bit-scanner". */
   command: string;
   className?: string;
 }

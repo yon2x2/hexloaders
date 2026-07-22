@@ -22,7 +22,7 @@ import PreviewCard from '@/components/PreviewCard';
 import Kicker from '@/components/Kicker';
 import BitEditor from '@/components/BitEditor';
 
-const INSTALL_CMD = 'npx shadcn@latest add @hexloaders/bit-scanner';
+const INSTALL_CMD = 'npx shadcn@latest add yon2x2/hexloaders/bit-scanner';
 
 /* ---------------------------------- hooks ---------------------------------- */
 
@@ -276,6 +276,7 @@ const MatrixCell = memo(function MatrixCell({
 
   const [copied, setCopied] = useState(false);
   const copy = async () => {
+    if (!meta.install) return;
     await copyText(meta.install);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1200);
@@ -316,15 +317,17 @@ const MatrixCell = memo(function MatrixCell({
         </span>
       </Link>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 py-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
-        <span className="truncate font-mono text-mono-micro">{meta.install}</span>
-        <button
-          type="button"
-          onClick={copy}
-          aria-label={`Copy install command for ${meta.name}`}
-          className="pointer-events-auto shrink-0 border border-hexl-fg px-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-        >
-          {copied ? 'COPIED' : 'COPY'}
-        </button>
+        <span className="truncate font-mono text-mono-micro">{meta.install ?? 'MANUAL SOURCE'}</span>
+        {meta.install && (
+          <button
+            type="button"
+            onClick={copy}
+            aria-label={`Copy install command for ${meta.name}`}
+            className="pointer-events-auto shrink-0 border border-hexl-fg px-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+          >
+            {copied ? 'COPIED' : 'COPY'}
+          </button>
+        )}
       </div>
     </div>
   );
@@ -421,7 +424,8 @@ function Matrix() {
       navigate(`/loaders/${order.current[focusIx].slug}`);
       return;
     } else if (e.key.toLowerCase() === 'c') {
-      void copyText(order.current[focusIx].install);
+      const command = order.current[focusIx].install;
+      if (command) void copyText(command);
       return;
     } else return;
     e.preventDefault();
@@ -446,7 +450,8 @@ function Matrix() {
         <Reveal delay={240}>
           <p className="mt-6 max-w-[68ch] text-body-sm">
             Row = upper trigram (bits 3–5). Column = lower trigram (bits 0–2). Address = (upper &lt;&lt; 3) |
-            lower. Every cell is a loader you can install, copy, and own.
+            lower. Every cell exposes source you can copy and own; verified registry installation
+            begins with Bit-Scanner.
           </p>
         </Reveal>
       </div>
@@ -630,8 +635,8 @@ function Hero() {
 
             <Reveal delay={480}>
               <p className="mt-8 max-w-[560px] text-body">
-                64 free and open-source loaders, built with React, TypeScript, and Tailwind CSS — on the oldest
-                binary system ever recorded. Install one, copy the code, and make it yours.
+                64 free and open-source loaders, built with React and TypeScript on the oldest binary
+                system ever recorded. Install the verified Bit-Scanner or copy any loader source and make it yours.
               </p>
             </Reveal>
 
@@ -772,7 +777,9 @@ function Flagships() {
                   packageManager
                   language="bash"
                   showLineNumbers={false}
-                  code={`shadcn@latest add @hexloaders/${f.slug}`}
+                  code={f.slug === 'bit-scanner'
+                    ? 'shadcn@latest add yon2x2/hexloaders/bit-scanner'
+                    : '# Registry rollout pending — use the manual source panel'}
                 />
               </Reveal>
               <Reveal delay={400}>
@@ -1040,8 +1047,8 @@ function Distribution() {
   ];
 
   const phases = [
-    { tag: 'PHASE 1 — SHIPPED', chip: 'NOW', body: 'shadcn-compatible registry, all 64 addressable.', blink: true },
-    { tag: 'PHASE 2 — NEXT', chip: 'Q3', body: 'npx hexloaders add <slug> — dedicated CLI: interactive picker, --all, --list, hexloaders.json, registry at r.hexloaders.dev.', blink: false },
+    { tag: 'PHASE 1 — SHIPPED', chip: 'NOW', body: 'GitHub registry vertical slice: Bit-Scanner installs into a clean Vite app.', blink: true },
+    { tag: 'PHASE 2 — NEXT', chip: 'NEXT', body: 'Apply the verified registry contract to the remaining 63 loaders.', blink: false },
     { tag: 'PHASE 3 — LATER', chip: 'Q4+', body: 'Community registry, variant transforms (--mechanic scan), MCP server for agent-driven installs.', blink: false },
   ];
 

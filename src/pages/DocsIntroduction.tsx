@@ -65,7 +65,7 @@ const START_CARDS: StartCard[] = [
   { href: '/#matrix', label: 'THE MATRIX', desc: 'Preview all 64 primitives live.' },
 ];
 
-const INSTALL_CMD = bySlug('bit-scanner')?.install ?? 'npx shadcn@latest add @hexloaders/bit-scanner';
+const INSTALL_CMD = bySlug('bit-scanner')?.install ?? 'npx shadcn@latest add yon2x2/hexloaders/bit-scanner';
 
 /** Ledger link-card: hover = instant invert, arrow shifts 4px with a hard cut. */
 function CardInner({ label, desc, index }: { label: string; desc: string; index: number }) {
