@@ -8,3 +8,4 @@ dist/
 *.csv
 .loaders-backup.tar.gz
 eval-workspace/
+.vercel
