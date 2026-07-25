@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.19.5
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run repository gates
+        run: npm run check
+
+  registry-consumer:
+    name: Registry consumer
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.19.5
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.5
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Bit Scanner in a clean app
+        env:
+          REGISTRY_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          REGISTRY_REF: ${{ github.head_ref || github.ref_name }}
+        run: npm run check:registry:consumer -- "${REGISTRY_REPOSITORY}/bit-scanner#${REGISTRY_REF}"
