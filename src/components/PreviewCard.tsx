@@ -24,16 +24,16 @@ export default function PreviewCard({ preview, code, filename, language = 'tsx',
   const [size, setSize] = useState<SizeKey>('M');
 
   const tabBtn = (t: 'PREVIEW' | 'CODE') =>
-    `px-4 py-2 font-mono text-mono-label uppercase${tab === t ? ' bg-hexl-fg text-hexl-bg' : ''}`;
-  const ctl = 'border-l border-hexl-fg px-3 py-2 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg';
+    `min-h-11 flex-1 px-4 py-2 font-mono text-mono-label uppercase sm:flex-none${tab === t ? ' bg-hexl-fg text-hexl-bg' : ''}`;
+  const ctl = 'min-h-11 border-l border-hexl-fg px-3 py-2 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg';
 
   return (
     <div className={`border border-hexl-fg bg-hexl-bg text-hexl-fg${className ? ` ${className}` : ''}`}>
-      <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
+      <div className="flex min-h-11 flex-col items-stretch border-b border-hexl-fg sm:flex-row sm:justify-between">
         {code === undefined ? (
-          <span className="border-r border-hexl-fg px-4 py-2 font-mono text-mono-label uppercase">PREVIEW</span>
+          <span className="flex min-h-11 items-center border-r border-hexl-fg px-4 py-2 font-mono text-mono-label uppercase">PREVIEW</span>
         ) : (
-          <div className="flex items-stretch" role="tablist">
+          <div className="flex min-h-11 w-full items-stretch sm:w-auto" role="tablist">
             <button type="button" role="tab" aria-selected={tab === 'PREVIEW'} onClick={() => setTab('PREVIEW')} className={`${tabBtn('PREVIEW')} border-r border-hexl-fg`}>
               PREVIEW
             </button>
@@ -42,24 +42,24 @@ export default function PreviewCard({ preview, code, filename, language = 'tsx',
             </button>
           </div>
         )}
-        <div className="flex items-stretch">
+        <div className="flex min-h-11 w-full items-stretch border-t border-hexl-fg sm:w-auto sm:border-t-0">
           <button
             type="button"
             onClick={() => setInvert(!invert)}
             aria-pressed={invert}
             aria-label="Invert preview"
-            className={`${ctl}${invert ? ' bg-hexl-fg text-hexl-bg' : ''}`}
+            className={`${ctl} flex-1 sm:flex-none${invert ? ' bg-hexl-fg text-hexl-bg' : ''}`}
           >
             INVERT
           </button>
-          <div className="flex items-stretch" role="group" aria-label="Size">
+          <div className="flex flex-1 items-stretch sm:flex-none" role="group" aria-label="Size">
             {(['S', 'M', 'L'] as SizeKey[]).map((s) => (
               <button
                 key={s}
                 type="button"
                 onClick={() => setSize(s)}
                 aria-pressed={size === s}
-                className={`${ctl}${size === s ? ' bg-hexl-fg text-hexl-bg' : ''}`}
+                className={`${ctl} min-w-11 flex-1${size === s ? ' bg-hexl-fg text-hexl-bg' : ''}`}
               >
                 {s}
               </button>

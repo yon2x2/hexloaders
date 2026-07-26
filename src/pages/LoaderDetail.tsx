@@ -433,11 +433,11 @@ export default function LoaderDetail() {
     <DocsShell toc={toc}>
       {/* ------------------------------ header ledger block ------------------------------ */}
       <header className="border border-hexl-fg">
-        <div className={`flex h-10 items-center justify-between gap-3 border-b border-hexl-fg${reveal(0)}`}>
-          <div className="truncate px-3 font-mono text-mono-label uppercase">
+        <div className={`flex min-h-10 flex-col border-b border-hexl-fg sm:flex-row sm:items-center sm:justify-between sm:gap-3${reveal(0)}`}>
+          <div className="min-w-0 break-words px-3 py-3 font-mono text-mono-label uppercase sm:truncate sm:py-0">
             LOADERS / {meta.mechanic} / {meta.slug.toUpperCase()}
           </div>
-          <div className="flex shrink-0 items-center gap-2 px-3">
+          <div className="flex shrink-0 flex-wrap items-center gap-2 border-t border-hexl-fg px-3 py-2 sm:border-t-0 sm:py-0">
             <Badge variant="solid">{meta.mechanic}</Badge>
             <Badge>0 DEPS</Badge>
             <Badge>{kb}</Badge>
@@ -584,17 +584,17 @@ export default function LoaderDetail() {
 
       {/* ----------------------------------- pager ----------------------------------- */}
       <nav aria-label="Pager" className="mt-16 grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg">
-        <Link to={`/loaders/${prev.slug}`} className="hexl-cell bg-hexl-bg px-4 py-4">
+        <Link to={`/loaders/${prev.slug}`} className="hexl-cell min-w-0 bg-hexl-bg px-4 py-4">
           <div className="font-mono text-mono-micro uppercase opacity-[0.45]">
             ← PREV · n°{pad(prev.value)}
           </div>
-          <div className="mt-1 font-grotesk text-head uppercase">{prev.name}</div>
+          <div className="mt-1 break-words font-grotesk text-head uppercase">{prev.name}</div>
         </Link>
-        <Link to={`/loaders/${next.slug}`} className="hexl-cell bg-hexl-bg px-4 py-4 text-right">
+        <Link to={`/loaders/${next.slug}`} className="hexl-cell min-w-0 bg-hexl-bg px-4 py-4 text-right">
           <div className="font-mono text-mono-micro uppercase opacity-[0.45]">
             NEXT · n°{pad(next.value)} →
           </div>
-          <div className="mt-1 font-grotesk text-head uppercase">{next.name}</div>
+          <div className="mt-1 break-words font-grotesk text-head uppercase">{next.name}</div>
         </Link>
       </nav>
     </DocsShell>

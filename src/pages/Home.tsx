@@ -6,7 +6,7 @@
  */
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { LOADERS, MECHANICS } from '@/lib/registry';
 import type { LoaderMeta, Mechanic } from '@/lib/registry';
@@ -189,21 +189,46 @@ const TypedCode = memo(function TypedCode({ code, filename }: { code: string; fi
 /** Mini 8×8 address map stepping through random cells every 240ms. */
 const MiniMap = memo(function MiniMap({ onPick }: { onPick?: (v: number) => void }) {
   const [active, setActive] = useState(26);
+  const [focusIndex, setFocusIndex] = useState(26);
+  const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   useEffect(() => {
     if (reducedMotion()) return;
     const id = window.setInterval(() => setActive(Math.floor(Math.random() * 64)), 240);
     return () => window.clearInterval(id);
   }, []);
+
+  const moveFocus = (event: KeyboardEvent<HTMLButtonElement>, value: number) => {
+    let next: number;
+    if (event.key === 'ArrowLeft') next = (value + 63) % 64;
+    else if (event.key === 'ArrowRight') next = (value + 1) % 64;
+    else if (event.key === 'ArrowUp') next = (value + 56) % 64;
+    else if (event.key === 'ArrowDown') next = (value + 8) % 64;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = 63;
+    else return;
+
+    event.preventDefault();
+    setFocusIndex(next);
+    buttonRefs.current[next]?.focus();
+  };
+
   return (
-    <div className="grid w-[120px] grid-cols-8 gap-px border border-hexl-fg bg-hexl-fg p-px" role="img" aria-label="8×8 address map">
+    <div className="grid w-[204px] max-w-full grid-cols-8 gap-px border border-hexl-fg bg-hexl-fg p-px" role="group" aria-label="Choose a state in the 8×8 address map">
       {Array.from({ length: 64 }, (_, v) => (
         <button
+          ref={(element) => {
+            buttonRefs.current[v] = element;
+          }}
           key={v}
           type="button"
-          tabIndex={-1}
-          aria-label={`Cell ${v}`}
-          onClick={() => onPick?.(v)}
-          className={`aspect-square w-full ${v === active ? 'bg-hexl-fg' : 'bg-hexl-bg'}`}
+          aria-label={`Show state ${v} in the loader matrix`}
+          tabIndex={v === focusIndex ? 0 : -1}
+          onClick={() => {
+            setFocusIndex(v);
+            onPick?.(v);
+          }}
+          onKeyDown={(event) => moveFocus(event, v)}
+          className={`aspect-square min-h-6 w-full ${v === active ? 'bg-hexl-fg' : 'bg-hexl-bg'}`}
         />
       ))}
     </div>
@@ -316,14 +341,14 @@ const MatrixCell = memo(function MatrixCell({
           )}
         </span>
       </Link>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 py-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex min-h-11 items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
         <span className="truncate font-mono text-mono-micro">{meta.install ?? 'MANUAL SOURCE'}</span>
         {meta.install && (
           <button
             type="button"
             onClick={copy}
             aria-label={`Copy install command for ${meta.name}`}
-            className="pointer-events-auto shrink-0 border border-hexl-fg px-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+            className="pointer-events-auto min-h-11 shrink-0 border border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
           >
             {copied ? 'COPIED' : 'COPY'}
           </button>
@@ -659,17 +684,17 @@ function Hero() {
             </Reveal>
 
             <Reveal delay={720}>
-              <div className="mt-4 flex max-w-[640px] flex-col sm:flex-row">
+              <div className="mt-4 flex max-w-[640px] flex-col gap-2 sm:flex-row sm:gap-0">
                 <button
                   type="button"
                   onClick={() => document.getElementById('matrix')?.scrollIntoView({ behavior: 'auto' })}
-                  className="flex h-14 flex-1 items-center justify-center border border-hexl-fg bg-hexl-fg px-6 font-mono text-mono-label uppercase text-hexl-bg hover:bg-hexl-bg hover:text-hexl-fg"
+                  className="flex h-14 min-h-14 shrink-0 flex-1 items-center justify-center border border-hexl-fg bg-hexl-fg px-6 font-mono text-mono-label uppercase text-hexl-bg hover:bg-hexl-bg hover:text-hexl-fg"
                 >
                   BROWSE THE 64 →
                 </button>
                 <Link
                   to="/playground"
-                  className="flex h-14 flex-1 items-center justify-center border border-hexl-fg px-6 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg sm:border-l-0"
+                  className="flex h-14 min-h-14 shrink-0 flex-1 items-center justify-center border border-hexl-fg px-6 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg sm:border-l-0"
                 >
                   PLAYGROUND
                 </Link>
