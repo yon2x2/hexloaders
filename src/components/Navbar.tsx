@@ -43,6 +43,7 @@ export default function Navbar() {
   const [hover, setHover] = useState(false);
   const [open, setOpen] = useState(false);
   const [inverted, setInverted] = useState(false);
+  const logoLinkRef = useRef<HTMLAnchorElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -60,14 +61,19 @@ export default function Navbar() {
     if (!open) return;
 
     const menuButton = menuButtonRef.current;
+    const logoLink = logoLinkRef.current;
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
+    const desktopQuery = window.matchMedia('(min-width: 1024px)');
 
     const firstLink = mobileNavRef.current?.querySelector<HTMLElement>('a[href]');
     firstLink?.focus();
 
+    const onDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) setOpen(false);
+    };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -93,12 +99,14 @@ export default function Navbar() {
       }
     };
 
+    desktopQuery.addEventListener('change', onDesktop);
     document.addEventListener('keydown', onKeyDown);
     return () => {
+      desktopQuery.removeEventListener('change', onDesktop);
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
-      menuButton?.focus();
+      (menuButton?.getClientRects().length ? menuButton : logoLink)?.focus();
     };
   }, [open]);
 
@@ -112,6 +120,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-hexl-fg bg-hexl-bg text-hexl-fg">
       <div className="flex h-14 items-stretch justify-between">
         <Link
+          ref={logoLinkRef}
           to="/"
           className="flex items-center gap-3 px-4 hover:bg-hexl-fg hover:text-hexl-bg"
           onMouseEnter={() => setHover(true)}

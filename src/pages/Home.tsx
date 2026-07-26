@@ -6,7 +6,7 @@
  */
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { LOADERS, MECHANICS } from '@/lib/registry';
 import type { LoaderMeta, Mechanic } from '@/lib/registry';
@@ -189,19 +189,45 @@ const TypedCode = memo(function TypedCode({ code, filename }: { code: string; fi
 /** Mini 8×8 address map stepping through random cells every 240ms. */
 const MiniMap = memo(function MiniMap({ onPick }: { onPick?: (v: number) => void }) {
   const [active, setActive] = useState(26);
+  const [focusIndex, setFocusIndex] = useState(26);
+  const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
   useEffect(() => {
     if (reducedMotion()) return;
     const id = window.setInterval(() => setActive(Math.floor(Math.random() * 64)), 240);
     return () => window.clearInterval(id);
   }, []);
+
+  const moveFocus = (event: KeyboardEvent<HTMLButtonElement>, value: number) => {
+    let next: number;
+    if (event.key === 'ArrowLeft') next = (value + 63) % 64;
+    else if (event.key === 'ArrowRight') next = (value + 1) % 64;
+    else if (event.key === 'ArrowUp') next = (value + 56) % 64;
+    else if (event.key === 'ArrowDown') next = (value + 8) % 64;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = 63;
+    else return;
+
+    event.preventDefault();
+    setFocusIndex(next);
+    buttonRefs.current[next]?.focus();
+  };
+
   return (
     <div className="grid w-[204px] max-w-full grid-cols-8 gap-px border border-hexl-fg bg-hexl-fg p-px" role="group" aria-label="Choose a state in the 8×8 address map">
       {Array.from({ length: 64 }, (_, v) => (
         <button
+          ref={(element) => {
+            buttonRefs.current[v] = element;
+          }}
           key={v}
           type="button"
           aria-label={`Show state ${v} in the loader matrix`}
-          onClick={() => onPick?.(v)}
+          tabIndex={v === focusIndex ? 0 : -1}
+          onClick={() => {
+            setFocusIndex(v);
+            onPick?.(v);
+          }}
+          onKeyDown={(event) => moveFocus(event, v)}
           className={`aspect-square min-h-6 w-full ${v === active ? 'bg-hexl-fg' : 'bg-hexl-bg'}`}
         />
       ))}
