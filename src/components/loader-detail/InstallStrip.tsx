@@ -61,8 +61,8 @@ export default function InstallStrip({ command, className }: InstallStripProps) 
   };
 
   return (
-    <div className={`flex h-14 items-stretch justify-between${className ? ` ${className}` : ''}`}>
-      <div className="flex items-stretch" role="tablist" aria-label="Package manager">
+    <div className={`flex min-h-14 flex-col items-stretch sm:h-14 sm:flex-row sm:justify-between${className ? ` ${className}` : ''}`}>
+      <div className="flex min-h-11 w-full items-stretch sm:w-auto" role="tablist" aria-label="Package manager">
         {PMS.map((p) => (
           <button
             key={p}
@@ -70,7 +70,7 @@ export default function InstallStrip({ command, className }: InstallStripProps) 
             role="tab"
             aria-selected={pm === p}
             onClick={() => setPm(p)}
-            className={`border-r border-hexl-fg px-3 font-mono text-mono-label uppercase${
+            className={`min-h-11 flex-1 border-r border-hexl-fg px-3 font-mono text-mono-label uppercase sm:flex-none${
               pm === p ? ' bg-hexl-fg text-hexl-bg' : ''
             }`}
           >
@@ -78,19 +78,21 @@ export default function InstallStrip({ command, className }: InstallStripProps) 
           </button>
         ))}
       </div>
-      <div className="flex min-w-0 flex-1 items-center truncate px-4 font-mono text-mono-data" aria-live="polite">
-        <span className="truncate">{full.slice(0, n)}</span>
-        <span aria-hidden="true" className="hexl-cursor ml-1 shrink-0">
-          ▮
-        </span>
+      <div className="flex min-h-14 min-w-0 flex-1 items-stretch border-t border-hexl-fg sm:border-t-0">
+        <div className="flex min-w-0 flex-1 items-center overflow-x-auto px-4 font-mono text-mono-data" aria-live="polite">
+          <span className="whitespace-nowrap">{full.slice(0, n)}</span>
+          <span aria-hidden="true" className="hexl-cursor ml-1 shrink-0">
+            ▮
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={onCopy}
+          className="min-w-16 shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+        >
+          {copied ? 'COPIED' : 'COPY'}
+        </button>
       </div>
-      <button
-        type="button"
-        onClick={onCopy}
-        className="shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-      >
-        {copied ? 'COPIED' : 'COPY'}
-      </button>
     </div>
   );
 }

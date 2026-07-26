@@ -17,8 +17,8 @@ export interface CssVarsTableProps {
 
 export default function CssVarsTable({ rows, className }: CssVarsTableProps) {
   return (
-    <div className={`border border-hexl-fg font-mono text-mono-data${className ? ` ${className}` : ''}`}>
-      <div className="grid grid-cols-[1.2fr_1fr_2fr] border-b border-hexl-fg">
+    <div className={`overflow-x-auto border border-hexl-fg font-mono text-mono-data${className ? ` ${className}` : ''}`}>
+      <div className="grid min-w-[480px] grid-cols-[1.2fr_1fr_2fr] border-b border-hexl-fg">
         {['VARIABLE', 'DEFAULT', 'EFFECT'].map((h) => (
           <div
             key={h}
@@ -31,7 +31,7 @@ export default function CssVarsTable({ rows, className }: CssVarsTableProps) {
       {rows.map((r) => (
         <div
           key={r.variable}
-          className="grid grid-cols-[1.2fr_1fr_2fr] border-b border-hexl-fg last:border-b-0 hover:bg-hexl-fg hover:text-hexl-bg"
+          className="grid min-w-[480px] grid-cols-[1.2fr_1fr_2fr] border-b border-hexl-fg last:border-b-0 hover:bg-hexl-fg hover:text-hexl-bg"
         >
           <div className="px-3 py-2 font-bold">{r.variable}</div>
           <div className="border-l border-hexl-fg px-3 py-2">{r.defaultValue}</div>

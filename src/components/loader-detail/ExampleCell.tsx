@@ -35,7 +35,7 @@ export default function ExampleCell({ title, caption, jsx, dark = false, childre
 
   return (
     <div
-      className={`group flex flex-col border border-hexl-fg bg-hexl-bg text-hexl-fg${
+      className={`group flex min-w-0 flex-col border border-hexl-fg bg-hexl-bg text-hexl-fg${
         dark ? ' hexl-invert' : ''
       }${className ? ` ${className}` : ''}`}
     >

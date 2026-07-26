@@ -6,8 +6,7 @@
  * All feedback is stepped/instant: the playground obeys the rules it shows.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { LOADERS, MECHANICS, bySlug, loadersByMechanic } from '@/lib/registry';
 import { HEXAGRAMS } from '@/lib/hexagrams';
@@ -343,6 +342,17 @@ export default function Playground() {
     setHeld(false); // resume loop
   };
 
+  const onStageKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return;
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      onStageClick();
+    } else if (event.key === 'r' || event.key === 'R') {
+      event.preventDefault();
+      onStageDoubleClick();
+    }
+  };
+
   /* -------------------------------- PNG capture -------------------------------- */
 
   const capture = async () => {
@@ -550,6 +560,7 @@ export default function Playground() {
 
   return (
     <div className="flex flex-col border-b border-hexl-fg lg:grid lg:h-[calc(100dvh-56px)] lg:grid-cols-[340px_minmax(0,1fr)_380px] lg:grid-rows-[minmax(0,1fr)_auto]">
+      <h1 className="sr-only">HEXLOADERS PLAYGROUND</h1>
       {/* ============================== PANEL 1 — LOADER ============================== */}
       <section className="order-1 flex min-h-0 flex-col border-b border-hexl-fg lg:col-start-1 lg:row-start-1 lg:border-b lg:border-r" aria-label="Loader picker">
         <PanelHeader
@@ -674,14 +685,14 @@ export default function Playground() {
 
       {/* ============================== PANEL 3 — STAGE ============================== */}
       <section className="order-2 flex min-h-[480px] flex-col lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:min-h-0" aria-label="Preview stage">
-        <div className="flex h-10 shrink-0 items-stretch justify-between border-b border-hexl-fg">
+        <div className="flex min-h-11 shrink-0 flex-col items-stretch border-b border-hexl-fg lg:flex-row lg:justify-between">
           <button
             type="button"
             onClick={() => {
               if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) togglePanel('stage');
             }}
             aria-expanded={open.stage}
-            className="flex min-w-0 items-center gap-2 px-3 font-mono text-mono-label uppercase lg:cursor-default"
+            className="flex min-h-11 min-w-0 items-center gap-2 px-3 font-mono text-mono-label uppercase lg:cursor-default"
           >
             <span aria-hidden="true" className="lg:hidden">
               {open.stage ? '−' : '+'}
@@ -691,12 +702,12 @@ export default function Playground() {
               {held ? <span className="ml-2 bg-hexl-fg px-1 text-hexl-bg">HOLD</span> : null}
             </span>
           </button>
-          <div className="flex shrink-0 items-stretch border-l border-hexl-fg">
+          <div className="flex min-h-11 w-full flex-wrap items-stretch border-t border-hexl-fg lg:w-auto lg:flex-nowrap lg:border-l lg:border-t-0">
             <button
               type="button"
               onClick={() => setGrid((g) => !g)}
               aria-pressed={grid}
-              className={`border-r border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${grid ? ' bg-hexl-fg text-hexl-bg' : ''}`}
+              className={`min-h-11 border-r border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${grid ? ' bg-hexl-fg text-hexl-bg' : ''}`}
             >
               GRID
             </button>
@@ -704,16 +715,16 @@ export default function Playground() {
               type="button"
               onClick={() => setStageInvert((v) => !v)}
               aria-pressed={stageInvert}
-              className={`px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${stageInvert ? ' bg-hexl-fg text-hexl-bg' : ''}`}
+              className={`min-h-11 px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${stageInvert ? ' bg-hexl-fg text-hexl-bg' : ''}`}
             >
               INVERT
             </button>
-            <div className="flex items-stretch border-l border-hexl-fg" role="group" aria-label="Zoom stepper">
+            <div className="flex min-h-11 items-stretch border-l border-hexl-fg" role="group" aria-label="Zoom stepper">
               <button
                 type="button"
                 aria-label="Zoom out"
                 onClick={() => setZoomIdx((z) => Math.max(0, z - 1))}
-                className="px-2 font-mono text-mono-micro hover:bg-hexl-fg hover:text-hexl-bg"
+                className="min-w-11 px-2 font-mono text-mono-micro hover:bg-hexl-fg hover:text-hexl-bg"
               >
                 −
               </button>
@@ -724,7 +735,7 @@ export default function Playground() {
                 type="button"
                 aria-label="Zoom in"
                 onClick={() => setZoomIdx((z) => Math.min(ZOOMS.length - 1, z + 1))}
-                className="border-l border-hexl-fg px-2 font-mono text-mono-micro hover:bg-hexl-fg hover:text-hexl-bg"
+                className="min-w-11 border-l border-hexl-fg px-2 font-mono text-mono-micro hover:bg-hexl-fg hover:text-hexl-bg"
               >
                 +
               </button>
@@ -732,7 +743,7 @@ export default function Playground() {
             <button
               type="button"
               onClick={capture}
-              className="border-l border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+              className="min-h-11 flex-1 border-l border-t border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg min-[360px]:border-t-0 lg:flex-none"
               aria-live="polite"
             >
               {captured ?? 'EXPORT PNG'}
@@ -744,11 +755,13 @@ export default function Playground() {
           <div
             ref={stageRef}
             role="application"
-            aria-label="Loader stage. Click to hold the loop, click again to advance one step, double-click to resume."
+            tabIndex={0}
+            aria-label="Loader stage. Click, Space, or Enter to hold the loop and advance one step. Double-click or press R to resume."
             className="relative min-h-0 flex-1 cursor-crosshair select-none overflow-hidden bg-hexl-bg text-hexl-fg"
             data-invert={stageInvert ? '' : undefined}
             onClick={onStageClick}
             onDoubleClick={onStageDoubleClick}
+            onKeyDown={onStageKeyDown}
           >
             {grid && (
               <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.05]">

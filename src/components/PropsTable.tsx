@@ -13,8 +13,8 @@ export interface PropsTableProps {
 /** Ledger table: PROP / TYPE / DEFAULT / DESCRIPTION, mono-data, row hover invert. */
 export default function PropsTable({ rows, className }: PropsTableProps) {
   return (
-    <div className={`border border-hexl-fg font-mono text-mono-data${className ? ` ${className}` : ''}`}>
-      <div className="grid grid-cols-[1fr_1.2fr_1fr_2fr] border-b border-hexl-fg">
+    <div className={`overflow-x-auto border border-hexl-fg font-mono text-mono-data${className ? ` ${className}` : ''}`}>
+      <div className="grid min-w-[560px] grid-cols-[1fr_1.2fr_1fr_2fr] border-b border-hexl-fg">
         {['PROP', 'TYPE', 'DEFAULT', 'DESCRIPTION'].map((h) => (
           <div key={h} className="px-3 py-2 text-mono-micro uppercase [&:not(:first-child)]:border-l [&:not(:first-child)]:border-hexl-fg">
             {h}
@@ -24,7 +24,7 @@ export default function PropsTable({ rows, className }: PropsTableProps) {
       {rows.map((r) => (
         <div
           key={r.prop}
-          className="grid grid-cols-[1fr_1.2fr_1fr_2fr] border-b border-hexl-fg last:border-b-0 hover:bg-hexl-fg hover:text-hexl-bg"
+          className="grid min-w-[560px] grid-cols-[1fr_1.2fr_1fr_2fr] border-b border-hexl-fg last:border-b-0 hover:bg-hexl-fg hover:text-hexl-bg"
         >
           <div className="px-3 py-2 font-bold">{r.prop}</div>
           <div className="border-l border-hexl-fg px-3 py-2">{r.type}</div>

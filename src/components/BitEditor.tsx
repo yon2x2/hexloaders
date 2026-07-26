@@ -56,7 +56,7 @@ export default function BitEditor({ value, onChange, size = 128, className }: Bi
                   aria-pressed={bit === 1}
                   aria-label={`Line ${i + 1} — ${bit === 1 ? 'Yang (solid)' : 'Yin (broken)'}. Toggle.`}
                   onClick={() => set(v ^ (1 << i))}
-                  className="block w-full hover:bg-hexl-fg hover:text-hexl-bg active:translate-x-[2px]"
+                  className="flex min-h-6 w-full items-center hover:bg-hexl-fg hover:text-hexl-bg active:translate-x-[2px]"
                   style={{ marginBottom: i === 0 ? 0 : (size * GAP) / W }}
                 >
                   <svg width={size} height={(size * LINE_H) / W} viewBox={`0 0 ${W} ${LINE_H}`} className="block">

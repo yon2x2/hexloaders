@@ -105,10 +105,10 @@ export default function CodeBlock({
 
   return (
     <div className={`border border-hexl-fg bg-hexl-bg text-hexl-fg${className ? ` ${className}` : ''}`}>
-      <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
-        <div className="flex items-center gap-3 px-3 font-mono text-mono-micro uppercase">
+      <div className={`flex min-h-11 items-stretch justify-between border-b border-hexl-fg${packageManager ? ' flex-col sm:h-11 sm:flex-row' : ''}`}>
+        <div className={`flex min-h-11 items-center gap-3 font-mono text-mono-micro uppercase${packageManager ? ' w-full sm:w-auto sm:px-3' : ' min-w-0 px-3'}`}>
           {packageManager ? (
-            <div className="flex h-full items-stretch" role="tablist" aria-label="Package manager">
+            <div className="flex min-h-11 w-full items-stretch sm:w-auto" role="tablist" aria-label="Package manager">
               {PMS.map((p) => (
                 <button
                   key={p}
@@ -116,7 +116,7 @@ export default function CodeBlock({
                   role="tab"
                   aria-selected={pm === p}
                   onClick={() => setPm(p)}
-                  className={`border-r border-hexl-fg px-3 font-mono text-mono-label uppercase first:border-l${
+                  className={`min-h-11 flex-1 border-r border-hexl-fg px-3 font-mono text-mono-label uppercase first:border-l sm:flex-none${
                     pm === p ? ' bg-hexl-fg text-hexl-bg' : ''
                   }`}
                 >
@@ -131,7 +131,7 @@ export default function CodeBlock({
         <button
           type="button"
           onClick={onCopy}
-          className="border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+          className={`min-h-11 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${packageManager ? ' w-full border-l-0 border-t sm:w-auto sm:border-l sm:border-t-0' : ''}`}
           aria-live="polite"
         >
           {copied ? 'COPIED' : 'COPY'}

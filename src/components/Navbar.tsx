@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import HexGlyph from '@/registry/loaders/hex-glyph';
-import Badge from './Badge';
 
 const LINKS = [
   { to: '/docs/introduction', label: 'INTRODUCTION' },
@@ -44,6 +43,8 @@ export default function Navbar() {
   const [hover, setHover] = useState(false);
   const [open, setOpen] = useState(false);
   const [inverted, setInverted] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
 
   // Living logo: on hover, step through random states every 120ms (steps(1)).
   useEffect(() => {
@@ -54,6 +55,52 @@ export default function Navbar() {
     const id = window.setInterval(() => setLogoValue(Math.floor(Math.random() * 64)), 120);
     return () => window.clearInterval(id);
   }, [hover]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const menuButton = menuButtonRef.current;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    const firstLink = mobileNavRef.current?.querySelector<HTMLElement>('a[href]');
+    firstLink?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusable = [
+        menuButton,
+        ...Array.from(mobileNavRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []),
+      ].filter((element): element is HTMLElement => Boolean(element));
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      menuButton?.focus();
+    };
+  }, [open]);
 
   const toggleInvert = () => {
     const next = !inverted;
@@ -72,7 +119,6 @@ export default function Navbar() {
         >
           <HexGlyph value={logoValue} size={20} aria-hidden="true" />
           <span className="font-mono text-mono-label uppercase">HEXLOADERS</span>
-          <Badge>v0.1.0</Badge>
         </Link>
 
         <nav className="hidden items-stretch lg:flex" aria-label="Primary">
@@ -116,25 +162,29 @@ export default function Navbar() {
             onClick={toggleInvert}
             aria-pressed={inverted}
             aria-label="Invert page colors"
-            className="flex items-center border-l border-hexl-fg px-4 hover:bg-hexl-fg hover:text-hexl-bg"
+            className="flex min-w-11 items-center justify-center border-l border-hexl-fg px-3 hover:bg-hexl-fg hover:text-hexl-bg"
           >
             <InvertIcon />
           </button>
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
-            aria-label="Menu"
-            className="flex items-center border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+            aria-controls="mobile-navigation"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            className="flex min-w-16 items-center justify-center border-l border-hexl-fg px-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
           >
-            {open ? '−' : '+'}
+            {open ? 'CLOSE' : 'MENU'}
           </button>
         </div>
       </div>
 
       {open && (
         <nav
-          className="fixed inset-0 top-14 z-50 flex flex-col border-t border-hexl-fg bg-hexl-bg lg:hidden"
+          ref={mobileNavRef}
+          id="mobile-navigation"
+          className="fixed inset-0 top-14 z-50 flex flex-col overflow-y-auto overscroll-contain border-t border-hexl-fg bg-hexl-bg pb-[env(safe-area-inset-bottom)] lg:hidden"
           aria-label="Mobile"
         >
           {MENU_LINKS.map((l, i) => (
