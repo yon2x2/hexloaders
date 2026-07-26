@@ -415,7 +415,7 @@ function Matrix() {
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     const cols = window.innerWidth >= 1024 ? 8 : window.innerWidth >= 640 ? 4 : 2;
-    let next = focusIx;
+    let next: number;
     if (e.key === 'ArrowRight') next = Math.min(63, focusIx + 1);
     else if (e.key === 'ArrowLeft') next = Math.max(0, focusIx - 1);
     else if (e.key === 'ArrowDown') next = Math.min(63, focusIx + cols);
