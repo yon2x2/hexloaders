@@ -1,12 +1,13 @@
 # HEXLOADERS
 
 HEXLOADERS is a React and TypeScript loader system built from the 64 I Ching
-hexagrams interpreted as six-bit states. The repository contains the component
-source, a live catalogue, documentation, a playground, and a showcase.
+hexagrams interpreted as six-bit states. Three flagship components and eight
+parameterized mechanic templates produce 64 named presets across the live
+catalogue, documentation, playground, and showcase.
 
-The website is functional. `bit-scanner` is the first public GitHub registry
-item; the remaining loaders expose their source for manual installation while
-their registry entries are prepared and verified.
+The website is functional. `bit-scanner` is the only public GitHub registry
+item today. The other ten component sources remain available for manual
+installation while their registry entries are prepared and verified.
 
 ```bash
 npx shadcn@latest add yon2x2/hexloaders/bit-scanner
@@ -14,7 +15,7 @@ npx shadcn@latest add yon2x2/hexloaders/bit-scanner
 
 ## Requirements
 
-- Node.js 20.19 or newer in the Node 20 release line
+- Node.js 24
 - npm 10 or newer
 
 The repository includes an `.nvmrc` file. With nvm installed, run `nvm use` before

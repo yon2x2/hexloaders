@@ -31,7 +31,8 @@ law table below IS the operative canon — treat it as complete.
 4. **Mechanical motion** — ONLY `steps(n,end)` timing, hard cuts (`transition: none`),
    instant inversion. Durations are integer multiples of `--hexl-step: 120ms`.
    No `ease`, `ease-in-out`, `cubic-bezier`, no smooth-scroll libraries.
-5. **Ownership** — code is the hero. Loaders are zero-dep, single-file, CSS-var driven.
+5. **Ownership** — code is the hero. Components add no runtime packages: flagships are
+   single-file; mechanic templates share only the local `hex-glyph` primitive.
 
 ## Workflow
 

@@ -524,7 +524,7 @@ function Matrix() {
       <div className="mx-auto max-w-[1440px] px-6 py-12 md:px-10">
         <div
           role="grid"
-          aria-label={sort === 'fuxi' ? 'The 64 loaders, Fu Xi arrangement' : `The 64 loaders, sorted by ${sort}`}
+          aria-label={sort === 'fuxi' ? 'The 64 presets, Fu Xi arrangement' : `The 64 presets, sorted by ${sort}`}
           onKeyDown={onKeyDown}
           className={`relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg sm:grid-cols-4${
             sort === 'fuxi' ? ' lg:grid-cols-[32px_repeat(8,minmax(0,1fr))]' : ' lg:grid-cols-8'
@@ -666,8 +666,8 @@ function Hero() {
 
             <Reveal delay={480}>
               <p className="mt-8 max-w-[560px] text-body">
-                64 free and open-source loaders, built with React and TypeScript on the oldest binary
-                system ever recorded. Install the verified Bit-Scanner or copy any loader source and make it yours.
+                64 free and open-source presets, produced by three flagship components and eight reusable
+                mechanic templates. Install the verified Bit-Scanner or copy any loader source and make it yours.
               </p>
             </Reveal>
 
@@ -993,8 +993,8 @@ function Architecture() {
         </Reveal>
         <Reveal delay={240}>
           <p className="mt-6 max-w-[68ch] text-body-sm">
-            Every loader reads its configuration from a single generated dictionary — 64 entries, each a 6-bit
-            value. Add a loader by composing mechanics over bits; never by drawing pixels.
+            Every preset reads its state and component identity from one dictionary — 64 entries,
+            each a 6-bit value. Compose mechanics over bits; never draw loading pixels by hand.
           </p>
         </Reveal>
 
@@ -1079,8 +1079,8 @@ function Distribution() {
 
   const phases = [
     { tag: 'PHASE 1 — SHIPPED', chip: 'NOW', body: 'GitHub registry vertical slice: Bit-Scanner installs into a clean Vite app.', blink: true },
-    { tag: 'PHASE 2 — NEXT', chip: 'NEXT', body: 'Apply the verified registry contract to the remaining 63 loaders.', blink: false },
-    { tag: 'PHASE 3 — LATER', chip: 'Q4+', body: 'Community registry, variant transforms (--mechanic scan), MCP server for agent-driven installs.', blink: false },
+    { tag: 'PHASE 2 — NEXT', chip: 'NEXT', body: 'Verify and publish the two remaining flagships and eight mechanic templates behind all 64 presets.', blink: false },
+    { tag: 'PHASE 3 — LATER', chip: 'LATER', body: 'Evaluate a dedicated HEXLOADERS CLI for discovery and batch installs after the registry rollout.', blink: false },
   ];
 
   return (
@@ -1125,7 +1125,7 @@ function Distribution() {
           <div className="lg:col-span-5">
             <Reveal>
               <div className="border border-hexl-fg">
-                <div className="border-b border-hexl-fg px-4 py-2 font-mono text-mono-label uppercase">CLI ROADMAP</div>
+                <div className="border-b border-hexl-fg px-4 py-2 font-mono text-mono-label uppercase">DISTRIBUTION ROADMAP</div>
                 {phases.map((p) => (
                   <div key={p.tag} className="border-b border-hexl-fg p-4 last:border-b-0 hover:bg-hexl-fg hover:text-hexl-bg">
                     <div className="flex items-center justify-between">
@@ -1162,11 +1162,11 @@ function Distribution() {
 const FAQ = [
   {
     q: 'IS THIS AN NPM PACKAGE?',
-    a: 'No. HEXLOADERS is a registry of source files. The CLI copies the file into your repository. You own it — there is nothing to upgrade and nothing to break.',
+    a: 'No. HEXLOADERS is a registry of source files. The shadcn CLI copies a verified file into your repository. You own it — there is nothing to upgrade and nothing to break.',
   },
   {
     q: 'DO THE LOADERS HAVE DEPENDENCIES?',
-    a: 'Zero. Each loader is a single .tsx file using inline SVG and CSS custom properties. Tailwind is used for layout only; the motion is plain CSS steps().',
+    a: 'No runtime packages beyond React. Flagships are single-file; mechanic templates share the zero-dependency hex-glyph primitive. Tailwind is used for site layout only.',
   },
   {
     q: 'CAN I USE THEM WITHOUT TAILWIND?',

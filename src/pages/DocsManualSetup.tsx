@@ -174,7 +174,7 @@ export default function DocsManualSetup() {
 
             <Reveal className="mt-8">
               <p className="max-w-[62ch] text-body-sm">
-                Optional fourth file — the shared 6-bit glyph the other loaders compose from.
+                Optional fourth file — the shared 6-bit glyph the mechanic templates compose from.
                 Bit-Scanner inlines its own bars to stay single-file; copy the glyph when you
                 start adding states.
               </p>
@@ -219,7 +219,7 @@ export default function DocsManualSetup() {
         prev={{
           to: '/docs/usage',
           label: 'USAGE',
-          desc: 'Installation, configuration, and the CLI roadmap.',
+          desc: 'Installation, configuration, and the distribution roadmap.',
         }}
         next={{
           to: '/loaders/bit-scanner',

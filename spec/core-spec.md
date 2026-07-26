@@ -52,13 +52,14 @@ export const HEX_NAMES: readonly (readonly [string, string, string])[] = [
 ```
 src/lib/hexagrams.ts          # Line, Bits, Hexagram, bitsOf, binaryOf, KING_WEN, HEX_NAMES,
                               # HEXAGRAMS (64 generated entries), byKingwen(n), kingwenOf(value)
-src/lib/registry.ts           # LoaderMeta[] — all 64 rows from design.md §7 table (n° = value, slug, name, mechanic)
-                              # + MECHANICS list + flagship flags. Single source for matrix, sidebar, routes.
+src/lib/registry.ts           # LoaderMeta[] — 64 named presets mapped to 11 distributable components
+                              # (3 flagship slugs + 8 <mechanic>-loader templates). Single source for routes/UI.
 src/index.css                 # --hexl-* tokens (design.md §9), fonts, selection, scrollbar, [data-invert]
 src/registry/loaders/bit-scanner.tsx       # zero-dep flagship (design.md §8.1) — default export BitScanner
 src/registry/loaders/mutating-matrix.tsx   # zero-dep flagship (design.md §8.2) — default export MutatingMatrix
 src/registry/loaders/inversion-pulse.tsx   # zero-dep flagship (design.md §8.3) — default export InversionPulse
 src/registry/loaders/hex-glyph.tsx         # zero-dep shared glyph primitive (SVG rects, CSS-var sized)
+src/registry/loaders/generated/*.tsx       # 8 zero-dep mechanic templates; each imports ../hex-glyph
 src/components/loaders/MechanicCell.tsx    # SITE-INTERNAL generic live cell: given value+mechanic renders
                                            # a mechanical animation (8 variants) — used for the 61 non-flagship
                                            # matrix cells. May import hex-glyph.tsx primitives inline.
@@ -67,8 +68,10 @@ src/components/loaders/MechanicCell.tsx    # SITE-INTERNAL generic live cell: gi
 ## 5. Source-exposure contract (copy-paste UX)
 - Registry loader sources are shown in Code tabs via Vite raw imports, e.g.:
   `import bitScannerSource from "@/registry/loaders/bit-scanner.tsx?raw"` — ALWAYS in sync, never duplicated.
-- A `src/lib/sources.ts` (scaffold) aggregates: the 3 flagship raw sources + hex-glyph raw + the CSS token
-  block string + a `registryEntryFor(slug)` JSON-string builder. Page agents import from here.
+- A `src/lib/sources.ts` (scaffold) aggregates: the 3 flagship raw sources + 8 mechanic-template raw sources
+  + hex-glyph raw + the CSS token block string + a `registryEntryFor(slug)` JSON-string builder.
+  Generated manifests preserve `loaders/generated/<mechanic>.tsx` beside `loaders/hex-glyph.tsx`.
+  Page agents import from here.
 
 ## 6. Motion & color enforcement (build-team lint of honor)
 - No gray hex values anywhere (`grep -Ei "#[0-9a-f]{6}" src | grep -viE "#000000|#ffffff"` must be empty,

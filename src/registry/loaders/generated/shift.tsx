@@ -9,8 +9,8 @@
  * stepping. The rail prints the rotation offset and live binary.
  * Cycle: 6 ticks × var(--hexl-step) = 720ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface ShiftLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63. LSB = bottom line. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -64,7 +64,7 @@ const reducedMotion = (): boolean =>
 const rotl6 = (v: number, k: number): number => ((v << k) | (v >> (6 - k))) & 63;
 
 export default function ShiftLoader({
-  value,
+  value = 36,
   size = 96,
   step = 120,
   invert = false,

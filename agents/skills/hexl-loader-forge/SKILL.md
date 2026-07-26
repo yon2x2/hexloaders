@@ -5,7 +5,7 @@ description: >
   new bespoke flagship loaders, or entirely new motion mechanics — and register them
   across registry.ts, sources.ts, detail pages and playground. Use when the user asks
   to add a loader, invent a new animation mechanic, promote a generated loader to
-  flagship quality, or grow the 64-loader registry. Repo: HEXLOADERS (React 19 + TS +
+  flagship quality, or grow the 64-preset registry. Repo: HEXLOADERS (React 19 + TS +
   Vite + Tailwind, zero-dep distributable loaders).
 ---
 
@@ -47,7 +47,7 @@ matrix and the Fu Xi map.
  * HEXLOADERS — <name> · STATE <n> · <binary> · mechanic <MECHANIC>
  * Registry: pending until consumer proof · zero additional dependencies beyond React · MIT
  */
-// props: value: number (0–63), size?, step? (ms, ≥120), invert?, className?
+// props: value?: number (0–63, representative default), size?, step? (ms, ≥120), invert?, className?
 // styling ONLY via --hexl-* CSS vars (+ inline style from size prop)
 // root: role="status" aria-label="Loading", spreads ...rest
 ```

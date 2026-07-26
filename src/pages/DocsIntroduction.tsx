@@ -34,10 +34,10 @@ const TOC: TocItem[] = [
 ];
 
 const STATS: [string, string][] = [
-  ['64', 'LOADERS'],
+  ['64', 'PRESETS'],
+  ['11', 'COMPONENTS'],
   ['8', 'MECHANICS'],
-  ['0', 'DEPENDENCIES'],
-  ['1', 'DICTIONARY'],
+  ['0', 'EXTRA DEPS'],
 ];
 
 const WHY: string[] = [
@@ -114,9 +114,9 @@ export default function DocsIntroduction() {
         <Reveal>
           <p className="max-w-[62ch] text-body-sm">
             HEXLOADERS follows the install model many teams already use with shadcn: pull a
-            component into your codebase, then edit it like local code. The collection is exactly
-            64 loaders — one per state of a 6-bit word — and stays compact on purpose so loaders
-            blend into your UI language instead of forcing a separate aesthetic.
+            component into your codebase, then edit it like local code. Eleven real components
+            produce 64 named presets — one per state of a 6-bit word — and stay compact on purpose
+            so loading states blend into your UI language instead of forcing a separate aesthetic.
           </p>
         </Reveal>
 
@@ -142,8 +142,8 @@ export default function DocsIntroduction() {
             A hexagram is six lines, read bottom to top. A solid line is 1; a broken line is 0.
             Six lines give 2<sup>6</sup> = 64 states — an address space recorded millennia before
             Leibniz published his binary arithmetic in 1703 and recognized its mirror in the Fu Xi
-            ordering. HEXLOADERS treats the hexagrams exactly as that: bits. Every loader in this
-            registry renders, counts, scans, or inverts those bits. Nothing here is symbolic;
+            ordering. HEXLOADERS treats the hexagrams exactly as that: bits. Every preset renders,
+            counts, scans, or inverts those bits through its component. Nothing here is symbolic;
             everything is structural.
           </p>
         </Reveal>
@@ -235,7 +235,7 @@ export default function DocsIntroduction() {
         next={{
           to: '/docs/usage',
           label: 'USAGE',
-          desc: 'Installation, configuration, and the CLI roadmap.',
+          desc: 'Installation, configuration, and the distribution roadmap.',
         }}
       />
 

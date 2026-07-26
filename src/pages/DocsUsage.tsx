@@ -2,7 +2,7 @@
  * HEXLOADERS — Usage `/docs/usage` (design/usage.md).
  * CLI install via the shadcn-compatible registry (pkg-manager tabs), Tailwind
  * / CSS-vars setup, using a loader, global theming + inversion (data-invert),
- * the reduced-motion contract, and the custom CLI roadmap (3 ledger phases).
+ * the reduced-motion contract, and the distribution roadmap (3 ledger phases).
  * Conversion-oriented: every section ends with something copyable.
  */
 
@@ -28,7 +28,7 @@ const TOC = [
   { id: 'use', label: 'Use' },
   { id: 'theme-and-invert', label: 'Theme & invert' },
   { id: 'reduced-motion', label: 'Reduced motion' },
-  { id: 'cli-roadmap', label: 'CLI roadmap' },
+  { id: 'cli-roadmap', label: 'Distribution roadmap' },
 ];
 
 /* tailwind.config.ts — excerpt (design.md §9). */
@@ -109,9 +109,9 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-body">
-            Install one loader, copy the code, and make it yours. Bit-Scanner is the first verified
-            GitHub registry item; the CLI copies its source into your repository without adding a
-            HEXLOADERS package dependency.
+            Install one loader, copy the code, and make it yours. Bit-Scanner is the only verified
+            GitHub registry item; the shadcn CLI copies its source into your repository without
+            adding a HEXLOADERS package dependency.
           </p>
         </Reveal>
       </header>
@@ -131,8 +131,8 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={300} className="mt-6">
           <LedgerNote>
-            REGISTRY ROLLOUT — Bit-Scanner is installable now. The other loaders remain available
-            through their manual source panels until each registry entry passes the same consumer test.
+            REGISTRY ROLLOUT — Bit-Scanner is installable now. The other ten components remain
+            available through manual source panels until each registry entry passes the same consumer test.
           </LedgerNote>
         </Reveal>
       </section>
@@ -165,9 +165,9 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Every loader accepts state, size, invert, showMeta (where applicable), className, and
-            spreads the rest onto the root. Sizing is preferential through CSS variables so a
-            parent can scale a whole tree of loaders at once.
+            Mechanic templates accept a value and styling props. Flagships expose their own
+            focused controls, such as showMeta on Bit-Scanner. Every loader spreads remaining HTML
+            attributes onto its root, and CSS variables let a parent scale a whole tree at once.
           </p>
         </Reveal>
       </section>
@@ -220,13 +220,14 @@ export default function DocsUsage() {
         </Reveal>
       </section>
 
-      {/* ------------------------------ CLI ROADMAP ------------------------------ */}
+      {/* ------------------------- DISTRIBUTION ROADMAP ------------------------- */}
       <section id="cli-roadmap" className="mt-16 scroll-mt-20">
-        <SectionHead index={6} title="CLI ROADMAP" />
+        <SectionHead index={6} title="DISTRIBUTION ROADMAP" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Phase 1 works today through the shadcn CLI. The dedicated hexloaders CLI removes the
-            last friction: discovery, batch installs, and variant transforms.
+            The shadcn CLI works today for Bit-Scanner. Next, the same consumer gate will cover the
+            other ten component sources behind all 64 presets. A dedicated HEXLOADERS CLI comes
+            only after that registry rollout.
           </p>
         </Reveal>
         <div className="mt-6">

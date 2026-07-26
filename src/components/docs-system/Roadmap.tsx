@@ -1,15 +1,12 @@
 /**
- * HEXLOADERS — docs-system CLI roadmap (usage.md §CLI roadmap, #cli-roadmap).
- * Three ledger bands with state chips: PHASE 1 — SHIPPED [NOW] (chip blinks
- * twice, then steady) · PHASE 2 — NEXT [Q3] · PHASE 3 — LATER [Q4+]. Bands
- * snap-in staggered 120ms, connectors draw in steps(4), commands type-in on
- * first view and carry hover copy chips. Bands hover-invert (hexl-cell).
+ * HEXLOADERS — docs-system distribution roadmap (#cli-roadmap).
+ * Three ledger bands with state chips: shipped registry proof, component-source
+ * rollout, then a dedicated CLI only if the verified registry needs one.
  */
 
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import Badge from '@/components/Badge';
-import { copyText } from '@/components/CodeBlock';
 import { GlyphList } from './DocsBlocks';
 import Reveal from '@/components/docs-foundation/Reveal';
 import { reducedMotion } from '@/components/docs-foundation/motion';
@@ -82,118 +79,7 @@ function PhaseBand({ head, chip, blink = false, children }: PhaseBandProps) {
   );
 }
 
-/* ------------------------------- CommandList ------------------------------ */
-
-interface CliCommand {
-  cmd: string;
-  note: string;
-}
-
-/** One CLI line: types in 6 chars/120ms after `start`, then its # note snaps on. */
-function CommandRow({ cmd, note, index, start }: CliCommand & { index: number; start: boolean }) {
-  const [n, setN] = useState(0);
-  const [copied, setCopied] = useState(false);
-  const done = n >= cmd.length;
-
-  useEffect(() => {
-    if (!start) return;
-    if (reducedMotion()) {
-      setN(cmd.length);
-      return;
-    }
-    let interval: number | undefined;
-    const timeout = window.setTimeout(() => {
-      interval = window.setInterval(() => {
-        setN((x) => {
-          if (x >= cmd.length) {
-            window.clearInterval(interval);
-            return x;
-          }
-          return Math.min(cmd.length, x + 6);
-        });
-      }, 120);
-    }, index * 240);
-    return () => {
-      window.clearTimeout(timeout);
-      window.clearInterval(interval);
-    };
-  }, [start, cmd, index]);
-
-  return (
-    <div className="group flex items-center justify-between gap-3 border-b border-hexl-fg px-3 py-2 last:border-b-0">
-      <span className="min-w-0 font-mono text-mono-data">
-        <span className="break-all">
-          {cmd.slice(0, n)}
-          {!done && (
-            <span aria-hidden="true" className="hexl-cursor">
-              ▮
-            </span>
-          )}
-        </span>
-        {done && <span className="opacity-[0.55]">{`  # ${note}`}</span>}
-      </span>
-      <button
-        type="button"
-        tabIndex={done ? 0 : -1}
-        onClick={async () => {
-          await copyText(cmd);
-          setCopied(true);
-          window.setTimeout(() => setCopied(false), 1200);
-        }}
-        className={`min-h-6 min-w-6 shrink-0 border border-hexl-fg px-2 py-0.5 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${
-          done ? ' hexl-hover-reveal' : ' invisible'
-        }`}
-      >
-        {copied ? 'COPIED' : 'COPY'}
-      </button>
-    </div>
-  );
-}
-
-/** Phase-2 command block: types in on first view, hover copy chips per command. */
-function CommandList({ commands }: { commands: CliCommand[] }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [start, setStart] = useState(() => reducedMotion());
-
-  useEffect(() => {
-    if (start) return;
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setStart(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.3 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [start]);
-
-  return (
-    <div ref={ref} className="border border-hexl-fg">
-      <div className="flex h-10 items-center justify-between border-b border-hexl-fg px-3 font-mono text-mono-micro uppercase">
-        <span>TERMINAL — HEXLOADERS CLI</span>
-        <span>PREVIEW</span>
-      </div>
-      {commands.map((c, i) => (
-        <CommandRow key={c.cmd} cmd={c.cmd} note={c.note} index={i} start={start} />
-      ))}
-    </div>
-  );
-}
-
 /* -------------------------------- Roadmap --------------------------------- */
-
-const PHASE_2_COMMANDS: CliCommand[] = [
-  { cmd: 'npx hexloaders@latest init', note: 'writes hexloaders.json, detects tailwind/css paths' },
-  { cmd: 'npx hexloaders add bit-scanner', note: 'copies one file, prints the css vars it needs' },
-  { cmd: 'npx hexloaders add --mechanic scan', note: 'batch by mechanic' },
-  { cmd: 'npx hexloaders add --all', note: 'the whole address space' },
-  { cmd: 'npx hexloaders list', note: 'the 64 states, with install status' },
-];
 
 export default function Roadmap() {
   return (
@@ -204,7 +90,7 @@ export default function Roadmap() {
             items={[
               'Public GitHub source registry, schema-compatible with shadcn.',
               'Bit-Scanner is verified in a clean Vite consumer.',
-              'The remaining loaders stay manual-only until they pass the same gate.',
+              'The other ten component sources stay manual-only until they pass the same gate.',
             ]}
           />
         </PhaseBand>
@@ -213,19 +99,13 @@ export default function Roadmap() {
       <PhaseConnector />
 
       <Reveal delay={120}>
-        <PhaseBand head="PHASE 2 — NEXT · the hexloaders CLI" chip="Q3">
-          <CommandList commands={PHASE_2_COMMANDS} />
+        <PhaseBand head="PHASE 2 — NEXT · registry rollout" chip="NEXT">
           <GlyphList
-            className="mt-4"
             items={[
-              <>
-                {'hexloaders.json: '}
-                <code className="border border-hexl-fg px-1">
-                  {'{ "loaderDir": "components/loaders", "css": "app/globals.css", "typescript": true }'}
-                </code>
-              </>,
-              'Interactive picker when run bare: npx hexloaders → searchable list of 64, space to select.',
-              'Conflict handling: diff view, keep/overwrite/skip — never silent.',
+              'Verify and publish the two remaining flagship component sources.',
+              'Verify and publish all eight parameterized mechanic templates.',
+              'Keep 64 named presets and routes mapped to those 11 real component sources.',
+              'Every item must pass install and production-build checks in a clean consumer.',
             ]}
           />
         </PhaseBand>
@@ -234,12 +114,12 @@ export default function Roadmap() {
       <PhaseConnector />
 
       <Reveal delay={240}>
-        <PhaseBand head="PHASE 3 — LATER · the ecosystem" chip="Q4+">
+        <PhaseBand head="PHASE 3 — LATER · dedicated HEXLOADERS CLI" chip="LATER">
           <GlyphList
             items={[
-              'Community registry: hexloaders publish (signed entries, mechanic-tagged).',
-              'Variant transforms: npx hexloaders add hex-stepper --mechanic invert rewrites the motion primitive before copying.',
-              'MCP server so coding agents can search and install states autonomously.',
+              'Consider a dedicated CLI only after the registry rollout is complete.',
+              'Discovery, batch installs, and conflict handling must answer proven user needs.',
+              'Community publishing and agent-driven installs remain later explorations.',
             ]}
           />
         </PhaseBand>
