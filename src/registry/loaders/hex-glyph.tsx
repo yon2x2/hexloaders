@@ -53,12 +53,13 @@ export default function HexGlyph({
   ...rest
 }: HexGlyphProps) {
   const [frame, setFrame] = useState(0);
+  const safeStep = Math.max(120, step);
 
   useEffect(() => {
     if (animated === 'none' || reducedMotion()) return;
-    const id = window.setInterval(() => setFrame((f) => f + 1), step);
+    const id = window.setInterval(() => setFrame((f) => f + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [animated, step]);
+  }, [animated, safeStep]);
 
   const shown =
     animated === 'cycle' ? Math.floor(Math.random() * 64) : value & 63;

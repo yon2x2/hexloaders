@@ -72,19 +72,20 @@ export default function StackLoader({
 }: StackLoaderProps) {
   const [still] = useState(reducedMotion);
   const [tick, setTick] = useState(0);
+  const safeStep = Math.max(120, step);
 
   useEffect(() => {
     if (still) return; // reduced motion: static fully-built stack
-    const id = window.setInterval(() => setTick((t) => t + 1), step);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [step, still]);
+  }, [safeStep, still]);
 
   const v = value & 63;
   const frame = tick % 8; // 0–5 build · 6 hold · 7 reset
   const top = still ? 5 : frame <= 5 ? frame : frame === 6 ? 5 : -1;
 
   const rootStyle: CSSProperties = {
-    ['--hexl-step' as string]: `${step}ms`,
+    ['--hexl-step' as string]: `${safeStep}ms`,
     ...style,
   };
 

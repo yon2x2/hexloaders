@@ -13,7 +13,7 @@ export interface CodeBlockProps {
   code: string;
   filename?: string;
   language?: 'bash' | 'tsx' | 'json' | 'css' | 'text';
-  /** Show the npm/pnpm/yarn/bun tab strip; `code` is the bare command after the PM prefix. */
+  /** Show the npm/pnpm/yarn/bun selector; `code` is the bare command after the PM prefix. */
   packageManager?: boolean;
   showLineNumbers?: boolean;
   className?: string;
@@ -108,13 +108,12 @@ export default function CodeBlock({
       <div className={`flex min-h-11 items-stretch justify-between border-b border-hexl-fg${packageManager ? ' flex-col sm:h-11 sm:flex-row' : ''}`}>
         <div className={`flex min-h-11 items-center gap-3 font-mono text-mono-micro uppercase${packageManager ? ' w-full sm:w-auto sm:px-3' : ' min-w-0 px-3'}`}>
           {packageManager ? (
-            <div className="flex min-h-11 w-full items-stretch sm:w-auto" role="tablist" aria-label="Package manager">
+            <div className="flex min-h-11 w-full items-stretch sm:w-auto" role="group" aria-label="Package manager">
               {PMS.map((p) => (
                 <button
                   key={p}
                   type="button"
-                  role="tab"
-                  aria-selected={pm === p}
+                  aria-pressed={pm === p}
                   onClick={() => setPm(p)}
                   className={`min-h-11 flex-1 border-r border-hexl-fg px-3 font-mono text-mono-label uppercase first:border-l sm:flex-none${
                     pm === p ? ' bg-hexl-fg text-hexl-bg' : ''
@@ -142,7 +141,7 @@ export default function CodeBlock({
           {lines.map((line, i) => (
             <span key={i} className="flex min-w-max">
               {showLineNumbers && (
-                <span aria-hidden="true" className="w-8 shrink-0 select-none pr-3 text-right opacity-[0.45]">
+                <span aria-hidden="true" className="w-8 shrink-0 select-none pr-3 text-right opacity-[0.55]">
                   {i + 1}
                 </span>
               )}
@@ -153,7 +152,7 @@ export default function CodeBlock({
                       {t.text}
                     </strong>
                   ) : t.cls === 'c' ? (
-                    <span key={j} className="opacity-[0.45]">
+                    <span key={j} className="opacity-[0.55]">
                       {t.text}
                     </span>
                   ) : (

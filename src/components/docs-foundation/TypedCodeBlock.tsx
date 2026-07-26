@@ -2,8 +2,8 @@
  * docs-foundation — TypedCodeBlock
  * CodeBlock that renders with a one-time terminal type-in when first viewed
  * (manual-setup.md §Step 3). The unit is the design's type-in clock — a fixed
- * chunk per 40ms tick, hard stop, block cursor ▮ while typing; the chunk is
- * scaled up (64 chars) so the full Bit-Scanner source still lands in ~3s.
+ * chunk per 120ms tick, hard stop, block cursor ▮ while typing; the chunk is
+ * scaled up so the full Bit-Scanner source still lands in ~3s.
  * COPY always copies exactly what is currently rendered. Reduced motion: the
  * full source renders instantly.
  */
@@ -12,8 +12,8 @@ import { useEffect, useRef, useState } from 'react';
 import CodeBlock from '@/components/CodeBlock';
 import { reducedMotion } from './motion';
 
-/** chars per 40ms tick (design unit: 2 chars/40ms, batched ×32 for long sources). */
-const CHUNK = 64;
+/** chars per 120ms tick (same throughput as the original 64 chars/40ms clock). */
+const CHUNK = 192;
 
 export interface TypedCodeBlockProps {
   code: string;
@@ -53,7 +53,7 @@ export default function TypedCodeBlock({ code, filename, language = 'tsx', class
     if (!started || done) return;
     const id = window.setInterval(() => {
       setN((x) => Math.min(x + CHUNK, code.length));
-    }, 40);
+    }, 120);
     return () => window.clearInterval(id);
   }, [started, done, code.length]);
 

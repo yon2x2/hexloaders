@@ -42,15 +42,15 @@ export default function ExampleCell({ title, caption, jsx, dark = false, childre
       <div className="flex aspect-[1/1.1] items-center justify-center overflow-hidden p-4">
         {children}
       </div>
-      <div className="flex h-12 items-stretch justify-between border-t border-hexl-fg">
-        <div className="flex min-w-0 flex-col justify-center px-3">
+      <div className="flex min-h-12 items-stretch justify-between border-t border-hexl-fg">
+        <div className="flex min-w-0 flex-col justify-center px-3 py-2">
           <span className="font-mono text-mono-micro uppercase">{title}</span>
-          <span className="truncate font-mono text-mono-micro uppercase opacity-[0.45]">{caption}</span>
+          <span className="truncate font-mono text-mono-micro uppercase opacity-[0.55]">{caption}</span>
         </div>
         <button
           type="button"
           onClick={onCopy}
-          className="shrink-0 border-l border-hexl-fg px-3 font-mono text-mono-label uppercase opacity-0 hover:bg-hexl-fg hover:text-hexl-bg focus-visible:opacity-100 group-hover:opacity-100"
+          className="shrink-0 border-l border-hexl-fg px-3 font-mono text-mono-label uppercase opacity-100 hover:bg-hexl-fg hover:text-hexl-bg lg:opacity-0 lg:focus-visible:opacity-100 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100"
         >
           {copied ? 'COPIED' : 'COPY JSX'}
         </button>

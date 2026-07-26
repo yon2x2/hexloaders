@@ -71,19 +71,20 @@ export default function CountLoader({
 }: CountLoaderProps) {
   const [still] = useState(reducedMotion);
   const [tick, setTick] = useState(0);
+  const safeStep = Math.max(120, step);
 
   useEffect(() => {
     if (still) return; // reduced motion: static starting state
-    const id = window.setInterval(() => setTick((t) => t + 1), step);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [step, still]);
+  }, [safeStep, still]);
 
   const v = value & 63;
   const shown = still ? v : (v + tick) & 63;
   const binary = [5, 4, 3, 2, 1, 0].map((b) => (shown >> b) & 1).join('');
 
   const rootStyle: CSSProperties = {
-    ['--hexl-step' as string]: `${step}ms`,
+    ['--hexl-step' as string]: `${safeStep}ms`,
     ...style,
   };
 

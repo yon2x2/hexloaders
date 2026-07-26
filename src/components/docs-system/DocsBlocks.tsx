@@ -161,7 +161,7 @@ export function DocsPager({ prev, next }: { prev?: PagerLink; next?: PagerLink }
 /* ----------------------------- TypedCodeBlock ----------------------------- */
 
 /**
- * CodeBlock that types in on first visibility — 2 chars per 40ms tick for
+ * CodeBlock that types in on first visibility — 6 chars per 120ms tick for
  * short listings (terminal spec, design.md §5); longer listings raise the
  * chunk so the sweep stays under ~2.4s. Runs once; block cursor ▮ while typing.
  */
@@ -180,7 +180,7 @@ export function TypedCodeBlock(props: CodeBlockProps) {
       (entries) => {
         if (!entries[0].isIntersecting) return;
         io.disconnect();
-        const chunk = Math.max(2, Math.ceil(code.length / 60));
+        const chunk = Math.max(6, Math.ceil(code.length / 20));
         interval = window.setInterval(() => {
           setN((x) => {
             if (x >= code.length) {
@@ -189,7 +189,7 @@ export function TypedCodeBlock(props: CodeBlockProps) {
             }
             return Math.min(code.length, x + chunk);
           });
-        }, 40);
+        }, 120);
       },
       { threshold: 0.2 },
     );

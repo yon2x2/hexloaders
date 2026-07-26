@@ -74,19 +74,20 @@ export default function CascadeLoader({
 }: CascadeLoaderProps) {
   const [still] = useState(reducedMotion);
   const [tick, setTick] = useState(0);
+  const safeStep = Math.max(120, step);
 
   useEffect(() => {
     if (still) return; // reduced motion: static glyph, wave arrived
-    const id = window.setInterval(() => setTick((t) => t + 1), step);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [step, still]);
+  }, [safeStep, still]);
 
   const v = value & 63;
   const frame = tick % 8; // 0–5 wave at row p · 6 arrive (all full) · 7 break (all dim)
   const p = frame;
 
   const rootStyle: CSSProperties = {
-    ['--hexl-step' as string]: `${step}ms`,
+    ['--hexl-step' as string]: `${safeStep}ms`,
     ...style,
   };
 

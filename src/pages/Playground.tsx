@@ -127,27 +127,26 @@ interface PanelHeaderProps {
   right?: ReactNode;
   open: boolean;
   onToggle: () => void;
+  controls: string;
   className?: string;
 }
 
 /** Ledger panel header — a collapse toggle on mobile, static row on desktop. */
-function PanelHeader({ title, right, open, onToggle, className }: PanelHeaderProps) {
+function PanelHeader({ title, right, open, onToggle, controls, className }: PanelHeaderProps) {
   return (
-    <div className={`flex h-10 shrink-0 items-stretch justify-between border-b border-hexl-fg${className ? ` ${className}` : ''}`}>
+    <div className={`flex min-h-10 shrink-0 items-stretch justify-between border-b border-hexl-fg${className ? ` ${className}` : ''}`}>
       <button
         type="button"
-        onClick={() => {
-          if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) onToggle();
-        }}
+        onClick={onToggle}
         aria-expanded={open}
-        className="flex items-center gap-2 px-3 font-mono text-mono-label uppercase lg:cursor-default"
+        aria-controls={controls}
+        className="flex items-center gap-2 px-3 py-2 font-mono text-mono-label uppercase lg:hidden"
       >
-        <span aria-hidden="true" className="lg:hidden">
-          {open ? '−' : '+'}
-        </span>
+        <span aria-hidden="true">{open ? '−' : '+'}</span>
         {title}
       </button>
-      {right ? <div className="flex items-center gap-2 px-3 font-mono text-mono-micro uppercase">{right}</div> : null}
+      <div className="hidden items-center px-3 py-2 font-mono text-mono-label uppercase lg:flex">{title}</div>
+      {right ? <div className="hidden items-center gap-2 px-3 font-mono text-mono-micro uppercase min-[240px]:flex">{right}</div> : null}
     </div>
   );
 }
@@ -261,6 +260,7 @@ export default function Playground() {
       mounted.current = true;
       return;
     }
+    if (reducedMotion()) return;
     setBlip(true);
     const id = window.setTimeout(() => setBlip(false), 120);
     return () => window.clearTimeout(id);
@@ -318,6 +318,10 @@ export default function Playground() {
   const randomizeSlot = () => {
     slotTimers.current.forEach((t) => window.clearTimeout(t));
     slotTimers.current = [];
+    if (reducedMotion()) {
+      setValue(Math.floor(Math.random() * 64));
+      return;
+    }
     // Fixed 6-step deceleration — mechanical honesty, not a slot machine curve.
     for (let k = 1; k <= 6; k++) {
       slotTimers.current.push(window.setTimeout(() => setValue(Math.floor(Math.random() * 64)), k * 120));
@@ -481,14 +485,14 @@ export default function Playground() {
     const next = jsxLines.map((l) => l.text);
     const diff = next.map((t, i) => (t !== prev[i] ? i : -1)).filter((i) => i >= 0);
     prevLines.current = next;
-    if (diff.length > 0) {
+    if (diff.length > 0 && !reducedMotion()) {
       setFlash(diff);
       const id = window.setTimeout(() => setFlash([]), 120);
       return () => window.clearTimeout(id);
     }
   }, [jsxLines]);
 
-  // Terminal type-in on first mount only: 2 chars per 40ms tick, block cursor.
+  // Terminal type-in on first mount only: 6 chars per 120ms tick, block cursor.
   const [typed, setTyped] = useState<number | null>(null);
   useEffect(() => {
     if (reducedMotion()) return;
@@ -496,14 +500,14 @@ export default function Playground() {
     setTyped(0);
     let n = 0;
     const id = window.setInterval(() => {
-      n += 2;
+      n += 6;
       if (n >= full.length) {
         window.clearInterval(id);
         setTyped(null);
       } else {
         setTyped(n);
       }
-    }, 40);
+    }, 120);
     return () => window.clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -568,8 +572,9 @@ export default function Playground() {
           right={<span>n° {String(matchCount).padStart(2, '0')}/64</span>}
           open={open.loader}
           onToggle={() => togglePanel('loader')}
+          controls="playground-loader-panel"
         />
-        <div className={open.loader ? 'flex min-h-0 flex-1 flex-col' : 'hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col'}>
+        <div id="playground-loader-panel" className={open.loader ? 'flex min-h-0 flex-1 flex-col' : 'hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col'}>
           <div className="shrink-0 border-b border-hexl-fg px-3 py-2">
             <input
               value={query}
@@ -579,7 +584,7 @@ export default function Playground() {
               autoCapitalize="off"
               autoCorrect="off"
               aria-label="Search loaders"
-              className="h-8 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data uppercase text-hexl-fg placeholder:opacity-[0.45]"
+              className="h-8 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data uppercase text-hexl-fg placeholder:opacity-[0.55]"
             />
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto max-h-72 lg:max-h-none">
@@ -612,7 +617,7 @@ export default function Playground() {
                         <span className="truncate text-mono-data">{l.name}</span>
                         <span className="flex shrink-0 items-center gap-2">
                           <span className="text-mono-data tabular-nums">{l.binary}</span>
-                          <span className="text-mono-micro uppercase opacity-[0.45]">{l.mechanic.slice(0, 3)}</span>
+                          <span className="text-mono-micro uppercase opacity-[0.55]">{l.mechanic.slice(0, 3)}</span>
                         </span>
                       </button>
                     ))}
@@ -646,11 +651,12 @@ export default function Playground() {
           }
           open={open.state}
           onToggle={() => togglePanel('state')}
+          controls="playground-state-panel"
         />
-        <div className={open.state ? '' : 'hidden lg:block'}>
+        <div id="playground-state-panel" className={open.state ? '' : 'hidden lg:block'}>
           <BitEditor value={value} onChange={setValue} size={128} className="border-0" />
           {/* 6-cell binary strip — a second way to edit the same word (print order top→bottom). */}
-          <div className="flex border-t border-hexl-fg" role="group" aria-label="Binary strip — click a cell to toggle its bit">
+          <div className="grid grid-cols-4 border-t border-hexl-fg min-[240px]:flex" role="group" aria-label="Binary strip — click a cell to toggle its bit">
             {[5, 4, 3, 2, 1, 0].map((bitIdx, i) => {
               const on = ((value >> bitIdx) & 1) === 1;
               return (
@@ -660,7 +666,9 @@ export default function Playground() {
                   onClick={() => setValue(value ^ (1 << bitIdx))}
                   aria-pressed={on}
                   aria-label={`Bit ${bitIdx} — ${on ? '1 Yang' : '0 Yin'}. Toggle.`}
-                  className={`flex h-12 flex-1 flex-col items-center justify-center gap-1 hover:bg-hexl-fg hover:text-hexl-bg${i > 0 ? ' border-l border-hexl-fg' : ''}`}
+                  className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-1 hover:bg-hexl-fg hover:text-hexl-bg${i > 0 ? ' border-l border-hexl-fg' : ''}${
+                    i >= 4 ? ' border-t border-hexl-fg min-[240px]:border-t-0' : ''
+                  }`}
                 >
                   <span aria-hidden="true" className={`block h-3 w-3${on ? ' bg-hexl-fg' : ' border border-hexl-fg'}`} />
                   <span className="font-mono text-mono-micro tabular-nums">{on ? 1 : 0}</span>
@@ -671,7 +679,7 @@ export default function Playground() {
               type="button"
               onClick={randomizeSlot}
               aria-label="Random state — steps through 6 rapid states before settling"
-              className="flex h-12 flex-1 flex-col items-center justify-center gap-1 border-l border-hexl-fg font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+              className="flex min-h-12 flex-1 flex-col items-center justify-center gap-1 border-l border-t border-hexl-fg font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg min-[240px]:border-t-0"
             >
               <span aria-hidden="true" className="block h-3 w-3 border border-current" />
               RND
@@ -688,20 +696,23 @@ export default function Playground() {
         <div className="flex min-h-11 shrink-0 flex-col items-stretch border-b border-hexl-fg lg:flex-row lg:justify-between">
           <button
             type="button"
-            onClick={() => {
-              if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches) togglePanel('stage');
-            }}
+            onClick={() => togglePanel('stage')}
             aria-expanded={open.stage}
-            className="flex min-h-11 min-w-0 items-center gap-2 px-3 font-mono text-mono-label uppercase lg:cursor-default"
+            aria-controls="playground-stage-panel"
+            className="flex min-h-11 min-w-0 items-center gap-2 px-3 font-mono text-mono-label uppercase lg:hidden"
           >
-            <span aria-hidden="true" className="lg:hidden">
-              {open.stage ? '−' : '+'}
-            </span>
+            <span aria-hidden="true">{open.stage ? '−' : '+'}</span>
             <span className="truncate">
               PREVIEW — {meta.name.toUpperCase()}
               {held ? <span className="ml-2 bg-hexl-fg px-1 text-hexl-bg">HOLD</span> : null}
             </span>
           </button>
+          <div className="hidden min-h-11 min-w-0 items-center px-3 font-mono text-mono-label uppercase lg:flex">
+            <span className="truncate">
+              PREVIEW — {meta.name.toUpperCase()}
+              {held ? <span className="ml-2 bg-hexl-fg px-1 text-hexl-bg">HOLD</span> : null}
+            </span>
+          </div>
           <div className="flex min-h-11 w-full flex-wrap items-stretch border-t border-hexl-fg lg:w-auto lg:flex-nowrap lg:border-l lg:border-t-0">
             <button
               type="button"
@@ -751,7 +762,10 @@ export default function Playground() {
           </div>
         </div>
 
-        <div className={open.stage ? 'flex min-h-0 flex-1 flex-col' : 'hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col'}>
+        <div id="playground-stage-panel" className={open.stage ? 'flex min-h-0 flex-1 flex-col' : 'hidden lg:flex lg:min-h-0 lg:flex-1 lg:flex-col'}>
+          <span className="sr-only" role="status">
+            {held ? 'Loader held. Activate the stage to advance one step.' : 'Loader running.'}
+          </span>
           <div
             ref={stageRef}
             role="application"
@@ -789,7 +803,7 @@ export default function Playground() {
                 {shared ? 'LINK COPIED' : 'COPY LINK'}
               </MicroButton>
             </div>
-            <div className="pointer-events-none absolute bottom-2 right-2 hidden font-mono text-mono-micro uppercase opacity-[0.45] md:block">
+            <div className="pointer-events-none absolute bottom-2 right-2 hidden font-mono text-mono-micro uppercase opacity-[0.55] md:block">
               CLICK HOLD/STEP · DBL-CLICK RESUME
             </div>
           </div>
@@ -815,8 +829,9 @@ export default function Playground() {
           right={<span>{meta.mechanic}</span>}
           open={open.params}
           onToggle={() => togglePanel('params')}
+          controls="playground-params-panel"
         />
-        <div className={open.params ? '' : 'hidden lg:block'}>
+        <div id="playground-params-panel" className={open.params ? '' : 'hidden lg:block'}>
           {isBs && (
             <SteppedSlider label="STEP" values={INTERVAL_VALUES} value={intervalMs} onChange={setIntervalMs} format={(v) => `${v}MS`} hint />
           )}
@@ -888,17 +903,20 @@ export default function Playground() {
           right={<span>JSX + INSTALL</span>}
           open={open.output}
           onToggle={() => togglePanel('output')}
+          controls="playground-output-panel"
           className="border-t border-hexl-fg lg:border-t"
         />
-        <div className={open.output ? '' : 'hidden lg:block'}>
+        <div id="playground-output-panel" className={open.output ? '' : 'hidden lg:block'}>
           {/* GENERATED JSX — changed props bold, defaults dim, changed lines flash once. */}
           <div className="border-b border-hexl-fg">
-            <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
-              <span className="flex items-center px-3 font-mono text-mono-micro uppercase">{pascal(slug)}.tsx — GENERATED JSX</span>
+            <div className="flex min-h-10 flex-col items-stretch justify-between border-b border-hexl-fg min-[240px]:flex-row">
+              <span className="flex min-h-10 min-w-0 items-center break-all px-3 py-2 font-mono text-mono-micro uppercase">
+                {pascal(slug)}.tsx — GENERATED JSX
+              </span>
               <button
                 type="button"
                 onClick={copyJsx}
-                className="border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+                className="min-h-11 border-t border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg min-[240px]:border-l min-[240px]:border-t-0"
                 aria-live="polite"
               >
                 {copiedJsx ? 'COPIED' : 'COPY JSX'}
@@ -914,7 +932,7 @@ export default function Playground() {
                 jsxLines.map((l, i) => (
                   <div
                     key={i}
-                    className={`min-h-[1.5em] whitespace-pre${l.changed ? ' font-bold' : ' opacity-[0.45]'}${flash.includes(i) ? ' bg-hexl-fg text-hexl-bg' : ''}`}
+                    className={`min-h-[1.5em] whitespace-pre${l.changed ? ' font-bold' : ' opacity-[0.55]'}${flash.includes(i) ? ' bg-hexl-fg text-hexl-bg' : ''}`}
                   >
                     {l.text || ' '}
                   </div>

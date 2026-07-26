@@ -50,7 +50,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function SubLabel({ children }: { children: ReactNode }) {
-  return <div className="mb-3 font-mono text-mono-label uppercase opacity-[0.45]">{children}</div>;
+  return <div className="mb-3 font-mono text-mono-label uppercase opacity-[0.55]">{children}</div>;
 }
 
 /* ------------------------------ registry data ------------------------------ */
@@ -367,7 +367,7 @@ export default function LoaderDetail() {
       return;
     }
     setStag(0);
-    const ids = [1, 2, 3].map((k) => window.setTimeout(() => setStag(k), 80 * k));
+    const ids = [1, 2, 3].map((k) => window.setTimeout(() => setStag(k), 120 * k));
     return () => ids.forEach((id) => window.clearTimeout(id));
   }, [slug]);
 
@@ -447,12 +447,12 @@ export default function LoaderDetail() {
 
         <div className={`flex min-h-40 flex-wrap items-center justify-between gap-6 p-6${reveal(1)}`}>
           <div className="min-w-0">
-            <div className="font-mono text-mono-micro uppercase opacity-[0.45]">
+            <div className="font-mono text-mono-micro uppercase opacity-[0.55]">
               n°{pad(meta.value)} · {meta.registry ?? 'MANUAL SOURCE'}
             </div>
             <h1 className="mt-1 font-grotesk text-display-md uppercase">{meta.name}</h1>
             <p className="mt-3 font-mono text-mono-data">{specLineFor(meta, kw)}</p>
-            <p className="mt-1 font-mono text-mono-micro uppercase opacity-[0.45]">
+            <p className="mt-1 font-mono text-mono-micro uppercase opacity-[0.55]">
               {chinese} · {pinyin} · {wilhelm} · KING WEN n°{kw}
             </p>
           </div>
@@ -528,7 +528,7 @@ export default function LoaderDetail() {
               {showSource && (
                 <div className="border-t border-hexl-fg">
                   <CodeBlock code={code} language="tsx" className="border-0" />
-                  <div className="border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase opacity-[0.45]">
+                  <div className="border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase opacity-[0.55]">
                     {files.length} {files.length === 1 ? 'FILE' : 'FILES'} · 0 DEPENDENCIES · MIT
                     {meta.flagship ? ' · DICTIONARY INLINED' : ' · IMPORTS ../hex-glyph'}
                   </div>
@@ -557,7 +557,7 @@ export default function LoaderDetail() {
         <div className="mt-6">
           <CssVarsTable rows={cssVarRowsFor(meta)} />
         </div>
-        <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.45]">
+        <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">
           REQUIRED ONCE IN globals.css — THE FULL TOKEN BLOCK SHIPS IN MANUAL SETUP.
         </p>
       </section>
@@ -585,13 +585,13 @@ export default function LoaderDetail() {
       {/* ----------------------------------- pager ----------------------------------- */}
       <nav aria-label="Pager" className="mt-16 grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg">
         <Link to={`/loaders/${prev.slug}`} className="hexl-cell min-w-0 bg-hexl-bg px-4 py-4">
-          <div className="font-mono text-mono-micro uppercase opacity-[0.45]">
+          <div className="font-mono text-mono-micro uppercase opacity-[0.55]">
             ← PREV · n°{pad(prev.value)}
           </div>
           <div className="mt-1 break-words font-grotesk text-head uppercase">{prev.name}</div>
         </Link>
         <Link to={`/loaders/${next.slug}`} className="hexl-cell min-w-0 bg-hexl-bg px-4 py-4 text-right">
-          <div className="font-mono text-mono-micro uppercase opacity-[0.45]">
+          <div className="font-mono text-mono-micro uppercase opacity-[0.55]">
             NEXT · n°{pad(next.value)} →
           </div>
           <div className="mt-1 break-words font-grotesk text-head uppercase">{next.name}</div>

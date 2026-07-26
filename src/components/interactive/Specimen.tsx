@@ -66,21 +66,21 @@ export default function Specimen({ title, context, slug, dimmed = false, childre
       className={`m-0 flex break-inside-avoid flex-col border border-hexl-fg bg-hexl-bg text-hexl-fg${dimmed ? ' opacity-[0.15]' : ''}`}
       aria-label={`${title} — specimen using ${slug}`}
     >
-      <header className="flex h-10 shrink-0 items-center justify-between border-b border-hexl-fg px-3">
+      <header className="flex min-h-10 shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-hexl-fg px-3 py-2">
         <span className="font-mono text-mono-label uppercase">{title}</span>
         <span className="font-mono text-mono-micro uppercase">CONTEXT: {context}</span>
       </header>
-      <div className="flex min-h-56 items-center justify-center p-8">{children(active)}</div>
+      <div className="flex min-h-56 items-center justify-center p-4 sm:p-8">{children(active)}</div>
       <button
         type="button"
         onClick={onCopy}
         disabled={!meta?.install}
         title={meta?.install ? 'Copy install command' : 'Manual source available on the loader page'}
         aria-live="polite"
-        className="flex h-9 shrink-0 items-center justify-between gap-3 border-t border-hexl-fg px-3 font-mono text-mono-micro uppercase enabled:hover:bg-hexl-fg enabled:hover:text-hexl-bg"
+        className="flex min-h-9 shrink-0 items-center justify-between gap-3 border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase enabled:hover:bg-hexl-fg enabled:hover:text-hexl-bg"
       >
         <span className="shrink-0">{copied ? 'COPIED' : slug}</span>
-        <span className="truncate opacity-[0.45]">{meta?.install ?? 'MANUAL SOURCE'}</span>
+        <span className="truncate opacity-[0.55]">{meta?.install ?? 'MANUAL SOURCE'}</span>
       </button>
     </figure>
   );

@@ -64,19 +64,20 @@ export default function StrobeLoader({
 }: StrobeLoaderProps) {
   const [still] = useState(reducedMotion);
   const [tick, setTick] = useState(0);
+  const safeStep = Math.max(120, step);
 
   useEffect(() => {
     if (still) return; // reduced motion: static resting value, beat bar full
-    const id = window.setInterval(() => setTick((t) => t + 1), step);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [step, still]);
+  }, [safeStep, still]);
 
   const v = value & 63;
   const beat = tick % 4; // 0 REST · 1 full 63 · 2 REST · 3 empty 0
   const shown = still || beat % 2 === 0 ? v : beat === 1 ? 63 : 0;
 
   const rootStyle: CSSProperties = {
-    ['--hexl-step' as string]: `${step}ms`,
+    ['--hexl-step' as string]: `${safeStep}ms`,
     ...style,
   };
 

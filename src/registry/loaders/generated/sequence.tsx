@@ -83,12 +83,13 @@ export default function SequenceLoader({
 }: SequenceLoaderProps) {
   const [still] = useState(reducedMotion);
   const [tick, setTick] = useState(0);
+  const safeStep = Math.max(120, step);
 
   useEffect(() => {
     if (still) return; // reduced motion: static first state
-    const id = window.setInterval(() => setTick((t) => t + 1), step);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [step, still]);
+  }, [safeStep, still]);
 
   const v = value & 63;
   const start = Math.max(0, KING_WEN.indexOf(v));
@@ -97,7 +98,7 @@ export default function SequenceLoader({
   const binary = [5, 4, 3, 2, 1, 0].map((b) => (shown >> b) & 1).join('');
 
   const rootStyle: CSSProperties = {
-    ['--hexl-step' as string]: `${step}ms`,
+    ['--hexl-step' as string]: `${safeStep}ms`,
     ...style,
   };
 

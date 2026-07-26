@@ -92,9 +92,10 @@ export default function BitScanner({
 }: BitScannerProps) {
   const v = value & 63;
   const binary = [5, 4, 3, 2, 1, 0].map((i) => (v >> i) & 1).join('');
+  const safeStep = Math.max(120, step);
 
   const rootStyle: CSSProperties = {
-    ['--hexl-step' as string]: `${step}ms`,
+    ['--hexl-step' as string]: `${safeStep}ms`,
     ['--hexl-line-h' as string]: `${size / 8}px`,
     ['--hexl-gap' as string]: `${size / 16}px`,
     ...style,

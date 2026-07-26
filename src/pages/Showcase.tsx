@@ -10,7 +10,7 @@ import { MECHANICS } from '@/lib/registry';
 import type { Mechanic } from '@/lib/registry';
 import Kicker from '@/components/Kicker';
 import Specimen, { Reveal } from '@/components/interactive/Specimen';
-import { useVisible } from '@/components/interactive/hooks';
+import { reducedMotion, useVisible } from '@/components/interactive/hooks';
 import {
   BootSequence,
   CheckoutButton,
@@ -51,7 +51,7 @@ const FILTERS: Filter[] = ['ALL', ...MECHANICS];
 
 function CommunityStrip() {
   const [ref, visible] = useVisible<HTMLElement>(0.3);
-  const [blink, setBlink] = useState(-1); // specimen slots blink in sequence once
+  const [blink, setBlink] = useState(() => (reducedMotion() ? 4 : -1)); // specimen slots blink in sequence once
 
   useEffect(() => {
     if (!visible || blink >= 4) return;
@@ -115,7 +115,7 @@ export default function Showcase() {
       {/* docs-style breadcrumb row */}
       <div className="border-b border-hexl-fg">
         <div className="mx-auto flex max-w-[1440px] items-center gap-2 px-6 py-2 font-mono text-mono-micro uppercase md:px-10">
-          <span className="opacity-[0.45]">RESOURCES</span>
+          <span className="opacity-[0.55]">RESOURCES</span>
           <span aria-hidden="true">/</span>
           <span>SHOWCASE</span>
         </div>

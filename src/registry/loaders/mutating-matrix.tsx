@@ -146,12 +146,13 @@ export default function MutatingMatrix({
 }: MutatingMatrixProps) {
   const seq = useMemo(() => buildSequence(mode, sequence, seed), [mode, sequence, seed]);
   const [tick, setTick] = useState(0);
+  const safeInterval = Math.max(120, interval);
 
   useEffect(() => {
     if (reducedMotion()) return; // static first state
-    const id = window.setInterval(() => setTick((t) => t + 1), interval);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeInterval);
     return () => window.clearInterval(id);
-  }, [interval]);
+  }, [safeInterval]);
 
   const i = tick % seq.length;
   const loop = Math.floor(tick / seq.length);
@@ -160,7 +161,7 @@ export default function MutatingMatrix({
   const binary = [5, 4, 3, 2, 1, 0].map((b) => (current >> b) & 1).join('');
 
   const rootStyle: CSSProperties = {
-    ['--hexl-interval' as string]: `${interval}ms`,
+    ['--hexl-interval' as string]: `${safeInterval}ms`,
     ...style,
   };
 
