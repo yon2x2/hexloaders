@@ -49,7 +49,8 @@ export default function Navbar() {
 
   // Living logo: on hover, step through random states every 120ms (steps(1)).
   useEffect(() => {
-    if (!hover) {
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!hover || motionQuery.matches) {
       setLogoValue(63);
       return;
     }

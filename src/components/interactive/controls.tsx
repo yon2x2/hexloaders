@@ -93,7 +93,7 @@ export function SteppedSlider({ label, values, value, onChange, format, hint }: 
           />
         ))}
       </div>
-      {hint && <div className="mt-2 font-mono text-mono-micro uppercase opacity-[0.45]">DRAG · ← → STEPS</div>}
+      {hint && <div className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">DRAG · ← → STEPS</div>}
     </div>
   );
 }
@@ -114,14 +114,16 @@ export function Segmented<T extends string | number>({ label, options, value, on
         <span>{label}</span>
         <span className="tabular-nums">{options.find((o) => o.value === value)?.label}</span>
       </div>
-      <div className="mt-2 flex border border-hexl-fg" role="group" aria-label={label}>
+      <div className="mt-2 grid grid-cols-2 border border-hexl-fg min-[240px]:flex" role="group" aria-label={label}>
         {options.map((o, i) => (
           <button
             key={String(o.value)}
             type="button"
             aria-pressed={o.value === value}
             onClick={() => onChange(o.value)}
-            className={`h-9 flex-1 font-mono text-mono-label uppercase${i > 0 ? ' border-l border-hexl-fg' : ''}${
+            className={`min-h-9 flex-1 font-mono text-mono-label uppercase${i % 2 > 0 ? ' border-l border-hexl-fg' : ''}${
+              i > 1 ? ' border-t border-hexl-fg min-[240px]:border-t-0' : ''
+            }${i > 0 ? ' min-[240px]:border-l min-[240px]:border-hexl-fg' : ''}${
               o.value === value ? ' bg-hexl-fg text-hexl-bg' : ' bg-hexl-bg text-hexl-fg hover:bg-hexl-fg hover:text-hexl-bg'
             }`}
           >
@@ -143,16 +145,16 @@ export interface ToggleProps {
 
 export function Toggle({ label, checked, onChange }: ToggleProps) {
   return (
-    <div className="flex items-stretch justify-between border-b border-hexl-fg">
-      <div className="flex items-center px-3 py-3 font-mono text-mono-micro uppercase">{label}</div>
-      <div className="flex items-stretch border-l border-hexl-fg" role="group" aria-label={label}>
+    <div className="flex flex-col items-stretch justify-between border-b border-hexl-fg min-[240px]:flex-row">
+      <div className="flex min-h-11 items-center px-3 py-3 font-mono text-mono-micro uppercase">{label}</div>
+      <div className="grid min-h-11 grid-cols-2 items-stretch border-t border-hexl-fg min-[240px]:flex min-[240px]:border-l min-[240px]:border-t-0" role="group" aria-label={label}>
         {[false, true].map((v) => (
           <button
             key={String(v)}
             type="button"
             aria-pressed={checked === v}
             onClick={() => onChange(v)}
-            className={`w-14 font-mono text-mono-label uppercase${
+            className={`min-h-11 w-full font-mono text-mono-label uppercase min-[240px]:w-14${
               checked === v ? ' bg-hexl-fg text-hexl-bg' : ' bg-hexl-bg text-hexl-fg hover:bg-hexl-fg hover:text-hexl-bg'
             }${v ? ' border-l border-hexl-fg' : ''}`}
           >
@@ -208,7 +210,7 @@ export function PatternEditor({ label, pattern, onChange }: PatternEditorProps) 
           </button>
         ))}
       </div>
-      <div className="mt-2 font-mono text-mono-micro uppercase opacity-[0.45]">CLICK BEAT — CYCLES 1 → 3 → 7 → 0</div>
+      <div className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">CLICK BEAT — CYCLES 1 → 3 → 7 → 0</div>
     </div>
   );
 }
@@ -271,7 +273,7 @@ export function SequenceInput({ label, sequence, onChange }: SequenceInputProps)
         inputMode="numeric"
         aria-label={`${label} — comma-separated states 0 to 63`}
         placeholder="0,17,34,42"
-        className="mt-2 h-9 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data text-hexl-fg placeholder:opacity-[0.45]"
+        className="mt-2 h-9 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data text-hexl-fg placeholder:opacity-[0.55]"
       />
     </div>
   );

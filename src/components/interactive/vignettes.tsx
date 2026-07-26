@@ -25,7 +25,7 @@ function InvButton({ children, onClick, ariaLabel }: { children: string; onClick
       type="button"
       onClick={onClick}
       aria-label={ariaLabel}
-      className="border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+      className="shrink-0 border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
     >
       {children}
     </button>
@@ -99,7 +99,7 @@ export function BootSequence({ active }: VignetteProps) {
       setChars(BOOT_TOTAL);
       return;
     }
-    const id = window.setInterval(() => setChars((c) => Math.min(BOOT_TOTAL, c + 2)), 40);
+    const id = window.setInterval(() => setChars((c) => Math.min(BOOT_TOTAL, c + 6)), 120);
     return () => window.clearInterval(id);
   }, [active, done]);
 
@@ -186,36 +186,38 @@ export function DataTableRefresh({ active }: VignetteProps) {
           {phase === 'running' ? 'COUNTING…' : 'REFRESH'}
         </button>
       </div>
-      <table className="w-full border-collapse font-mono text-mono-micro uppercase">
-        <tbody>
-          {Array.from({ length: 4 }, (_, r) => (
-            <tr key={r}>
-              <td className="border-b border-r border-hexl-fg px-2 py-1 tabular-nums">0{r}</td>
-              {Array.from({ length: 3 }, (_, c) => {
-                const k = r * 3 + c;
-                const locked = phase !== 'running' || tick >= lockTickOf(k);
-                return (
-                  <td key={c} className="border-b border-r border-hexl-fg px-2 py-1">
-                    <span className="flex items-center gap-2">
-                      <span aria-hidden="true" className="inline-flex w-7 justify-center">
-                        {locked ? (
-                          <HexGlyph value={TABLE_VALUES[k]} size={24} />
-                        ) : (
-                          <MechanicCell value={34} mechanic="COUNT" size={24} active={active} />
-                        )}
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse font-mono text-mono-micro uppercase">
+          <tbody>
+            {Array.from({ length: 4 }, (_, r) => (
+              <tr key={r}>
+                <td className="border-b border-r border-hexl-fg px-2 py-1 tabular-nums">0{r}</td>
+                {Array.from({ length: 3 }, (_, c) => {
+                  const k = r * 3 + c;
+                  const locked = phase !== 'running' || tick >= lockTickOf(k);
+                  return (
+                    <td key={c} className="border-b border-r border-hexl-fg px-2 py-1">
+                      <span className="flex items-center gap-2">
+                        <span aria-hidden="true" className="inline-flex w-7 justify-center">
+                          {locked ? (
+                            <HexGlyph value={TABLE_VALUES[k]} size={24} />
+                          ) : (
+                            <MechanicCell value={34} mechanic="COUNT" size={24} active={active} />
+                          )}
+                        </span>
+                        <span className="tabular-nums">{locked ? `n°${TABLE_VALUES[k]}` : '——'}</span>
                       </span>
-                      <span className="tabular-nums">{locked ? `n°${TABLE_VALUES[k]}` : '——'}</span>
-                    </span>
-                  </td>
-                );
-              })}
-              <td className="border-b border-hexl-fg px-2 py-1 tabular-nums">
-                {phase === 'running' && tick < lockTickOf(r * 3 + 2) ? 'COUNT' : 'LOCK'}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    </td>
+                  );
+                })}
+                <td className="border-b border-hexl-fg px-2 py-1 tabular-nums">
+                  {phase === 'running' && tick < lockTickOf(r * 3 + 2) ? 'COUNT' : 'LOCK'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="px-3 py-2 font-mono text-mono-micro uppercase">
         {phase === 'done' ? 'REFRESH COMPLETE — 12 CELLS LOCKED' : phase === 'running' ? `CASCADE — TICK ${tick}` : 'IDLE — 12 CELLS'}
       </div>
@@ -260,7 +262,7 @@ export function UploadCard({ active }: VignetteProps) {
       {phase === 'idle' && (
         <>
           <span className="font-mono text-mono-label uppercase">DROP FILE</span>
-          <span className="font-mono text-mono-micro uppercase opacity-[0.45]">CLICK TO SIMULATE</span>
+          <span className="font-mono text-mono-micro uppercase opacity-[0.55]">CLICK TO SIMULATE</span>
         </>
       )}
       {phase === 'uploading' && (
@@ -326,7 +328,7 @@ export function PageTransition({ active }: VignetteProps) {
           <HexGlyph value={page === 0 ? 26 : 42} size={48} aria-hidden="true" />
         </div>
         <div className="mt-4 flex items-center justify-between border-t border-hexl-fg pt-3">
-          <span className="font-mono text-mono-micro uppercase opacity-[0.45]">a page turn with no easing curve in sight</span>
+          <span className="font-mono text-mono-micro uppercase opacity-[0.55]">a page turn with no easing curve in sight</span>
           <span aria-hidden="true">
             {active ? (
               <InversionPulse mode="colorspace" pattern={[3, 1]} interval={120} value={42} size={24} />
@@ -383,7 +385,7 @@ export function FormValidation({ active }: VignetteProps) {
             autoCorrect="off"
             inputMode="numeric"
             aria-label="Enter a state from 0 to 63"
-            className="h-11 w-full bg-transparent px-3 font-mono text-mono-data placeholder:opacity-[0.45]"
+            className="h-11 w-full bg-transparent px-3 font-mono text-mono-data placeholder:opacity-[0.55]"
           />
           <span aria-hidden="true" className="flex w-10 items-center justify-center border-l border-hexl-fg">
             {strobe > 0 ? (
@@ -403,7 +405,7 @@ export function FormValidation({ active }: VignetteProps) {
       </div>
       <div className="mt-3 flex min-h-12 items-center gap-4 border border-hexl-fg px-3 py-2">
         {result === null ? (
-          <span className="font-mono text-mono-micro uppercase opacity-[0.45]">AWAITING INPUT — 6 BITS, LSB = BOTTOM LINE</span>
+          <span className="font-mono text-mono-micro uppercase opacity-[0.55]">AWAITING INPUT — 6 BITS, LSB = BOTTOM LINE</span>
         ) : result.ok && hex ? (
           <>
             <HexGlyph value={hex.value} size={32} aria-hidden="true" />
@@ -468,11 +470,11 @@ export function SkeletonLedger({ active }: VignetteProps) {
         ) : (
           <div className="flex flex-col items-center justify-center gap-3 px-3 py-6">
             <MechanicCell value={2} mechanic="CASCADE" size={96} active={active} aria-hidden="true" />
-            <span className="font-mono text-mono-micro uppercase opacity-[0.45]">LOADING LEDGER…</span>
+            <span className="font-mono text-mono-micro uppercase opacity-[0.55]">LOADING LEDGER…</span>
           </div>
         )}
       </div>
-      <div className="border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase opacity-[0.45]">
+      <div className="border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase opacity-[0.55]">
         skeletons, but honest about being machinery
       </div>
     </div>
@@ -500,8 +502,8 @@ export function CliStatusLine({ active }: VignetteProps) {
 
   return (
     <div data-invert="" className="w-full max-w-md border border-hexl-fg bg-hexl-bg text-hexl-fg">
-      <div className="flex h-9 items-center justify-between border-b border-hexl-fg px-3">
-        <span className="font-mono text-mono-micro uppercase">SHELL — /usr/bin/hexloaders</span>
+      <div className="flex min-h-9 items-center justify-between gap-3 border-b border-hexl-fg px-3 py-2">
+        <span className="min-w-0 break-all font-mono text-mono-micro uppercase">SHELL — /usr/bin/hexloaders</span>
         <InvButton onClick={() => setTick(0)} ariaLabel="Rerun the install">
           RERUN
         </InvButton>
@@ -509,7 +511,7 @@ export function CliStatusLine({ active }: VignetteProps) {
       <div className="p-4 font-mono text-mono-micro uppercase">
         <div>$ hexloaders add --all</div>
         <div className="mt-2 flex items-start gap-3">
-          <span className="leading-none tracking-[0.12em]" aria-hidden="true">
+          <span className="min-w-0 break-all leading-none tracking-[0.12em]" aria-hidden="true">
             <span className="block">[{cells.slice(0, 32).map((c) => (c ? '■' : '□')).join('')}]</span>
             <span className="mt-1 block">[{cells.slice(32).map((c) => (c ? '■' : '□')).join('')}]</span>
           </span>

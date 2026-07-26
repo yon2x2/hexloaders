@@ -5,7 +5,7 @@
  * tracks (row = upper trigram bits 3–5, col = lower trigram bits 0–2). Hover
  * highlights row+column tracks (instant invert) and drives the readout:
  * STATE · UPPER · LOWER · KING WEN. Click copies the value. Assembles in
- * raster order on entry (hard steps, 6ms/cell).
+ * raster order on entry (hard steps, batched on the shared 120ms clock).
  */
 
 import { Fragment, useEffect, useRef, useState } from 'react';
@@ -26,7 +26,7 @@ export default function FuXiMap() {
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  /* Raster assemble on first visibility: one cell per 6ms tick, hard cut (steps(1) feel). */
+  /* Raster assemble on first visibility: batched cells per 120ms tick, hard cut. */
   useEffect(() => {
     const el = ref.current;
     if (!el || reducedMotion()) {
@@ -44,9 +44,9 @@ export default function FuXiMap() {
               window.clearInterval(interval);
               return s;
             }
-            return s + 1;
+            return Math.min(64, s + 20);
           });
-        }, 6);
+        }, 120);
       },
       { threshold: 0.25 },
     );
@@ -82,7 +82,7 @@ export default function FuXiMap() {
           {/* top-left corner registration mark */}
           <div
             aria-hidden="true"
-            className="flex h-[28px] w-[28px] items-center justify-center bg-hexl-bg font-mono text-mono-micro opacity-[0.45]"
+            className="flex h-[28px] w-[28px] items-center justify-center bg-hexl-bg font-mono text-mono-micro opacity-[0.55]"
           >
             +
           </div>

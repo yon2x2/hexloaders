@@ -5,7 +5,7 @@
  * distribution/CLI → FAQ → CTA. Pure #000/#FFF, stepped mechanical motion.
  */
 
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { LOADERS, MECHANICS } from '@/lib/registry';
@@ -89,7 +89,7 @@ const SysClock = memo(function SysClock() {
   }, []);
 
   useEffect(() => {
-    if (now.getSeconds() !== 0) return;
+    if (reducedMotion() || now.getSeconds() !== 0) return;
     setBlip(true);
     const id = window.setTimeout(() => setBlip(false), 120);
     return () => window.clearTimeout(id);
@@ -117,7 +117,7 @@ const CycleGlyph = memo(function CycleGlyph({ size = 64 }: { size?: number }) {
   return <HexGlyph value={v} size={size} aria-hidden="true" />;
 });
 
-/** Terminal type-in: 2 chars per 40ms tick, block cursor, hides 1200ms after done. */
+/** Terminal type-in: 6 chars per 120ms tick, block cursor, hides 1200ms after done. */
 function useTypeIn(text: string, start: boolean) {
   const [n, setN] = useState(0);
   const [done, setDone] = useState(false);
@@ -137,9 +137,9 @@ function useTypeIn(text: string, start: boolean) {
           setDone(true);
           return x;
         }
-        return x + 2;
+        return x + 6;
       });
-    }, 40);
+    }, 120);
     return () => window.clearInterval(id);
   }, [start, text]);
   useEffect(() => {
@@ -341,7 +341,11 @@ const MatrixCell = memo(function MatrixCell({
           )}
         </span>
       </Link>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex min-h-11 items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+      <div
+        className={`pointer-events-none absolute inset-x-0 bottom-0 flex min-h-11 items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 ${
+          meta.install ? 'hexl-hover-reveal' : 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
+        }`}
+      >
         <span className="truncate font-mono text-mono-micro">{meta.install ?? 'MANUAL SOURCE'}</span>
         {meta.install && (
           <button
@@ -393,19 +397,20 @@ function Matrix() {
 
   // CRT raster-order stepped assembly; re-scan on sort change (blank flash first).
   useEffect(() => {
+    if (reducedMotion()) {
+      setBlank(false);
+      setRevealedCount(64);
+      return;
+    }
     setBlank(true);
     setRevealedCount(0);
     const t0 = window.setTimeout(() => setBlank(false), 120);
-    if (reducedMotion()) {
-      setRevealedCount(64);
-      return () => window.clearTimeout(t0);
-    }
     let n = 0;
     const id = window.setInterval(() => {
-      n += 1;
+      n = Math.min(64, n + 10);
       setRevealedCount(n);
       if (n >= 64) window.clearInterval(id);
-    }, 12);
+    }, 120);
     return () => {
       window.clearTimeout(t0);
       window.clearInterval(id);
@@ -414,6 +419,7 @@ function Matrix() {
 
   const flashCell = useCallback((v: number) => {
     document.getElementById('matrix')?.scrollIntoView({ behavior: 'auto' });
+    if (reducedMotion()) return;
     setFlashValue(v);
     let n = 0;
     const id = window.setInterval(() => {
@@ -506,7 +512,7 @@ function Matrix() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="SEARCH STATES…"
               aria-label="Search states by name, slug or binary"
-              className="w-44 border border-hexl-fg bg-hexl-bg px-2 py-1 font-mono text-mono-data uppercase placeholder:opacity-[0.45]"
+              className="w-44 border border-hexl-fg bg-hexl-bg px-2 py-1 font-mono text-mono-data uppercase placeholder:opacity-[0.55]"
             />
             <span className="font-mono text-mono-micro uppercase tabular-nums">
               n° {String(matchCount).padStart(2, '0')}/64
@@ -1125,7 +1131,7 @@ function Distribution() {
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-mono-label uppercase">{p.tag}</span>
                       <span
-                        className="border border-hexl-fg px-1 py-0.5 font-mono text-mono-micro uppercase"
+                        className="hexl-motion border border-hexl-fg px-1 py-0.5 font-mono text-mono-micro uppercase"
                         style={p.blink ? { animation: 'hexl-blink 960ms steps(1,end) 2' } : undefined}
                       >
                         {p.chip}
@@ -1181,25 +1187,21 @@ const FAQ = [
 ];
 
 function FaqItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
+  const panelId = useId();
   return (
     <div className="border-b border-hexl-fg last:border-b-0">
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="flex h-14 w-full items-center justify-between px-4 text-left font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+        aria-controls={panelId}
+        className="flex min-h-14 w-full items-center justify-between px-4 py-3 text-left font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
       >
-        <span>{q}</span>
+        <span className="min-w-0 break-words [overflow-wrap:anywhere]">{q}</span>
         <span aria-hidden="true">{open ? '−' : '+'}</span>
       </button>
-      <div
-        className={`grid transition-[grid-template-rows] [transition-duration:240ms] ease-step-4 ${
-          open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-        }`}
-      >
-        <div className="overflow-hidden">
-          <p className="max-w-[68ch] px-4 pb-6 pt-2 text-body-sm">{a}</p>
-        </div>
+      <div id={panelId} hidden={!open}>
+        <p className="max-w-[68ch] px-4 pb-6 pt-2 text-body-sm">{a}</p>
       </div>
     </div>
   );
@@ -1214,7 +1216,9 @@ function Faq() {
           <Kicker>■ F.A.Q.</Kicker>
         </Reveal>
         <Reveal delay={120}>
-          <h2 className="mt-8 font-grotesk text-display-md uppercase">SIX QUESTIONS. SIX ANSWERS.</h2>
+          <h2 className="mt-8 break-words font-grotesk text-display-md uppercase [overflow-wrap:anywhere]">
+            SIX QUESTIONS. SIX ANSWERS.
+          </h2>
         </Reveal>
         <Reveal delay={240}>
           <div className="mt-12 border border-hexl-fg">

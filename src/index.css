@@ -81,8 +81,12 @@
     /* Tickers stop; reveals become instant; loaders park on a static frame. */
     .hexl-ticker-track,
     .hexl-cursor,
-    .hexl-motion {
+    .hexl-motion,
+    .animate-hexl-snap {
       animation: none !important;
+    }
+    .hexl-motion {
+      transition: none !important;
     }
     .hexl-reveal {
       opacity: 1 !important;
@@ -145,6 +149,20 @@
     --hexl-fg: var(--hexl-fg-inv);
     background: var(--hexl-bg-inv);
     color: var(--hexl-fg-inv);
+  }
+
+  /* Touch/mobile actions stay visible; fine-pointer desktop keeps hover/focus reveal. */
+  .hexl-hover-reveal {
+    opacity: 1;
+  }
+  @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+    .hexl-hover-reveal {
+      opacity: 0;
+    }
+    .group:hover .hexl-hover-reveal,
+    .group:focus-within .hexl-hover-reveal {
+      opacity: 1;
+    }
   }
 
   /* MechanicCell glyphs scale fluidly inside matrix cells. */

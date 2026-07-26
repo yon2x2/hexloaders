@@ -87,12 +87,13 @@ export default function InversionPulse({
 }: InversionPulseProps) {
   const [tick, setTick] = useState(0);
   const [still] = useState(reducedMotion);
+  const safeInterval = Math.max(120, interval);
 
   useEffect(() => {
     if (still) return; // reduced motion: static glyph, bar full
-    const id = window.setInterval(() => setTick((t) => t + 1), interval);
+    const id = window.setInterval(() => setTick((t) => t + 1), safeInterval);
     return () => window.clearInterval(id);
-  }, [interval, still]);
+  }, [safeInterval, still]);
 
   const total = pattern.reduce((a, b) => a + b, 0);
   const t = tick % total;

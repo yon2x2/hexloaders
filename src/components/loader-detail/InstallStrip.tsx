@@ -1,7 +1,7 @@
 /**
  * HEXLOADERS — InstallStrip (loader-detail local)
- * Single-row install command strip: PM tabs (npm/pnpm/yarn/bun), the command
- * typed-in at 2 chars per 40ms tick with a blinking block cursor, COPY button
+ * Single-row install command strip: PM selector (npm/pnpm/yarn/bun), the command
+ * typed-in at 6 chars per 120ms tick with a blinking block cursor, COPY button
  * with a hard COPIED swap (1200ms). No fades, instant everything.
  */
 
@@ -44,10 +44,10 @@ export default function InstallStrip({ command, className }: InstallStripProps) 
     setN(0);
     let i = 0;
     const id = window.setInterval(() => {
-      i += 2;
+      i += 6;
       setN(Math.min(i, full.length));
       if (i >= full.length) window.clearInterval(id);
-    }, 40);
+    }, 120);
     return () => window.clearInterval(id);
   }, [full]);
 
@@ -62,15 +62,16 @@ export default function InstallStrip({ command, className }: InstallStripProps) 
 
   return (
     <div className={`flex min-h-14 flex-col items-stretch sm:h-14 sm:flex-row sm:justify-between${className ? ` ${className}` : ''}`}>
-      <div className="flex min-h-11 w-full items-stretch sm:w-auto" role="tablist" aria-label="Package manager">
-        {PMS.map((p) => (
+      <div className="grid min-h-11 w-full grid-cols-2 items-stretch min-[240px]:grid-cols-4 sm:flex sm:w-auto" role="group" aria-label="Package manager">
+        {PMS.map((p, index) => (
           <button
             key={p}
             type="button"
-            role="tab"
-            aria-selected={pm === p}
+            aria-pressed={pm === p}
             onClick={() => setPm(p)}
             className={`min-h-11 flex-1 border-r border-hexl-fg px-3 font-mono text-mono-label uppercase sm:flex-none${
+              index < 2 ? ' border-b border-hexl-fg min-[240px]:border-b-0' : ''
+            }${
               pm === p ? ' bg-hexl-fg text-hexl-bg' : ''
             }`}
           >
@@ -79,10 +80,13 @@ export default function InstallStrip({ command, className }: InstallStripProps) 
         ))}
       </div>
       <div className="flex min-h-14 min-w-0 flex-1 items-stretch border-t border-hexl-fg sm:border-t-0">
-        <div className="flex min-w-0 flex-1 items-center overflow-x-auto px-4 font-mono text-mono-data" aria-live="polite">
-          <span className="whitespace-nowrap">{full.slice(0, n)}</span>
+        <div className="flex min-w-0 flex-1 items-center overflow-x-auto px-4 font-mono text-mono-data">
+          <span aria-hidden="true" className="whitespace-nowrap">{full.slice(0, n)}</span>
           <span aria-hidden="true" className="hexl-cursor ml-1 shrink-0">
             ▮
+          </span>
+          <span className="sr-only" role="status">
+            {full}
           </span>
         </div>
         <button

@@ -44,7 +44,7 @@ function PhaseConnector() {
   return (
     <div ref={ref} aria-hidden="true" className="flex h-6 items-stretch justify-center">
       <div
-        className="w-px origin-top bg-hexl-fg"
+        className="hexl-motion w-px origin-top bg-hexl-fg"
         style={{
           transform: on ? 'scaleY(1)' : 'scaleY(0)',
           transition: 'transform 480ms steps(4, end)',
@@ -89,7 +89,7 @@ interface CliCommand {
   note: string;
 }
 
-/** One CLI line: types in 2 chars/40ms after `start`, then its # note snaps on. */
+/** One CLI line: types in 6 chars/120ms after `start`, then its # note snaps on. */
 function CommandRow({ cmd, note, index, start }: CliCommand & { index: number; start: boolean }) {
   const [n, setN] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -109,9 +109,9 @@ function CommandRow({ cmd, note, index, start }: CliCommand & { index: number; s
             window.clearInterval(interval);
             return x;
           }
-          return Math.min(cmd.length, x + 2);
+          return Math.min(cmd.length, x + 6);
         });
-      }, 40);
+      }, 120);
     }, index * 240);
     return () => {
       window.clearTimeout(timeout);
@@ -130,7 +130,7 @@ function CommandRow({ cmd, note, index, start }: CliCommand & { index: number; s
             </span>
           )}
         </span>
-        {done && <span className="opacity-[0.45]">{`  # ${note}`}</span>}
+        {done && <span className="opacity-[0.55]">{`  # ${note}`}</span>}
       </span>
       <button
         type="button"
@@ -140,8 +140,8 @@ function CommandRow({ cmd, note, index, start }: CliCommand & { index: number; s
           setCopied(true);
           window.setTimeout(() => setCopied(false), 1200);
         }}
-        className={`shrink-0 border border-hexl-fg px-2 py-0.5 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${
-          done ? ' opacity-0 focus-visible:opacity-100 group-hover:opacity-100' : ' invisible'
+        className={`min-h-6 min-w-6 shrink-0 border border-hexl-fg px-2 py-0.5 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+          done ? ' hexl-hover-reveal' : ' invisible'
         }`}
       >
         {copied ? 'COPIED' : 'COPY'}

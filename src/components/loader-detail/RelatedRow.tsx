@@ -36,7 +36,7 @@ export default function RelatedRow({ meta }: RelatedRowProps) {
             className="hexl-cell relative flex aspect-square items-center justify-center bg-hexl-bg"
             aria-label={`n°${m.value} ${m.name}`}
           >
-            <span aria-hidden="true" className="absolute left-1 top-1 font-mono text-mono-micro opacity-[0.45]">
+            <span aria-hidden="true" className="absolute left-1 top-1 font-mono text-mono-micro opacity-[0.55]">
               {String(m.value).padStart(2, '0')}
             </span>
             {m.value === complement && (
@@ -48,7 +48,7 @@ export default function RelatedRow({ meta }: RelatedRowProps) {
           </Link>
         ))}
       </div>
-      <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.45]">
+      <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">
         SAME UPPER TRIGRAM · ROW {rowBits} · + BITWISE COMPLEMENT n°{complement}
       </p>
     </div>

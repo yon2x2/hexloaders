@@ -39,10 +39,10 @@ function SidebarNav() {
       <div className="px-3 pb-2 pt-6 text-mono-label uppercase">THE 64 LOADERS</div>
       {MECHANICS.map((m) => (
         <div key={m}>
-          <div className="px-3 pb-1 pt-3 text-mono-micro uppercase opacity-[0.45]">{m}</div>
+          <div className="px-3 pb-1 pt-3 text-mono-micro uppercase opacity-[0.55]">{m}</div>
           {loadersByMechanic(m).map((l) => (
             <NavLink key={l.slug} to={`/loaders/${l.slug}`} className={linkCls}>
-              <span className="mr-2 opacity-[0.45]">{String(l.value).padStart(2, '0')}</span>
+              <span className="mr-2 opacity-[0.55]">{String(l.value).padStart(2, '0')}</span>
               {l.name}
               {l.flagship ? ' ★' : ''}
             </NavLink>
@@ -112,7 +112,7 @@ export default function DocsShell({ children, toc = [] }: DocsShellProps) {
         <aside className="sticky top-14 hidden h-[calc(100dvh-56px)] w-64 shrink-0 overflow-y-auto border-r border-hexl-fg pb-16 lg:block">
           <SidebarNav />
         </aside>
-        <main className="w-full max-w-[760px] flex-1 px-6 py-10 md:px-10">{children}</main>
+        <div className="w-full max-w-[760px] flex-1 px-6 py-10 md:px-10">{children}</div>
         {toc.length > 0 && (
           <aside className="sticky top-14 hidden h-[calc(100dvh-56px)] w-48 shrink-0 border-l border-hexl-fg px-4 py-10 xl:block">
             <div className="mb-4 font-mono text-mono-label uppercase">ON THIS PAGE</div>

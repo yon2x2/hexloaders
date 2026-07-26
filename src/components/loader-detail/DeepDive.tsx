@@ -13,7 +13,7 @@ const rowClip = (r: number): string =>
   `inset(${((60 - 12 * r) / 68) * 100}% 0% ${(12 * r / 68) * 100}% 0%)`;
 
 function SubLabel({ children }: { children: ReactNode }) {
-  return <div className="mb-3 font-mono text-mono-label uppercase opacity-[0.45]">{children}</div>;
+  return <div className="mb-3 font-mono text-mono-label uppercase opacity-[0.55]">{children}</div>;
 }
 
 function RhythmRow({ children }: { children: ReactNode }) {
@@ -26,7 +26,7 @@ function ReducedFrame({ children, caption }: { children: ReactNode; caption: str
   return (
     <div>
       <div className="flex h-32 items-center justify-center border border-hexl-fg">{children}</div>
-      <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.45]">
+      <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">
         prefers-reduced-motion — {caption}
       </p>
     </div>
@@ -100,7 +100,7 @@ function MutatingMatrixDeepDive() {
             </div>
           ))}
         </div>
-        <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.45]">
+        <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">
           EVERY CELL SHARES THE CLOCK; THE INDEX OFFSET DRAWS A DIAGONAL WAVE OF CONFIGURATIONS.
         </p>
       </div>
