@@ -7,6 +7,7 @@
 
 import { memo, useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
+import { Check as CheckIcon, Copy as CopyIcon } from 'iconoir-react';
 import { Link, useNavigate } from 'react-router';
 import { LOADERS, MECHANICS } from '@/lib/registry';
 import type { LoaderMeta, Mechanic } from '@/lib/registry';
@@ -330,7 +331,13 @@ const MatrixCell = memo(function MatrixCell({
           {meta.flagship ? ' ★' : ''}
         </span>
         <span className="absolute bottom-1.5 left-1.5 font-mono text-mono-micro">{meta.binary}</span>
-        <span className="absolute bottom-1.5 right-1.5 font-mono text-mono-micro">{meta.mechanic}</span>
+        <span
+          className={`absolute bottom-1.5 right-1.5 font-mono text-mono-micro${
+            meta.install ? ' hexl-cell-action-meta' : ''
+          }`}
+        >
+          {meta.mechanic}
+        </span>
         <span className="flex h-full w-full items-center justify-center">
           {meta.flagship ? (
             <FlagshipLive slug={meta.slug} />
@@ -341,23 +348,27 @@ const MatrixCell = memo(function MatrixCell({
           )}
         </span>
       </Link>
-      <div
-        className={`pointer-events-none absolute inset-x-0 bottom-0 flex min-h-11 items-center justify-between gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 ${
-          meta.install ? 'hexl-hover-reveal' : 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
-        }`}
-      >
-        <span className="truncate font-mono text-mono-micro">{meta.install ?? 'MANUAL SOURCE'}</span>
-        {meta.install && (
-          <button
-            type="button"
-            onClick={copy}
-            aria-label={`Copy install command for ${meta.name}`}
-            className="pointer-events-auto min-h-11 shrink-0 border border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-          >
-            {copied ? 'COPIED' : 'COPY'}
-          </button>
-        )}
-      </div>
+      {meta.install ? (
+        <button
+          type="button"
+          onClick={copy}
+          aria-label={`Copy install command for ${meta.name}`}
+          className="hexl-hover-reveal pointer-events-auto absolute bottom-0 right-0 flex h-11 w-11 items-center justify-center border-l border-t border-hexl-fg bg-hexl-bg text-hexl-fg hover:bg-hexl-fg hover:text-hexl-bg"
+        >
+          {copied ? (
+            <CheckIcon aria-hidden="true" height={20} width={20} strokeWidth={1.5} />
+          ) : (
+            <CopyIcon aria-hidden="true" height={20} width={20} strokeWidth={1.5} />
+          )}
+          <span className="sr-only" aria-live="polite">
+            {copied ? `Install command for ${meta.name} copied` : ''}
+          </span>
+        </button>
+      ) : (
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex min-h-11 items-center border-t border-hexl-fg bg-hexl-bg px-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+          <span className="truncate font-mono text-mono-micro">MANUAL SOURCE</span>
+        </div>
+      )}
     </div>
   );
 });
