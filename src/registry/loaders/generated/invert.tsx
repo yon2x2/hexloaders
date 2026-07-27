@@ -2,15 +2,13 @@
  * HEXLOADERS — invert (generated mechanic template)
  * mechanic: INVERT
  * serves states 17 25 33 41 48 49 56 (+ 40 via the bespoke flagship inversion-pulse)
- * registry: pending
- *
  * Periodic bitwise complement: every clock tick all six lines negate —
  * Yang⇄Yin, a hard 0ms cut, no transition anywhere. A two-segment beat bar
  * under the glyph tallies the NORMAL / COMPLEMENT phases.
  * Cycle: 2 ticks × var(--hexl-step) = 240ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -19,7 +17,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface InvertLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63. Alternating values (e.g. 42 · 101010) read best. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -53,7 +51,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function InvertLoader({
-  value,
+  value = 17,
   size = 96,
   step = 120,
   invert = false,

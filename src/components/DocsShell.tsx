@@ -121,7 +121,7 @@ export default function DocsShell({ children, toc = [] }: DocsShellProps) {
                 <li key={item.id}>
                   <a
                     href={`#${item.id}`}
-                    className={`flex items-center gap-2 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${active === item.id ? ' font-bold' : ''}`}
+                    className={`flex min-h-6 items-center gap-2 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${active === item.id ? ' font-bold' : ''}`}
                   >
                     <span aria-hidden="true" className={`inline-block h-2 w-2${active === item.id ? ' bg-hexl-fg' : ''}`} />
                     {item.label}

@@ -2,15 +2,13 @@
  * HEXLOADERS — stack (generated mechanic template)
  * mechanic: STACK
  * serves states 04 11 14 20 28 30 38
- * registry: pending
- *
  * Build-up: lines stack bottom→top one row per clock tick out of the dim
  * field, hold one tick fully built, then reset to dim and start over.
  * A six-segment ledger bar under the glyph fills as the stack rises.
  * Cycle: 6 build steps + 1 hold + 1 reset = 8 × var(--hexl-step) = 960ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -19,7 +17,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface StackLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63. LSB = bottom line. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -62,7 +60,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function StackLoader({
-  value,
+  value = 4,
   size = 96,
   step = 120,
   invert = false,

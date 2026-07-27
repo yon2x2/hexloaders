@@ -36,11 +36,11 @@ dictionary excerpt that elides HEX_NAMES from the raw text).
    variables table, and Manual Setup step 1 (all three read the same block — verify).
 3. Added/removed a registry row? → verify sidebar grouping, related-loaders rows,
    and pager wrap (63↔0) still behave; update Introduction's data row if counts change
-   (64 LOADERS · 8 MECHANICS · 0 DEPENDENCIES · 1 DICTIONARY).
+   (64 LOADERS · 8 MECHANICS · 0 EXTRA DEPS · 100% SOURCE OWNED).
 4. Changed a mechanic? → docs mechanics table in `DocsArchitecture.tsx` + Usage
    reduced-motion table + Footer mechanic glyph row.
-5. Changed CLI messaging? → Usage `#cli-roadmap`, home distribution section, and the
-   install strip on detail pages must tell the same story.
+5. Changed distribution status? → update `docs/internal/distribution-guide.md`.
+   Public pages must describe only current install/copy actions, never roadmap phases.
 
 ## Adding a docs section
 

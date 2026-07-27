@@ -2,15 +2,13 @@
  * HEXLOADERS — cascade (generated mechanic template)
  * mechanic: CASCADE
  * serves states 02 03 06 10 13 22 29 37
- * registry: pending
- *
  * Propagation wave: a front travels bottom→top one row per clock tick —
  * rows behind the front are full, the leading row rides at mid opacity,
  * rows ahead stay dim. The wave arrives, holds one tick, then breaks.
  * Cycle: 6 propagation steps + 1 arrive + 1 break = 8 × var(--hexl-step) = 960ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -19,7 +17,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface CascadeLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63. LSB = bottom line. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -64,7 +62,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function CascadeLoader({
-  value,
+  value = 2,
   size = 96,
   step = 120,
   invert = false,

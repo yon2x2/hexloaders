@@ -2,16 +2,14 @@
  * HEXLOADERS — strobe (generated mechanic template)
  * mechanic: STROBE
  * serves states 00 05 08 12 16 21 24 32
- * registry: pending
- *
  * Binary blink: the register strobes around its resting value in hard 0/1
  * beats — REST → full flash (STATE 63 · 111111) → REST → empty flash
  * (STATE 0 · 000000). No fades; every beat is a hard cut.
  * A four-segment beat bar under the glyph tallies the pattern.
  * Cycle: 4 ticks × var(--hexl-step) = 480ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -20,7 +18,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface StrobeLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63 — the resting value between flashes. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -54,7 +52,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function StrobeLoader({
-  value,
+  value = 0,
   size = 96,
   step = 120,
   invert = false,

@@ -948,7 +948,7 @@ export default function Playground() {
             </div>
             <div className="flex items-stretch justify-between">
               <code className="truncate px-3 py-3 font-mono text-mono-data">
-                {meta.install ?? 'MANUAL SOURCE · REGISTRY ROLLOUT PENDING'}
+                {meta.install ?? 'MANUAL SOURCE'}
               </code>
               {meta.install && (
                 <button

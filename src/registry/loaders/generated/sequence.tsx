@@ -2,15 +2,13 @@
  * HEXLOADERS — sequence (generated mechanic template)
  * mechanic: SEQUENCE
  * serves states 27 35 43 51 58 61 63 (+ 19 via the bespoke flagship mutating-matrix)
- * registry: pending
- *
  * King Wen stepping: the glyph starts at the King Wen position of `value` and
  * advances one sequence position per clock tick — a hard steps(1) cut per
  * frame, the historical permutation running as a loader.
  * Cycle: 64 ticks × var(--hexl-step) = 7680ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -19,7 +17,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface SequenceLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63 — the King Wen walk starts at its sequence position. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -73,7 +71,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function SequenceLoader({
-  value,
+  value = 27,
   size = 96,
   step = 120,
   invert = false,

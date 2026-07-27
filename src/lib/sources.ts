@@ -80,7 +80,10 @@ export function loaderFilesFor(slug: string): LoaderFile[] {
     return [{ path: `loaders/${meta.slug}.tsx`, source: LOADER_SOURCES[meta.slug] }];
   }
   return [
-    { path: `loaders/${meta.slug}.tsx`, source: GENERATED_SOURCES[meta.mechanic] },
+    {
+      path: `loaders/generated/${meta.mechanic.toLowerCase()}.tsx`,
+      source: GENERATED_SOURCES[meta.mechanic],
+    },
     { path: 'loaders/hex-glyph.tsx', source: hexGlyphSource },
   ];
 }
@@ -91,6 +94,8 @@ export function registryEntryFor(slug: string): string {
   if (!meta) throw new Error(`Unknown loader slug: ${slug}`);
   const entry = {
     slug: meta.slug,
+    component: meta.component,
+    preset: meta.flagship ? null : meta.slug,
     name: meta.name,
     state: meta.value,
     binary: meta.binary,
@@ -100,7 +105,10 @@ export function registryEntryFor(slug: string): string {
     distribution: meta.registry ? 'github-registry' : 'manual-source',
     files: meta.flagship
       ? [`loaders/${meta.slug}.tsx`]
-      : [`loaders/${meta.slug}.tsx`, 'loaders/hex-glyph.tsx'],
+      : [
+          `loaders/generated/${meta.mechanic.toLowerCase()}.tsx`,
+          'loaders/hex-glyph.tsx',
+        ],
     dependencies: [],
     cssVars: ['--hexl-fg', '--hexl-bg', '--hexl-step', '--hexl-dim'],
   };

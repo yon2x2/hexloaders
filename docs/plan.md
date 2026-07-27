@@ -1,13 +1,14 @@
 # PLAN — "HEX" — I Ching Binary Loader Library (shadcn-style registry)
 
 ## Goal
-Open-source, scalable UI library ecosystem of 64 animated loaders based on I Ching hexagrams
-treated as a 6-bit binary system. Distribution = copy-paste / CLI registry (shadcn/ui + Dot Matrix model).
+Open-source, scalable UI library ecosystem of 64 animated presets based on I Ching hexagrams
+treated as a 6-bit binary system. Three flagships plus eight mechanic templates are the 11
+distributable components. Distribution = copy-paste / shadcn source registry.
 Design = Rationalist Bauhaus × Minimal Ledger: pure #000/#FFF only, rigid grid, mono/type indexing,
 mechanical stepped motion (CSS `steps()`), zero-dependency, CSS-custom-property-driven.
 Deliverable: a production-grade React+TS+Tailwind webapp = landing page + live component previews +
-source viewer + copy/install UX + the actual registry architecture (data model, tokens, 3 flagship loaders,
-CLI strategy doc).
+  source viewer + copy/install UX + the actual registry architecture (data model, tokens, 3 flagship loaders,
+  8 mechanic templates, source ownership UX).
 
 ## Stage 1 — Orchestration skill load + design foundation
 - Load skill: `vibecoding-webapp-swarm` (web UI task).
@@ -30,8 +31,9 @@ CLI strategy doc).
 
 ## Stage 3 — Landing page + registry UX
 - Subagent C: Dot Matrix/shadcn-style site — header, hero (mono type, ledger grid), live preview cards
-  with Preview/Code tabs + copy button, install command block (`npx hexloaders add bit-scanner`),
-  full 64-hexagram index grid, architecture section, CLI roadmap section.
+  with Preview/Code tabs + copy button, install command block
+  (`npx shadcn@latest add yon2x2/hexloaders/bit-scanner`), full 64-hexagram index grid,
+  architecture section, install/source ownership section.
 - Output: complete pages wired to Stage 2 components.
 
 ## Stage 4 — Validate, build, deliver
@@ -39,5 +41,6 @@ CLI strategy doc).
 - Fix loop via reviewer subagent if needed.
 - Deliver: `mshtools-website_version_manager` build_version (type: static).
 
-## Stage 5 — Docs artifact
-- CLI integration strategy section embedded in site + ARCHITECTURE.md in repo.
+## Stage 5 — Internal distribution guide
+- Keep roadmap and release sequencing internal in `docs/internal/distribution-guide.md`.
+- Public pages describe only what users can install or copy today.

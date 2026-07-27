@@ -4,8 +4,8 @@
 
 ```tsx
 export interface LoaderProps {
-  value: number;        // 0–63, LSB = bottom line (REQUIRED for generated templates;
-                        // flagships may default it, e.g. BitScanner defaults 26)
+  value?: number;       // 0–63, LSB = bottom line; every distributable has a
+                        // representative default and presets pass their named state
   size?: number;        // px glyph width; sets --hexl-line-h/--hexl-gap inline
   step?: number;        // ms per tick; MUST be clamped Math.max(120, step)
   invert?: boolean;     // renders in negative color space (adds .hexl-invert)
@@ -27,7 +27,8 @@ export interface LoaderProps {
 {
   value: number;              // 0–63 — also the 8×8 grid position (row=upper, col=lower)
   name: string;               // "Barrel Shift"
-  slug: string;               // "barrel-shift" — used in /loaders/[slug] and the GitHub registry item
+  slug: string;               // "barrel-shift" — named preset used in /loaders/[slug]
+  component: string;          // "shift-loader" — canonical distributable registry item
   mechanic: Mechanic;         // one of the 8 (see mechanics.md)
   flagship?: boolean;         // only the 3 bespoke loaders
 }
@@ -52,8 +53,11 @@ keeps shown source identical to shipped source.
 ```tsx
 /**
  * HEXLOADERS — <Name> · STATE <n> · <binary top→bottom> · mechanic <MECHANIC>
- * Registry: pending until consumer proof · Files: [<file>, hex-glyph.tsx]
+ * Files: [<file>, hex-glyph.tsx]
  * Zero additional runtime dependencies beyond React.
  * License: MIT — install one, copy the code, make it yours.
  */
 ```
+
+Publication state belongs only in `docs/internal/distribution-guide.md`; never
+include roadmap or pending status in source headers exposed by the Code panels.

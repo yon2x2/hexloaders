@@ -1,8 +1,8 @@
 /**
  * HEXLOADERS — Showcase `/showcase`
- * Proof-of-context: the 64 loaders inside real interface situations — buttons,
- * boot sequences, tables, terminals, forms, page veils. Every specimen is live,
- * viewport-gated, and a single file installed from the registry.
+ * Proof-of-context: the 64 presets inside real interface situations — buttons,
+ * boot sequences, tables, terminals, forms, page veils. Every specimen is live
+ * and viewport-gated; registry availability is reported without overclaiming.
  */
 
 import { useEffect, useState } from 'react';
@@ -131,8 +131,9 @@ export default function Showcase() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[68ch] text-body">
-            Loaders earning their keep — in buttons, boot sequences, tables, and terminals. Every specimen below is
-            live. Every one is a single file installed from the registry.
+            Loaders earning their keep — in buttons, boot sequences, tables, and terminals. Every
+            example below is live. Bit-Scanner installs in one command; every other loader exposes
+            source you can copy now.
           </p>
         </Reveal>
         <Reveal delay={240}>

@@ -1,6 +1,6 @@
 /**
  * HEXLOADERS — LoaderDetail `/loaders/:slug`
- * The component page template instantiated for all 64 loaders (loader-detail.md).
+ * The preset page template instantiated for all 64 named states (loader-detail.md).
  * Data-driven from registry.ts + hexagrams.ts: header ledger block, live
  * PreviewCard (flagship component / MechanicCell), genuine copy-pasteable
  * sources via loaderFilesFor, install block, props, CSS vars, examples,
@@ -68,7 +68,7 @@ const MECHANIC_CYCLE: Record<Mechanic, number> = {
 };
 
 type GeneratedComponent = ComponentType<{
-  value: number;
+  value?: number;
   size?: number;
   step?: number;
   invert?: boolean;
@@ -96,6 +96,17 @@ const GENERATED_NAME: Record<Mechanic, string> = {
   STACK: 'StackLoader',
   CASCADE: 'CascadeLoader',
   STROBE: 'StrobeLoader',
+};
+
+const GENERATED_DEFAULT: Record<Mechanic, number> = {
+  SCAN: 7,
+  SEQUENCE: 27,
+  INVERT: 17,
+  SHIFT: 36,
+  COUNT: 18,
+  STACK: 4,
+  CASCADE: 2,
+  STROBE: 0,
 };
 
 /** Component default states of the flagships (independent of registry n° — do not "fix"). */
@@ -201,7 +212,12 @@ function propRowsFor(meta: LoaderMeta): PropRow[] {
     ];
   }
   return [
-    { prop: 'value', type: 'number', default: '— (required)', description: '6-bit value 0–63 · LSB = bottom line' },
+    {
+      prop: 'value',
+      type: 'number',
+      default: String(GENERATED_DEFAULT[meta.mechanic]),
+      description: '6-bit value 0–63 · LSB = bottom line',
+    },
     { prop: 'step', type: 'number', default: '120', description: 'Base clock ms · all durations are multiples' },
     size,
     invert,
@@ -374,7 +390,7 @@ export default function LoaderDetail() {
   useEffect(() => {
     document.title = meta ? `${meta.name} — HEXLOADERS` : 'UNKNOWN STATE — HEXLOADERS';
     return () => {
-      document.title = 'HEXLOADERS — 64 binary loaders for every app.';
+      document.title = 'HEXLOADERS — 64 open-source loaders for every app.';
     };
   }, [meta]);
 
@@ -466,7 +482,7 @@ export default function LoaderDetail() {
             <InstallStrip command={meta.install.replace(/^npx /, '')} />
           ) : (
             <div className="flex h-14 items-center px-4 font-mono text-mono-label uppercase">
-              MANUAL SOURCE AVAILABLE · REGISTRY ROLLOUT PENDING
+              MANUAL SOURCE AVAILABLE
             </div>
           )}
         </div>

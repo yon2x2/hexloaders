@@ -24,6 +24,7 @@ export interface LoaderMeta {
   value: number; // registry n° = 6-bit state value (0–63), Fu Xi grid address
   name: string;
   slug: string; // kebab-case
+  component: string; // Canonical distributable: flagship slug or <mechanic>-loader.
   mechanic: Mechanic;
   flagship: boolean;
   binary: string; // top→bottom print string of value
@@ -33,7 +34,7 @@ export interface LoaderMeta {
 }
 
 const FLAGSHIP_SLUGS = new Set(['bit-scanner', 'mutating-matrix', 'inversion-pulse']);
-const PUBLISHED_REGISTRY_SLUGS = new Set(['bit-scanner']);
+const PUBLISHED_REGISTRY_COMPONENTS = new Set(['bit-scanner']);
 export const GITHUB_REGISTRY = 'yon2x2/hexloaders';
 
 /** [name, slug, mechanic] in value order 0–63 (row = upper 000→111, col = lower 000→111). */
@@ -106,13 +107,16 @@ const TABLE: readonly (readonly [string, string, Mechanic])[] = [
 
 export const LOADERS: readonly LoaderMeta[] = TABLE.map(([name, slug, mechanic], value) => {
   const hexagram = HEXAGRAMS[value];
-  const registry = PUBLISHED_REGISTRY_SLUGS.has(slug) ? `${GITHUB_REGISTRY}/${slug}` : null;
+  const flagship = FLAGSHIP_SLUGS.has(slug);
+  const component = flagship ? slug : `${mechanic.toLowerCase()}-loader`;
+  const registry = PUBLISHED_REGISTRY_COMPONENTS.has(component) ? `${GITHUB_REGISTRY}/${component}` : null;
   return {
     value,
     name,
     slug,
+    component,
     mechanic,
-    flagship: FLAGSHIP_SLUGS.has(slug),
+    flagship,
     binary: hexagram.binary,
     hexagram,
     registry,

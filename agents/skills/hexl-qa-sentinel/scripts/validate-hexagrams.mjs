@@ -33,6 +33,23 @@ if (tableMatch) {
   const MECHS = new Set(['SCAN', 'SEQUENCE', 'INVERT', 'SHIFT', 'COUNT', 'STACK', 'CASCADE', 'STROBE']);
   const bad = tuples.map((t) => t[3]).filter((m) => !MECHS.has(m));
   check(bad.length === 0, bad.length ? `unknown mechanics: ${[...new Set(bad)].join(',')}` : 'all mechanics valid (8 known)');
+  const flagships = new Set(['bit-scanner', 'mutating-matrix', 'inversion-pulse']);
+  const components = tuples.map((tuple) =>
+    flagships.has(tuple[2]) ? tuple[2] : `${tuple[3].toLowerCase()}-loader`,
+  );
+  check(new Set(components).size === 11, '64 presets resolve to 11 distributable components');
+}
+
+// ── generated source bundle — mechanic template + sibling primitive ──
+const sources = fs.readFileSync('src/lib/sources.ts', 'utf8');
+check(
+  sources.includes('loaders/generated/${meta.mechanic.toLowerCase()}.tsx') &&
+    sources.includes("'loaders/hex-glyph.tsx'"),
+  'generated manifests preserve template + primitive paths',
+);
+for (const mechanic of ['scan', 'sequence', 'invert', 'shift', 'count', 'stack', 'cascade', 'strobe']) {
+  const source = fs.readFileSync(`src/registry/loaders/generated/${mechanic}.tsx`, 'utf8');
+  check(source.includes("from '../hex-glyph'"), `${mechanic}-loader resolves the shared primitive`);
 }
 
 // ── registry.json — public GitHub source registry ──
@@ -40,17 +57,42 @@ const publicRegistry = JSON.parse(fs.readFileSync('registry.json', 'utf8'));
 check(publicRegistry.$schema === 'https://ui.shadcn.com/schema/registry.json', 'public registry uses the shadcn schema');
 check(publicRegistry.name === 'hexloaders', 'public registry name is hexloaders');
 const publicItems = Array.isArray(publicRegistry.items) ? publicRegistry.items : [];
-check(publicItems.length === 1, `public registry has one verified item (got ${publicItems.length})`);
+check(publicItems.length > 0, `public registry has verified items (got ${publicItems.length})`);
+check(
+  new Set(publicItems.map((item) => item.name)).size === publicItems.length,
+  'public registry item names are unique',
+);
+const publishedMatch = reg.match(/PUBLISHED_REGISTRY_COMPONENTS\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
+const publishedComponents = publishedMatch ? [...publishedMatch[1].matchAll(/'([^']+)'/g)].map((match) => match[1]) : [];
+const publicNames = publicItems.map((item) => item.name);
+check(
+  publishedComponents.length === publicNames.length &&
+    publishedComponents.every((name) => publicNames.includes(name)),
+  'public registry matches components marked as published',
+);
 const bitScanner = publicItems.find((item) => item.name === 'bit-scanner');
 check(!!bitScanner, 'public registry contains bit-scanner');
-const bitScannerFile = bitScanner?.files?.[0];
+for (const item of publicItems) {
+  const files = Array.isArray(item.files) ? item.files : [];
+  check(files.length > 0, `${item.name} declares files`);
+  check(
+    files.every((file) => typeof file.path === 'string' && fs.existsSync(file.path)),
+    `${item.name} registry sources exist`,
+  );
+  check(
+    files.every((file) => /^@(components|ui|lib|hooks)\//.test(file.target ?? '')),
+    `${item.name} uses explicit portable targets`,
+  );
+  check(
+    new Set(files.map((file) => file.target)).size === files.length,
+    `${item.name} targets are unique`,
+  );
+}
+
+const publicSource = fs.globSync('src/**/*.{ts,tsx}').map((file) => fs.readFileSync(file, 'utf8')).join('\n');
 check(
-  bitScannerFile?.path === 'src/registry/loaders/bit-scanner.tsx' && fs.existsSync(bitScannerFile.path),
-  'bit-scanner registry source exists',
-);
-check(
-  bitScannerFile?.target === '@components/loaders/bit-scanner.tsx',
-  'bit-scanner installs through the consumer components alias',
+  !/distribution roadmap|registry rollout|dedicated hexloaders cli|rollout pending|registry: pending/i.test(publicSource),
+  'public UI excludes the internal distribution roadmap',
 );
 
 process.exit(fail);

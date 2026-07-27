@@ -64,11 +64,12 @@ ${hexagramsRaw.slice(end).trim()}`.trimEnd();
 const BIT_SCANNER_ENTRY = registryEntryFor('bit-scanner');
 
 const REGISTRY_FIELDS: string[][] = [
-  ['slug', 'file + route name'],
-  ['state', 'default 6-bit value'],
+  ['slug', 'named preset + route'],
+  ['component', 'canonical distributable source'],
+  ['state', 'preset 6-bit value'],
   ['mechanic', 'taxonomy tag for filtering'],
   ['files', 'paths copied into the consumer repo'],
-  ['cssVars', 'variables the CLI injects if missing'],
+  ['cssVars', 'variables consumed by the source'],
   ['dependencies', 'always []'],
 ];
 
@@ -76,21 +77,21 @@ const ADD_STEPS: { title: string; text: string }[] = [
   { title: 'PICK A STATE', text: 'Choose its default value, 0–63. Mixed patterns read best in motion.' },
   { title: 'PICK A MECHANIC', text: 'One of the eight. Compose at most two.' },
   {
-    title: 'WRITE THE FILE',
-    text: 'Single .tsx, zero deps, consume bitsOf(state). Contract in the template below.',
+    title: 'REUSE THE COMPONENT',
+    text: 'Map the preset to its mechanic template; create a new file only for a real flagship or mechanic.',
   },
   {
-    title: 'REGISTER IT',
-    text: 'Add the entry to registry/index.json. The docs, matrix, and CLI pick it up from there.',
+    title: 'REGISTER THE PRESET',
+    text: 'Add one metadata row. The docs, matrix, route, and source manifest derive from it.',
   },
 ];
 
 /* loader-template.tsx — the condensed contract (architecture.md). */
-const LOADER_TEMPLATE = `/** STATE 26 · 011010 · MECHANIC: SCAN · registry: pending */
+const LOADER_TEMPLATE = `/** STATE 26 · 011010 · MECHANIC: SCAN */
 import { bitsOf } from "./hexagrams";
 
-export function MyLoader({ state = 26, size = 96, invert = false, className, ...rest }) {
-  const bits = bitsOf(state); // bottom → top
+export function MyLoader({ value = 26, size = 96, invert = false, className, ...rest }) {
+  const bits = bitsOf(value); // bottom → top
   return (
     <div role="status" aria-label="Loading"
          style={{ "--hexl-scale": size / 96 } as React.CSSProperties}
@@ -165,10 +166,8 @@ export default function DocsArchitecture() {
         <SectionHead index={3} title="THE REGISTRY" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Each loader is an addressable registry item — the same contract shadcn uses. Metadata
-            declares the default state, the mechanic, the files to copy, and the CSS variables it
-            reads. The CLI (or a human) resolves the item, copies the files, and injects the
-            variable block.
+            Every loader has a stable identity, route, and source manifest. The shadcn CLI copies
+            declared files for installable loaders, and every loader page exposes its manual source.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">
@@ -188,9 +187,8 @@ export default function DocsArchitecture() {
         <SectionHead index={4} title="MECHANICS" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Every loader is one mechanic applied to bits. Eight mechanics cover the registry; each
-            is a pure function of state and clock. Composing a new loader = picking a mechanic and
-            a state.
+            Every loader applies a motion mechanic to six bits. Each result is a predictable
+            function of state and clock, so the animation stays consistent wherever it is used.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">

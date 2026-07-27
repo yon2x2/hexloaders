@@ -2,15 +2,13 @@
  * HEXLOADERS — count (generated mechanic template)
  * mechanic: COUNT
  * serves states 18 26 34 42 45 50 57 59
- * registry: pending
- *
  * Binary counting: the state increments by one per clock tick —
  * (value + tick) mod 64 — rolling over at 64 like a six-bit odometer.
  * Every carry is a hard cut; the rail prints the live state and binary.
  * Cycle: 64 ticks × var(--hexl-step) = 7680ms @ 120ms.
  *
- * Parameterized — one file serves 8 states.
- * Zero dependencies. Single file. MIT License.
+ * Parameterized — one template serves 8 states.
+ * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -19,7 +17,7 @@ import HexGlyph from '../hex-glyph';
 
 export interface CountLoaderProps extends HTMLAttributes<HTMLDivElement> {
   /** 6-bit state 0–63 — the count starts here. LSB = bottom line. */
-  value: number;
+  value?: number;
   /** Glyph width in px. Default 96. */
   size?: number;
   /** Base clock in ms. Default 120. */
@@ -61,7 +59,7 @@ const reducedMotion = (): boolean =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function CountLoader({
-  value,
+  value = 18,
   size = 96,
   step = 120,
   invert = false,
