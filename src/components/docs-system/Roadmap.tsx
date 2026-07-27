@@ -90,7 +90,7 @@ export default function Roadmap() {
             items={[
               'Public GitHub source registry, schema-compatible with shadcn.',
               'Bit-Scanner is verified in a clean Vite consumer.',
-              'The other ten component sources stay manual-only until they pass the same gate.',
+              'Every other loader keeps its manual source available during rollout.',
             ]}
           />
         </PhaseBand>
@@ -102,10 +102,9 @@ export default function Roadmap() {
         <PhaseBand head="PHASE 2 — NEXT · registry rollout" chip="NEXT">
           <GlyphList
             items={[
-              'Verify and publish the two remaining flagship component sources.',
-              'Verify and publish all eight parameterized mechanic templates.',
-              'Keep 64 named presets and routes mapped to those 11 real component sources.',
-              'Every item must pass install and production-build checks in a clean consumer.',
+              'Expand one-command installs across the collection.',
+              'Keep all 64 loader pages and source panels available during rollout.',
+              'Verify every release in a clean consumer before publishing it.',
             ]}
           />
         </PhaseBand>

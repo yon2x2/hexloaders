@@ -34,10 +34,10 @@ const TOC: TocItem[] = [
 ];
 
 const STATS: [string, string][] = [
-  ['64', 'PRESETS'],
-  ['11', 'COMPONENTS'],
+  ['64', 'LOADERS'],
   ['8', 'MECHANICS'],
   ['0', 'EXTRA DEPS'],
+  ['100%', 'SOURCE OWNED'],
 ];
 
 const WHY: string[] = [
@@ -62,7 +62,7 @@ type StartCard =
 const START_CARDS: StartCard[] = [
   { to: '/docs/usage', label: 'USAGE', desc: 'Install your first loader in under a minute.' },
   { to: '/docs/architecture', label: 'ARCHITECTURE', desc: 'How 64 states become one dictionary.' },
-  { href: '/#matrix', label: 'THE MATRIX', desc: 'Preview all 64 primitives live.' },
+  { href: '/#matrix', label: 'THE MATRIX', desc: 'Preview all 64 loaders live.' },
 ];
 
 const INSTALL_CMD = bySlug('bit-scanner')?.install ?? 'npx shadcn@latest add yon2x2/hexloaders/bit-scanner';
@@ -113,10 +113,9 @@ export default function DocsIntroduction() {
       <DocSection id="what-this-project-is" index={1} title="What this project is">
         <Reveal>
           <p className="max-w-[62ch] text-body-sm">
-            HEXLOADERS follows the install model many teams already use with shadcn: pull a
-            component into your codebase, then edit it like local code. Eleven real components
-            produce 64 named presets — one per state of a 6-bit word — and stay compact on purpose
-            so loading states blend into your UI language instead of forcing a separate aesthetic.
+            Choose from 64 live loaders, bring the source into your codebase, and edit it like
+            local code. Each one stays compact on purpose so loading states blend into your UI
+            language instead of forcing a separate aesthetic.
           </p>
         </Reveal>
 

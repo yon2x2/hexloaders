@@ -524,7 +524,7 @@ function Matrix() {
       <div className="mx-auto max-w-[1440px] px-6 py-12 md:px-10">
         <div
           role="grid"
-          aria-label={sort === 'fuxi' ? 'The 64 presets, Fu Xi arrangement' : `The 64 presets, sorted by ${sort}`}
+          aria-label={sort === 'fuxi' ? 'The 64 loaders, Fu Xi arrangement' : `The 64 loaders, sorted by ${sort}`}
           onKeyDown={onKeyDown}
           className={`relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg sm:grid-cols-4${
             sort === 'fuxi' ? ' lg:grid-cols-[32px_repeat(8,minmax(0,1fr))]' : ' lg:grid-cols-8'
@@ -666,8 +666,7 @@ function Hero() {
 
             <Reveal delay={480}>
               <p className="mt-8 max-w-[560px] text-body">
-                64 free and open-source presets, produced by three flagship components and eight reusable
-                mechanic templates. Install the verified Bit-Scanner or copy any loader source and make it yours.
+                64 free and open-source loaders. Preview one live, copy the source, and make it yours.
               </p>
             </Reveal>
 
@@ -993,8 +992,8 @@ function Architecture() {
         </Reveal>
         <Reveal delay={240}>
           <p className="mt-6 max-w-[68ch] text-body-sm">
-            Every preset reads its state and component identity from one dictionary — 64 entries,
-            each a 6-bit value. Compose mechanics over bits; never draw loading pixels by hand.
+            Every loader comes from one reliable dictionary — name, preview, route, and source stay
+            in sync across all 64 states.
           </p>
         </Reveal>
 
@@ -1079,7 +1078,7 @@ function Distribution() {
 
   const phases = [
     { tag: 'PHASE 1 — SHIPPED', chip: 'NOW', body: 'GitHub registry vertical slice: Bit-Scanner installs into a clean Vite app.', blink: true },
-    { tag: 'PHASE 2 — NEXT', chip: 'NEXT', body: 'Verify and publish the two remaining flagships and eight mechanic templates behind all 64 presets.', blink: false },
+    { tag: 'PHASE 2 — NEXT', chip: 'NEXT', body: 'Expand verified one-command installs across the 64-loader collection.', blink: false },
     { tag: 'PHASE 3 — LATER', chip: 'LATER', body: 'Evaluate a dedicated HEXLOADERS CLI for discovery and batch installs after the registry rollout.', blink: false },
   ];
 
@@ -1166,7 +1165,7 @@ const FAQ = [
   },
   {
     q: 'DO THE LOADERS HAVE DEPENDENCIES?',
-    a: 'No runtime packages beyond React. Flagships are single-file; mechanic templates share the zero-dependency hex-glyph primitive. Tailwind is used for site layout only.',
+    a: 'No runtime packages beyond React. When a loader needs a local helper, its source includes it. Tailwind is used for site layout only.',
   },
   {
     q: 'CAN I USE THEM WITHOUT TAILWIND?',

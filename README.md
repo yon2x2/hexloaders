@@ -1,13 +1,11 @@
 # HEXLOADERS
 
-HEXLOADERS is a React and TypeScript loader system built from the 64 I Ching
-hexagrams interpreted as six-bit states. Three flagship components and eight
-parameterized mechanic templates produce 64 named presets across the live
-catalogue, documentation, playground, and showcase.
+HEXLOADERS is a collection of 64 free and open-source React loaders built from
+the I Ching hexagrams as six-bit states. Preview them live, copy the source, and
+make one yours.
 
-The website is functional. `bit-scanner` is the only public GitHub registry
-item today. The other ten component sources remain available for manual
-installation while their registry entries are prepared and verified.
+`bit-scanner` installs from the public GitHub registry today. Every other loader
+exposes its source for manual installation while one-command installs roll out.
 
 ```bash
 npx shadcn@latest add yon2x2/hexloaders/bit-scanner
@@ -38,7 +36,7 @@ npm run dev              # Start the local Vite server on port 4317
 npm run lint             # Run ESLint
 npm run build            # Type-check and create the production build
 npm run check:integrity  # Validate the 64-state dictionary and registry
-npm run check:registry:consumer # Install Bit Scanner into a clean Vite app and build it
+npm run check:registry:consumer # Install every public registry item into a clean Vite app
 npm run check:design     # Audit the HEXLOADERS design laws
 npm run check            # Run the complete non-browser gate sequence
 npm run preview          # Preview the production build

@@ -131,9 +131,9 @@ export default function Showcase() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[68ch] text-body">
-            Loaders earning their keep — in buttons, boot sequences, tables, and terminals. Every specimen below is
-            live. Bit-Scanner installs from the registry today; the other examples expose manual source while their
-            component entries are verified.
+            Loaders earning their keep — in buttons, boot sequences, tables, and terminals. Every
+            example below is live. Bit-Scanner installs in one command; every other loader exposes
+            source you can copy now.
           </p>
         </Reveal>
         <Reveal delay={240}>

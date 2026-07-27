@@ -36,7 +36,7 @@ function SidebarNav() {
           {l.label}
         </NavLink>
       ))}
-      <div className="px-3 pb-2 pt-6 text-mono-label uppercase">THE 64 PRESETS</div>
+      <div className="px-3 pb-2 pt-6 text-mono-label uppercase">THE 64 LOADERS</div>
       {MECHANICS.map((m) => (
         <div key={m}>
           <div className="px-3 pb-1 pt-3 text-mono-micro uppercase opacity-[0.55]">{m}</div>

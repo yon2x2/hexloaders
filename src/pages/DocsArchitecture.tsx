@@ -166,10 +166,9 @@ export default function DocsArchitecture() {
         <SectionHead index={3} title="THE REGISTRY" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Eleven component sources are addressable registry items using the same contract as
-            shadcn. The 64 named presets select a component, state, and mechanic. The shadcn CLI
-            resolves a verified item and copies its declared files; manual source remains available
-            while rollout verification is pending.
+            Every loader has a stable identity, route, and source manifest. The shadcn CLI resolves
+            a verified loader and copies its declared files; manual source remains available while
+            one-command installation is pending.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">
@@ -189,9 +188,8 @@ export default function DocsArchitecture() {
         <SectionHead index={4} title="MECHANICS" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Every preset is one mechanic applied to bits. Eight parameterized templates cover the
-            non-flagship states; each is a pure function of value and clock. Composing a preset
-            means selecting a mechanic and a state.
+            Every loader applies a motion mechanic to six bits. Each result is a predictable
+            function of state and clock, so the animation stays consistent wherever it is used.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">

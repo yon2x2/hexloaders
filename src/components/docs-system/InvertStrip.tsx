@@ -24,7 +24,7 @@ export default function InvertStrip() {
     <div className="border border-hexl-fg">
       <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
         <span className="flex items-center px-3 font-mono text-mono-micro uppercase">
-          LIVE — THREE FLAGSHIPS AT 48PX
+          LIVE — THREE LOADERS AT 48PX
         </span>
         <button
           type="button"

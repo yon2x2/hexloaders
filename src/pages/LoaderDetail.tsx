@@ -390,7 +390,7 @@ export default function LoaderDetail() {
   useEffect(() => {
     document.title = meta ? `${meta.name} — HEXLOADERS` : 'UNKNOWN STATE — HEXLOADERS';
     return () => {
-      document.title = 'HEXLOADERS — 64 binary loading presets for every app.';
+      document.title = 'HEXLOADERS — 64 open-source loaders for every app.';
     };
   }, [meta]);
 

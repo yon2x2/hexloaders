@@ -131,8 +131,8 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={300} className="mt-6">
           <LedgerNote>
-            REGISTRY ROLLOUT — Bit-Scanner is installable now. The other ten components remain
-            available through manual source panels until each registry entry passes the same consumer test.
+            REGISTRY ROLLOUT — Bit-Scanner is installable now. Every other loader keeps its manual
+            source available while one-command installs move through the same consumer test.
           </LedgerNote>
         </Reveal>
       </section>
@@ -165,9 +165,9 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Mechanic templates accept a value and styling props. Flagships expose their own
-            focused controls, such as showMeta on Bit-Scanner. Every loader spreads remaining HTML
-            attributes onto its root, and CSS variables let a parent scale a whole tree at once.
+            Each loader documents the controls it accepts, including size, timing, and inversion.
+            Every loader also spreads remaining HTML attributes onto its root, and CSS variables
+            let a parent scale a whole tree at once.
           </p>
         </Reveal>
       </section>
@@ -225,9 +225,9 @@ export default function DocsUsage() {
         <SectionHead index={6} title="DISTRIBUTION ROADMAP" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            The shadcn CLI works today for Bit-Scanner. Next, the same consumer gate will cover the
-            other ten component sources behind all 64 presets. A dedicated HEXLOADERS CLI comes
-            only after that registry rollout.
+            The shadcn CLI works today for Bit-Scanner. Next, the same consumer test will expand
+            one-command installs across the collection. A dedicated HEXLOADERS CLI comes only
+            after that registry rollout.
           </p>
         </Reveal>
         <div className="mt-6">
