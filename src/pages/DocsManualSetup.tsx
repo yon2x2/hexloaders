@@ -151,8 +151,8 @@ export default function DocsManualSetup() {
 
       {/* SEC.04 — Step 3: The loader (reference implementation) */}
       <DocSection id="step-3-the-loader" index={4} title="Step 3: The loader (reference implementation)">
-        <div className="lg:grid lg:grid-cols-[1fr_220px] lg:gap-8">
-          <div>
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-8">
+          <div className="min-w-0">
             <Reveal>
               <p className="max-w-[62ch] text-body-sm">
                 This is the entire component. Zero dependencies. The styles ship inside the file;

@@ -30,6 +30,7 @@ export interface BitScannerProps extends HTMLAttributes<HTMLDivElement> {
 const CSS = `
 .hexl-bs {
   --hexl-bs-cycle: calc(var(--hexl-step, 120ms) * 8);
+  --hexl-bs-label-dim: 0.55;
   display: inline-flex;
   align-items: stretch;
   border: 1px solid var(--hexl-fg, #000000);
@@ -62,13 +63,18 @@ const CSS = `
 }
 .hexl-bs-tag {
   display: block;
-  opacity: var(--hexl-dim, 0.15);
-  animation: hexl-bs-row var(--hexl-bs-cycle) steps(1, end) infinite;
+  opacity: var(--hexl-bs-label-dim, 0.55);
+  animation: hexl-bs-tag var(--hexl-bs-cycle) steps(1, end) infinite;
 }
 @keyframes hexl-bs-row {
   0% { opacity: 1; }
   12.5% { opacity: var(--hexl-dim, 0.15); }
   100% { opacity: var(--hexl-dim, 0.15); }
+}
+@keyframes hexl-bs-tag {
+  0% { opacity: 1; }
+  12.5% { opacity: var(--hexl-bs-label-dim, 0.55); }
+  100% { opacity: var(--hexl-bs-label-dim, 0.55); }
 }
 @media (prefers-reduced-motion: reduce) {
   .hexl-bs-row, .hexl-bs-tag { animation: none; opacity: 1; }
