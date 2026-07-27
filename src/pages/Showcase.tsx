@@ -42,7 +42,7 @@ const SPECIMENS: SpecimenDef[] = [
   { title: 'PAGE TRANSITION', context: 'ROUTING', slug: 'inversion-pulse', mechanic: 'INVERT', Component: PageTransition },
   { title: 'FORM VALIDATION', context: 'FORMS', slug: 'bit-flip', mechanic: 'INVERT', Component: FormValidation },
   { title: 'SKELETON LEDGER', context: 'DATA', slug: 'falling-edge', mechanic: 'CASCADE', Component: SkeletonLedger },
-  { title: 'CLI STATUS LINE', context: 'TERMINAL', slug: 'ripple-counter', mechanic: 'COUNT', Component: CliStatusLine },
+  { title: 'CI STATUS LINE', context: 'PIPELINE', slug: 'ripple-counter', mechanic: 'COUNT', Component: CliStatusLine },
 ];
 
 const FILTERS: Filter[] = ['ALL', ...MECHANICS];
@@ -132,8 +132,8 @@ export default function Showcase() {
         <Reveal delay={160}>
           <p className="mt-6 max-w-[68ch] text-body">
             Loaders earning their keep — in buttons, boot sequences, tables, and terminals. Every
-            example below is live. Bit-Scanner installs in one command; every other loader exposes
-            source you can copy now.
+            example below is live. Install available loaders in one command, or copy any loader's
+            source now.
           </p>
         </Reveal>
         <Reveal delay={240}>

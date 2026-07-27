@@ -17,6 +17,26 @@
         }
       ],
       "docs": "Import the default export from your components/loaders/bit-scanner file. The component requires React and includes its own CSS, reduced-motion behavior, and accessible status semantics."
+    },
+    {
+      "name": "cascade-loader",
+      "type": "registry:component",
+      "title": "Cascade Loader",
+      "description": "A zero-extra-dependency React loader that sends a stepped wave through a six-line state.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/cascade.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/cascade.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/cascade file. It includes the shared HexGlyph source, reduced-motion behavior, and accessible status semantics."
     }
   ]
 }

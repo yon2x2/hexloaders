@@ -481,7 +481,7 @@ export function SkeletonLedger({ active }: VignetteProps) {
   );
 }
 
-/* ============================ 8 — CLI STATUS LINE ============================ */
+/* ============================= 8 — CI STATUS LINE ============================ */
 
 export function CliStatusLine({ active }: VignetteProps) {
   const [tick, setTick] = useState(0); // 0..8 — 8 cells per 120ms
@@ -503,13 +503,13 @@ export function CliStatusLine({ active }: VignetteProps) {
   return (
     <div data-invert="" className="w-full max-w-md border border-hexl-fg bg-hexl-bg text-hexl-fg">
       <div className="flex min-h-9 items-center justify-between gap-3 border-b border-hexl-fg px-3 py-2">
-        <span className="min-w-0 break-all font-mono text-mono-micro uppercase">SHELL — /usr/bin/hexloaders</span>
-        <InvButton onClick={() => setTick(0)} ariaLabel="Rerun the install">
+        <span className="min-w-0 break-all font-mono text-mono-micro uppercase">CI — REGISTRY INTEGRITY</span>
+        <InvButton onClick={() => setTick(0)} ariaLabel="Rerun the integrity check">
           RERUN
         </InvButton>
       </div>
       <div className="p-4 font-mono text-mono-micro uppercase">
-        <div>$ hexloaders add --all</div>
+        <div>$ npm run check:integrity</div>
         <div className="mt-2 flex items-start gap-3">
           <span className="min-w-0 break-all leading-none tracking-[0.12em]" aria-hidden="true">
             <span className="block">[{cells.slice(0, 32).map((c) => (c ? '■' : '□')).join('')}]</span>
@@ -524,7 +524,7 @@ export function CliStatusLine({ active }: VignetteProps) {
           </span>
         </div>
         <div className="mt-2 tabular-nums">
-          {done ? '64/64 INSTALLED — 0 DEPENDENCIES' : `${filled}/64 INSTALLING…`}
+          {done ? '64/64 PRESETS VERIFIED' : `${filled}/64 VERIFYING…`}
         </div>
       </div>
     </div>
