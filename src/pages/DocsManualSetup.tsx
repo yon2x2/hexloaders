@@ -174,9 +174,8 @@ export default function DocsManualSetup() {
 
             <Reveal className="mt-8">
               <p className="max-w-[62ch] text-body-sm">
-                Optional fourth file — the shared 6-bit glyph the mechanic templates compose from.
-                Bit-Scanner inlines its own bars to stay single-file; copy the glyph when you
-                start adding states.
+                Shared glyph source — copy this file only when the loader's source panel lists it.
+                Bit-Scanner stays single-file and does not need it.
               </p>
             </Reveal>
             <Reveal className="mt-6">
