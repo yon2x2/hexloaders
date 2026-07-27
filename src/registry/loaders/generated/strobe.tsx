@@ -2,8 +2,6 @@
  * HEXLOADERS — strobe (generated mechanic template)
  * mechanic: STROBE
  * serves states 00 05 08 12 16 21 24 32
- * registry: pending
- *
  * Binary blink: the register strobes around its resting value in hard 0/1
  * beats — REST → full flash (STATE 63 · 111111) → REST → empty flash
  * (STATE 0 · 000000). No fades; every beat is a hard cut.

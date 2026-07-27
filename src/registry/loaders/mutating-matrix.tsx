@@ -1,8 +1,6 @@
 /**
  * HEXLOADERS — mutating-matrix
  * n° 19 · binary 010011 · mechanic: SEQUENCE
- * registry: pending
- *
  * A 3×3 bank of hexagram glyphs stepping through a state sequence — a system
  * visibly computing configurations. Every cell advances on the same clock with
  * a hard steps(1) jump; cell k renders sequence[i + k], a diagonal wave.

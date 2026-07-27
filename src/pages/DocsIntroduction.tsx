@@ -234,7 +234,7 @@ export default function DocsIntroduction() {
         next={{
           to: '/docs/usage',
           label: 'USAGE',
-          desc: 'Installation, configuration, and the distribution roadmap.',
+          desc: 'Installation, configuration, and customization.',
         }}
       />
 

@@ -2,8 +2,6 @@
  * HEXLOADERS — scan (generated mechanic template)
  * mechanic: SCAN
  * serves states 07 09 15 23 31 39 47 55 (+ 01 via the bespoke flagship bit-scanner)
- * registry: pending
- *
  * The active row crosses the hexagram top→bottom in six discrete steps;
  * every row snaps from dim to full for exactly one step, then back.
  * Cycle: 6 sweep steps + 2 hold steps = 8 × var(--hexl-step) = 960ms @ 120ms.

@@ -87,7 +87,7 @@ const ADD_STEPS: { title: string; text: string }[] = [
 ];
 
 /* loader-template.tsx — the condensed contract (architecture.md). */
-const LOADER_TEMPLATE = `/** STATE 26 · 011010 · MECHANIC: SCAN · registry: pending */
+const LOADER_TEMPLATE = `/** STATE 26 · 011010 · MECHANIC: SCAN */
 import { bitsOf } from "./hexagrams";
 
 export function MyLoader({ value = 26, size = 96, invert = false, className, ...rest }) {
@@ -166,9 +166,8 @@ export default function DocsArchitecture() {
         <SectionHead index={3} title="THE REGISTRY" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Every loader has a stable identity, route, and source manifest. The shadcn CLI resolves
-            a verified loader and copies its declared files; manual source remains available while
-            one-command installation is pending.
+            Every loader has a stable identity, route, and source manifest. The shadcn CLI copies
+            declared files for installable loaders, and every loader page exposes its manual source.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">

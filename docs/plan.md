@@ -8,7 +8,7 @@ Design = Rationalist Bauhaus × Minimal Ledger: pure #000/#FFF only, rigid grid,
 mechanical stepped motion (CSS `steps()`), zero-dependency, CSS-custom-property-driven.
 Deliverable: a production-grade React+TS+Tailwind webapp = landing page + live component previews +
   source viewer + copy/install UX + the actual registry architecture (data model, tokens, 3 flagship loaders,
-  8 mechanic templates, distribution strategy).
+  8 mechanic templates, source ownership UX).
 
 ## Stage 1 — Orchestration skill load + design foundation
 - Load skill: `vibecoding-webapp-swarm` (web UI task).
@@ -33,7 +33,7 @@ Deliverable: a production-grade React+TS+Tailwind webapp = landing page + live c
 - Subagent C: Dot Matrix/shadcn-style site — header, hero (mono type, ledger grid), live preview cards
   with Preview/Code tabs + copy button, install command block
   (`npx shadcn@latest add yon2x2/hexloaders/bit-scanner`), full 64-hexagram index grid,
-  architecture section, distribution roadmap section.
+  architecture section, install/source ownership section.
 - Output: complete pages wired to Stage 2 components.
 
 ## Stage 4 — Validate, build, deliver
@@ -41,5 +41,6 @@ Deliverable: a production-grade React+TS+Tailwind webapp = landing page + live c
 - Fix loop via reviewer subagent if needed.
 - Deliver: `mshtools-website_version_manager` build_version (type: static).
 
-## Stage 5 — Docs artifact
-- Distribution strategy section embedded in the site; a dedicated CLI remains conditional on proven demand.
+## Stage 5 — Internal distribution guide
+- Keep roadmap and release sequencing internal in `docs/internal/distribution-guide.md`.
+- Public pages describe only what users can install or copy today.

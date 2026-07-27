@@ -2,7 +2,7 @@
  * HEXLOADERS — Usage `/docs/usage` (design/usage.md).
  * CLI install via the shadcn-compatible registry (pkg-manager tabs), Tailwind
  * / CSS-vars setup, using a loader, global theming + inversion (data-invert),
- * the reduced-motion contract, and the distribution roadmap (3 ledger phases).
+ * and the reduced-motion contract.
  * Conversion-oriented: every section ends with something copyable.
  */
 
@@ -14,13 +14,11 @@ import { CSS_TOKENS_BLOCK } from '@/lib/sources';
 import Reveal from '@/components/docs-foundation/Reveal';
 import {
   SectionHead,
-  LedgerNote,
   LedgerTable,
   DocsPager,
   TypedCodeBlock,
 } from '@/components/docs-system/DocsBlocks';
 import InvertStrip from '@/components/docs-system/InvertStrip';
-import Roadmap from '@/components/docs-system/Roadmap';
 
 const TOC = [
   { id: 'install-a-loader', label: 'Install a loader' },
@@ -28,7 +26,6 @@ const TOC = [
   { id: 'use', label: 'Use' },
   { id: 'theme-and-invert', label: 'Theme & invert' },
   { id: 'reduced-motion', label: 'Reduced motion' },
-  { id: 'cli-roadmap', label: 'Distribution roadmap' },
 ];
 
 /* tailwind.config.ts — excerpt (design.md §9). */
@@ -109,9 +106,8 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-body">
-            Install one loader, copy the code, and make it yours. Bit-Scanner is the only verified
-            GitHub registry item; the shadcn CLI copies its source into your repository without
-            adding a HEXLOADERS package dependency.
+            Install Bit-Scanner in one command, copy the code, and make it yours. The shadcn CLI
+            copies its source into your repository without adding a HEXLOADERS package dependency.
           </p>
         </Reveal>
       </header>
@@ -128,12 +124,6 @@ export default function DocsUsage() {
             configured components directory. The installed file imports React only; HEXLOADERS is
             not added to node_modules.
           </p>
-        </Reveal>
-        <Reveal delay={300} className="mt-6">
-          <LedgerNote>
-            REGISTRY ROLLOUT — Bit-Scanner is installable now. Every other loader keeps its manual
-            source available while one-command installs move through the same consumer test.
-          </LedgerNote>
         </Reveal>
       </section>
 
@@ -218,21 +208,6 @@ export default function DocsUsage() {
         <Reveal delay={320} className="mt-6">
           <LedgerTable columns={['LOADER', 'STATIC FRAME']} rows={STATIC_FRAMES} />
         </Reveal>
-      </section>
-
-      {/* ------------------------- DISTRIBUTION ROADMAP ------------------------- */}
-      <section id="cli-roadmap" className="mt-16 scroll-mt-20">
-        <SectionHead index={6} title="DISTRIBUTION ROADMAP" />
-        <Reveal delay={80}>
-          <p className="mt-6 max-w-[62ch] text-body-sm">
-            The shadcn CLI works today for Bit-Scanner. Next, the same consumer test will expand
-            one-command installs across the collection. A dedicated HEXLOADERS CLI comes only
-            after that registry rollout.
-          </p>
-        </Reveal>
-        <div className="mt-6">
-          <Roadmap />
-        </div>
       </section>
 
       <DocsPager

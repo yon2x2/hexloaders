@@ -2,8 +2,6 @@
  * HEXLOADERS — cascade (generated mechanic template)
  * mechanic: CASCADE
  * serves states 02 03 06 10 13 22 29 37
- * registry: pending
- *
  * Propagation wave: a front travels bottom→top one row per clock tick —
  * rows behind the front are full, the leading row rides at mid opacity,
  * rows ahead stay dim. The wave arrives, holds one tick, then breaks.

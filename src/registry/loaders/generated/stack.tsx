@@ -2,8 +2,6 @@
  * HEXLOADERS — stack (generated mechanic template)
  * mechanic: STACK
  * serves states 04 11 14 20 28 30 38
- * registry: pending
- *
  * Build-up: lines stack bottom→top one row per clock tick out of the dim
  * field, hold one tick fully built, then reset to dim and start over.
  * A six-segment ledger bar under the glyph fills as the stack rises.

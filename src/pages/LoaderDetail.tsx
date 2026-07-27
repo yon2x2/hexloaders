@@ -482,7 +482,7 @@ export default function LoaderDetail() {
             <InstallStrip command={meta.install.replace(/^npx /, '')} />
           ) : (
             <div className="flex h-14 items-center px-4 font-mono text-mono-label uppercase">
-              MANUAL SOURCE AVAILABLE · REGISTRY ROLLOUT PENDING
+              MANUAL SOURCE AVAILABLE
             </div>
           )}
         </div>

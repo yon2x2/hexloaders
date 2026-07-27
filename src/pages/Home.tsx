@@ -809,7 +809,7 @@ function Flagships() {
                   showLineNumbers={false}
                   code={f.slug === 'bit-scanner'
                     ? 'shadcn@latest add yon2x2/hexloaders/bit-scanner'
-                    : '# Registry rollout pending — use the manual source panel'}
+                    : '# Copy from the manual source panel'}
                 />
               </Reveal>
               <Reveal delay={400}>
@@ -1076,12 +1076,6 @@ function Distribution() {
     },
   ];
 
-  const phases = [
-    { tag: 'PHASE 1 — SHIPPED', chip: 'NOW', body: 'GitHub registry vertical slice: Bit-Scanner installs into a clean Vite app.', blink: true },
-    { tag: 'PHASE 2 — NEXT', chip: 'NEXT', body: 'Expand verified one-command installs across the 64-loader collection.', blink: false },
-    { tag: 'PHASE 3 — LATER', chip: 'LATER', body: 'Evaluate a dedicated HEXLOADERS CLI for discovery and batch installs after the registry rollout.', blink: false },
-  ];
-
   return (
     <section className="border-b border-hexl-fg">
       <div className="mx-auto max-w-[1440px] px-6 py-24 md:px-10">
@@ -1092,8 +1086,8 @@ function Distribution() {
           <h2 className="mt-8 font-grotesk text-display-lg uppercase">OWN YOUR LOADERS.</h2>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+        <div className="mt-12 max-w-4xl">
+          <div>
             {rows.map((r, i) => (
               <Reveal key={r.n} delay={i * 120}>
                 <div className="flex items-stretch border border-hexl-fg border-b-0 last:border-b">
@@ -1121,35 +1115,6 @@ function Distribution() {
             ))}
           </div>
 
-          <div className="lg:col-span-5">
-            <Reveal>
-              <div className="border border-hexl-fg">
-                <div className="border-b border-hexl-fg px-4 py-2 font-mono text-mono-label uppercase">DISTRIBUTION ROADMAP</div>
-                {phases.map((p) => (
-                  <div key={p.tag} className="border-b border-hexl-fg p-4 last:border-b-0 hover:bg-hexl-fg hover:text-hexl-bg">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-mono-label uppercase">{p.tag}</span>
-                      <span
-                        className="hexl-motion border border-hexl-fg px-1 py-0.5 font-mono text-mono-micro uppercase"
-                        style={p.blink ? { animation: 'hexl-blink 960ms steps(1,end) 2' } : undefined}
-                      >
-                        {p.chip}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-body-sm">{p.body}</p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal delay={120}>
-              <Link
-                to="/docs/usage#cli-roadmap"
-                className="mt-6 inline-block font-mono text-mono-label uppercase underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg"
-              >
-                READ THE FULL ROADMAP →
-              </Link>
-            </Reveal>
-          </div>
         </div>
       </div>
     </section>

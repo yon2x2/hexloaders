@@ -89,4 +89,10 @@ for (const item of publicItems) {
   );
 }
 
+const publicSource = fs.globSync('src/**/*.{ts,tsx}').map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+check(
+  !/distribution roadmap|registry rollout|dedicated hexloaders cli|rollout pending|registry: pending/i.test(publicSource),
+  'public UI excludes the internal distribution roadmap',
+);
+
 process.exit(fail);

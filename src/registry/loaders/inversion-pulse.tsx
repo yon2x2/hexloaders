@@ -1,8 +1,6 @@
 /**
  * HEXLOADERS — inversion-pulse
  * n° 42 · binary 101010 · mechanic: INVERT
- * registry: pending
- *
  * The module snaps to negative on a stepped rhythm — hard 0ms inversions of the
  * color space (filter: invert(1) on the root). In 'bitwise' mode colors stay
  * but every line flips (Yang⇄Yin: 101010 → 010101). In 'both' they alternate.

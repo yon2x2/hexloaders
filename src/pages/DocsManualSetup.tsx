@@ -219,7 +219,7 @@ export default function DocsManualSetup() {
         prev={{
           to: '/docs/usage',
           label: 'USAGE',
-          desc: 'Installation, configuration, and the distribution roadmap.',
+          desc: 'Installation, configuration, and customization.',
         }}
         next={{
           to: '/loaders/bit-scanner',

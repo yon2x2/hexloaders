@@ -45,12 +45,15 @@ matrix and the Fu Xi map.
 ```tsx
 /**
  * HEXLOADERS — <name> · STATE <n> · <binary> · mechanic <MECHANIC>
- * Registry: pending until consumer proof · zero additional dependencies beyond React · MIT
+ * Zero additional dependencies beyond React · MIT
  */
 // props: value?: number (0–63, representative default), size?, step? (ms, ≥120), invert?, className?
 // styling ONLY via --hexl-* CSS vars (+ inline style from size prop)
 // root: role="status" aria-label="Loading", spreads ...rest
 ```
+
+Track publication state only in `docs/internal/distribution-guide.md`; source
+headers are public through the loader Code panels.
 
 Read `agents/skills/hexl-loader-forge/references/contracts.md` for the full API and
 registry-entry schema, and `references/mechanics.md` for the 8-mechanic taxonomy.

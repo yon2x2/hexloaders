@@ -2,8 +2,6 @@
  * HEXLOADERS — sequence (generated mechanic template)
  * mechanic: SEQUENCE
  * serves states 27 35 43 51 58 61 63 (+ 19 via the bespoke flagship mutating-matrix)
- * registry: pending
- *
  * King Wen stepping: the glyph starts at the King Wen position of `value` and
  * advances one sequence position per clock tick — a hard steps(1) cut per
  * frame, the historical permutation running as a loader.

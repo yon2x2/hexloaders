@@ -53,8 +53,11 @@ keeps shown source identical to shipped source.
 ```tsx
 /**
  * HEXLOADERS — <Name> · STATE <n> · <binary top→bottom> · mechanic <MECHANIC>
- * Registry: pending until consumer proof · Files: [<file>, hex-glyph.tsx]
+ * Files: [<file>, hex-glyph.tsx]
  * Zero additional runtime dependencies beyond React.
  * License: MIT — install one, copy the code, make it yours.
  */
 ```
+
+Publication state belongs only in `docs/internal/distribution-guide.md`; never
+include roadmap or pending status in source headers exposed by the Code panels.

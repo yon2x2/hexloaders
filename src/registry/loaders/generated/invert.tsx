@@ -2,8 +2,6 @@
  * HEXLOADERS — invert (generated mechanic template)
  * mechanic: INVERT
  * serves states 17 25 33 41 48 49 56 (+ 40 via the bespoke flagship inversion-pulse)
- * registry: pending
- *
  * Periodic bitwise complement: every clock tick all six lines negate —
  * Yang⇄Yin, a hard 0ms cut, no transition anywhere. A two-segment beat bar
  * under the glyph tallies the NORMAL / COMPLEMENT phases.
