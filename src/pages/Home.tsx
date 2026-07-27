@@ -807,9 +807,8 @@ function Flagships() {
                   packageManager
                   language="bash"
                   showLineNumbers={false}
-                  code={f.slug === 'bit-scanner'
-                    ? 'shadcn@latest add yon2x2/hexloaders/bit-scanner'
-                    : '# Copy from the manual source panel'}
+                  code={LOADERS.find((loader) => loader.slug === f.slug)?.install?.replace(/^npx /, '')
+                    ?? '# Copy from the manual source panel'}
                 />
               </Reveal>
               <Reveal delay={400}>

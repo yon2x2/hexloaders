@@ -37,6 +37,21 @@
         }
       ],
       "docs": "Import the default export from your components/loaders/generated/cascade file. It includes the shared HexGlyph source, reduced-motion behavior, and accessible status semantics."
+    },
+    {
+      "name": "mutating-matrix",
+      "type": "registry:component",
+      "title": "Mutating Matrix",
+      "description": "A zero-extra-dependency React loader that advances a bank of hexagrams through a shared sequence.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/mutating-matrix.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/mutating-matrix.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/mutating-matrix file. The component requires React and includes its own CSS, reduced-motion behavior, timer cleanup, and accessible status semantics."
     }
   ]
 }

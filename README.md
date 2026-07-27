@@ -4,12 +4,13 @@ HEXLOADERS is a collection of 64 free and open-source React loaders built from
 the I Ching hexagrams as six-bit states. Preview them live, copy the source, and
 make one yours.
 
-`bit-scanner` and `cascade-loader` install from the public GitHub registry.
+`bit-scanner`, `cascade-loader`, and `mutating-matrix` install from the public GitHub registry.
 Every loader also exposes its source for manual installation.
 
 ```bash
 npx shadcn@latest add yon2x2/hexloaders/bit-scanner
 npx shadcn@latest add yon2x2/hexloaders/cascade-loader
+npx shadcn@latest add yon2x2/hexloaders/mutating-matrix
 ```
 
 ## Requirements
@@ -56,8 +57,7 @@ npm run preview          # Preview the production build
 - `src/lib/hexagrams.ts` is the canonical 64-state dictionary.
 - `src/lib/registry.ts` is the loader metadata source of truth.
 - `src/lib/sources.ts` exposes real component source through Vite raw imports.
-- `src/registry/loaders/` contains three flagship loaders and eight mechanic
-  templates used by the catalogue.
+- `src/registry/loaders/` contains the loader sources used by the catalogue.
 - `agents/skills/` contains the project-specific design, documentation, loader,
   and QA workflows.
 
@@ -65,8 +65,7 @@ The non-negotiable design constraints are pure black and white, rigid ledger
 geometry, technical typography, stepped mechanical motion, and zero-dependency
 loader components.
 
-Additional context lives in [`docs/plan.md`](docs/plan.md) and
-[`spec/core-spec.md`](spec/core-spec.md).
+Maintainer documentation lives under [`docs/internal/`](docs/internal/).
 
 ## License
 

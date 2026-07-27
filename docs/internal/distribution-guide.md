@@ -5,14 +5,14 @@ or possible CLI work in the public website.
 
 ## Current state
 
-- `bit-scanner` and `cascade-loader` are public GitHub registry items.
+- `bit-scanner`, `cascade-loader`, and `mutating-matrix` are public GitHub registry items.
 - Every loader page exposes its real source for manual installation.
 - Public copy should describe only actions available now: install or copy source.
 
 ## Release sequence
 
-1. Keep the two published sources covered by the clean-consumer gate.
-2. Verify and publish the two remaining flagship sources.
+1. Keep the three published sources covered by the clean-consumer gate.
+2. Verify and publish the remaining flagship source.
 3. Verify and publish the seven remaining mechanic sources.
 4. Keep all 64 loader routes and source panels available throughout.
 5. Require the clean-consumer install and production-build gate for every item.

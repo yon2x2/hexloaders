@@ -75,10 +75,10 @@ const REGISTRY_FIELDS: string[][] = [
 
 const ADD_STEPS: { title: string; text: string }[] = [
   { title: 'PICK A STATE', text: 'Choose its default value, 0–63. Mixed patterns read best in motion.' },
-  { title: 'PICK A MECHANIC', text: 'One of the eight. Compose at most two.' },
+  { title: 'PICK A MECHANIC', text: 'Choose a motion style that makes the state change clear.' },
   {
     title: 'REUSE THE COMPONENT',
-    text: 'Map the preset to its mechanic template; create a new file only for a real flagship or mechanic.',
+    text: 'Reuse the source shown for the preset. Create a separate file only when the behavior genuinely differs.',
   },
   {
     title: 'REGISTER THE PRESET',
