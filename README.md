@@ -4,11 +4,12 @@ HEXLOADERS is a collection of 64 free and open-source React loaders built from
 the I Ching hexagrams as six-bit states. Preview them live, copy the source, and
 make one yours.
 
-`bit-scanner` installs from the public GitHub registry. Every other loader
-exposes its source for manual installation.
+`bit-scanner` and `cascade-loader` install from the public GitHub registry.
+Every loader also exposes its source for manual installation.
 
 ```bash
 npx shadcn@latest add yon2x2/hexloaders/bit-scanner
+npx shadcn@latest add yon2x2/hexloaders/cascade-loader
 ```
 
 ## Requirements

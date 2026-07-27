@@ -5,16 +5,17 @@ or possible CLI work in the public website.
 
 ## Current state
 
-- `bit-scanner` is the only public GitHub registry item.
+- `bit-scanner` and `cascade-loader` are public GitHub registry items.
 - Every loader page exposes its real source for manual installation.
 - Public copy should describe only actions available now: install or copy source.
 
 ## Release sequence
 
-1. Verify and publish the two remaining flagship sources.
-2. Verify and publish the eight mechanic sources.
-3. Keep all 64 loader routes and source panels available throughout.
-4. Require the clean-consumer install and production-build gate for every item.
+1. Keep the two published sources covered by the clean-consumer gate.
+2. Verify and publish the two remaining flagship sources.
+3. Verify and publish the seven remaining mechanic sources.
+4. Keep all 64 loader routes and source panels available throughout.
+5. Require the clean-consumer install and production-build gate for every item.
 
 ## Dedicated CLI
 
