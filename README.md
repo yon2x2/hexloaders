@@ -15,6 +15,10 @@ npx shadcn@latest add yon2x2/hexloaders/inversion-pulse
 npx shadcn@latest add yon2x2/hexloaders/invert-loader
 npx shadcn@latest add yon2x2/hexloaders/scan-loader
 npx shadcn@latest add yon2x2/hexloaders/sequence-loader
+npx shadcn@latest add yon2x2/hexloaders/shift-loader
+npx shadcn@latest add yon2x2/hexloaders/count-loader
+npx shadcn@latest add yon2x2/hexloaders/stack-loader
+npx shadcn@latest add yon2x2/hexloaders/strobe-loader
 ```
 
 ## Requirements

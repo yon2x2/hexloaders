@@ -42,6 +42,10 @@ const PUBLISHED_REGISTRY_COMPONENTS = new Set([
   'invert-loader',
   'scan-loader',
   'sequence-loader',
+  'shift-loader',
+  'count-loader',
+  'stack-loader',
+  'strobe-loader',
 ]);
 export const GITHUB_REGISTRY = 'yon2x2/hexloaders';
 

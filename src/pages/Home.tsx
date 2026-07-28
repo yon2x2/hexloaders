@@ -492,8 +492,7 @@ function Matrix() {
         <Reveal delay={240}>
           <p className="mt-6 max-w-[68ch] text-body-sm">
             Row = upper trigram (bits 3–5). Column = lower trigram (bits 0–2). Address = (upper &lt;&lt; 3) |
-            lower. Every cell exposes source you can copy and own; verified registry installation
-            begins with Bit-Scanner.
+            lower. Every cell exposes source you can copy and own, with a verified install command.
           </p>
         </Reveal>
       </div>

@@ -5,17 +5,19 @@ or possible CLI work in the public website.
 
 ## Current state
 
-- `bit-scanner`, `cascade-loader`, `mutating-matrix`, `inversion-pulse`,
-  `invert-loader`, `scan-loader`, and `sequence-loader` are public GitHub registry items.
+- All canonical components are public GitHub registry items: `bit-scanner`,
+  `cascade-loader`, `mutating-matrix`, `inversion-pulse`, `invert-loader`,
+  `scan-loader`, `sequence-loader`, `shift-loader`, `count-loader`,
+  `stack-loader`, and `strobe-loader`.
 - Every loader page exposes its real source for manual installation.
 - Public copy should describe only actions available now: install or copy source.
 
-## Release sequence
+## Release policy
 
-1. Keep the seven published sources covered by the clean-consumer gate.
-2. Verify and publish the four remaining mechanic sources.
-3. Keep all 64 loader routes and source panels available throughout.
-4. Require the clean-consumer install and production-build gate for every item.
+1. Keep every published source covered by the clean-consumer gate.
+2. Verify every registry item alone and all items together.
+3. Keep all 64 loader routes and source panels available.
+4. Require clean-consumer builds and an exact-SHA production check for every change.
 
 ## Dedicated CLI
 
