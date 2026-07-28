@@ -25,7 +25,7 @@ export default defineConfig([
       // state from effects and refs.
       'react-hooks/immutability': 'off',
       'react-hooks/purity': 'off',
-      'react-hooks/refs': 'off',
+      'react-hooks/refs': 'error',
       'react-hooks/set-state-in-effect': 'off',
       // Shared component modules also export variants and source helpers.
       'react-refresh/only-export-components': 'off',

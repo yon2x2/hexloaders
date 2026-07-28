@@ -542,7 +542,16 @@ export default function Playground() {
 
   const stageLoader = (() => {
     if (isBs)
-      return <BitScanner value={value} step={effectiveInterval} size={sizePx} invert={invert} showMeta={showMeta} />;
+      return (
+        <BitScanner
+          value={value}
+          step={effectiveInterval}
+          size={sizePx}
+          invert={invert}
+          showMeta={showMeta}
+          aria-hidden="true"
+        />
+      );
     if (isMm)
       return (
         <MutatingMatrix
@@ -552,6 +561,7 @@ export default function Playground() {
           cells={mmCells}
           size={sizePx}
           showMeta={showMeta}
+          aria-hidden="true"
         />
       );
     if (isIp)
@@ -563,10 +573,19 @@ export default function Playground() {
           value={value}
           size={sizePx}
           invert={invert}
+          aria-hidden="true"
         />
       );
     const GeneratedLoader = GENERATED_LOADERS[meta.mechanic];
-    return <GeneratedLoader value={value} size={sizePx} step={effectiveInterval} invert={invert} />;
+    return (
+      <GeneratedLoader
+        value={value}
+        size={sizePx}
+        step={effectiveInterval}
+        invert={invert}
+        aria-hidden="true"
+      />
+    );
   })();
 
   const rulerPos = ruler % 60;

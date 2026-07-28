@@ -114,8 +114,7 @@ function MechanicCell({ value, mechanic, size = 56, invert = false, active = tru
   return (
     <span
       className={`inline-block${invert ? ' hexl-invert' : ''}${className ? ` ${className}` : ''}`}
-      role="status"
-      aria-label="Loading"
+      aria-hidden="true"
     >
       <svg width={size} height={(size * H) / W} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" style={{ display: 'block' }}>
         {rows.map((r) => {

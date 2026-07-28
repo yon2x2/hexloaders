@@ -32,10 +32,13 @@ The skills are self-contained: scripts are runnable as-is from the repo root, an
 
 ## Pre-merge ritual (recommended)
 
-1. `npm run build`
-2. `node agents/skills/hexl-qa-sentinel/scripts/validate-hexagrams.mjs`
-3. `bash agents/skills/hexl-design-guardian/scripts/audit-design-laws.sh`
-4. jsdom smoke on all 9 routes (see qa-sentinel SKILL.md)
+1. Run `npm run check`.
+2. If registry metadata, public loader sources, install targets, or distribution
+   files changed, run `npm run check:registry:consumer`.
+3. If regex loops, timers, effects, or shared runtime/rendering code changed, run
+   the nine-route smoke described in `skills/hexl-qa-sentinel/SKILL.md`.
+4. For a release, complete the exact-SHA production check required by
+   `docs/internal/distribution-guide.md`.
 
 ## History
 

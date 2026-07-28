@@ -23,23 +23,26 @@ only runtime memory profiling caught it.
 
 ## Gate sequence (run all, in order)
 
-1. **Build:** `npm run build` → must pass.
-2. **Integrity:** `node agents/skills/hexl-qa-sentinel/scripts/validate-hexagrams.mjs`
-   → King Wen permutation, anchors, registry slugs must all PASS.
-3. **Design laws:** `bash agents/skills/hexl-design-guardian/scripts/audit-design-laws.sh`.
-4. **Memory smoke:** `npm i -D jsdom` (never commit it — revert package files after),
-   `npm run build`, then for EACH route run
+1. **Base gate:** `npm run check`.
+2. **Clean consumer:** if registry metadata, public source, install targets, or a
+   release changed, run `npm run check:registry:consumer`.
+3. **Memory smoke:** if regex loops, timers, effects, or shared runtime/rendering
+   code changed, record `git status --short`, then install jsdom without changing
+   package metadata:
+   `npm install --no-save --package-lock=false jsdom`.
+   Run `npm run build`, then for EACH route run
    `node --max-old-space-size=3072 agents/skills/hexl-qa-sentinel/scripts/smoke.mjs <route>`.
    Routes: `/` `/docs/introduction` `/docs/architecture` `/docs/usage`
    `/docs/manual-setup` `/playground` `/showcase` `/loaders/bit-scanner` `/loaders/cascade-row`.
    Pass = `OK 30s` with bounded heap. Fail = `FAIL heap>2.5GB` or EVAL ERROR.
+   `git status --short` must be identical before and after.
 
 ## Known-fragile patterns (audit these in every diff)
 
 | Pattern | Rule |
 |---|---|
 | `while (re.exec(s))` | regex MUST have `/g` + reset `re.lastIndex = 0` before each reuse |
-| `setInterval(fn, delay)` | delay MUST be clamped: `Math.max(120, delay)` — 0/undefined = tight loop = tab death |
+| `setInterval(fn, delay)` | finite delay MUST be floored and clamped to `120..2_147_483_647`; invalid input uses a safe fallback |
 | `useEffect` without dep array that sets state | infinite render loop — must have deps |
 | state updated per tick | must replace, never append/accumulate (`setX([...x, v])` in a timer = leak) |
 | recursion in components | must have a depth/value guard |
@@ -53,7 +56,8 @@ only runtime memory profiling caught it.
 3. If heap climbs steadily: **per-tick accumulation** or unclamped fast interval.
 4. If blank without OOM: render exception — check EVAL ERROR output and error
    boundaries; suspect setState-during-render (React throws max update depth).
-5. Fix root cause, re-run all 9 routes, revert jsdom from package.json/lock, commit.
+5. Fix root cause, re-run all 9 routes, confirm package metadata stayed unchanged,
+   then commit.
 
 ## Harness notes
 

@@ -63,6 +63,7 @@ export default function Specimen({ title, context, slug, dimmed = false, childre
   return (
     <figure
       ref={ref}
+      inert={dimmed ? true : undefined}
       className={`m-0 flex break-inside-avoid flex-col border border-hexl-fg bg-hexl-bg text-hexl-fg${dimmed ? ' opacity-[0.15]' : ''}`}
       aria-label={`${title} — specimen using ${slug}`}
     >

@@ -4,15 +4,18 @@
 
 ```tsx
 export interface LoaderProps {
-  value?: number;       // 0–63, LSB = bottom line; every distributable has a
-                        // representative default and presets pass their named state
-  size?: number;        // px glyph width; sets --hexl-line-h/--hexl-gap inline
-  step?: number;        // ms per tick; MUST be clamped Math.max(120, step)
-  invert?: boolean;     // renders in negative color space (adds .hexl-invert)
-  className?: string;   // Tailwind composition; spread ...rest onto root
+  value?: number;       // 0–63, LSB = bottom line
+  size?: number;        // px glyph width
+  invert?: boolean;     // negative color space
+  className?: string;   // composition; spread ...rest onto root
 }
 ```
 
+- Generated mechanic templates expose `step`.
+- Flagships expose only the specialized props declared by their source, such as
+  `interval`, `pattern`, `cells`, `mode`, or `showMeta`.
+- Every timer input must normalize finite values into
+  `120..2_147_483_647`; invalid values use the component fallback.
 - Root element: `role="status"`, `aria-label="Loading"` (overrideable), decorative
   metadata `aria-hidden`.
 - Colors ONLY through `var(--hexl-fg)` / `var(--hexl-bg)`; dim via `var(--hexl-dim)`,
@@ -24,18 +27,17 @@ export interface LoaderProps {
 ## Registry entry (`src/lib/registry.ts`)
 
 ```ts
-{
-  value: number;              // 0–63 — also the 8×8 grid position (row=upper, col=lower)
-  name: string;               // "Barrel Shift"
-  slug: string;               // "barrel-shift" — named preset used in /loaders/[slug]
-  component: string;          // "shift-loader" — canonical distributable registry item
-  mechanic: Mechanic;         // one of the 8 (see mechanics.md)
-  flagship?: boolean;         // only the 3 bespoke loaders
-}
+type RegistryRow = readonly [
+  name: string,
+  slug: string,
+  mechanic: Mechanic,
+];
 ```
 
-Derived display data comes from `hexagrams.ts` (`binaryOf(value)`, `kingwenOf(value)`,
-`HEX_NAMES`) — never duplicate it into the registry row.
+The tuple index is the value. `component`, `flagship`, `hexagram`, `binary`,
+`registry`, and `install` are derived in `src/lib/registry.ts`; never duplicate
+them into the row. Component source and `check:components` are the authority for
+specialized props.
 
 ## sources.ts wiring
 

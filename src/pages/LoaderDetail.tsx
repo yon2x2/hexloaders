@@ -228,7 +228,7 @@ function flagshipExamples(meta: LoaderMeta): ExampleDef[] {
         jsx: '<BitScanner size={24} showMeta={false} />',
         node: (
           <span className="inline-flex items-center gap-3 border border-hexl-fg px-3 py-2">
-            <BitScanner size={24} showMeta={false} />
+            <BitScanner size={24} showMeta={false} aria-hidden="true" />
             <span className="font-mono text-mono-label uppercase">PROCESSING</span>
           </span>
         ),
@@ -237,14 +237,14 @@ function flagshipExamples(meta: LoaderMeta): ExampleDef[] {
         title: 'FULL LEDGER',
         caption: 'the readout as ornament',
         jsx: '<BitScanner size={128} value={42} />',
-        node: <BitScanner size={128} value={42} />,
+        node: <BitScanner size={128} value={42} aria-hidden="true" />,
       },
       {
         title: 'INVERTED',
         caption: 'negative space, free of charge',
         jsx: '<BitScanner invert />',
         dark: true,
-        node: <BitScanner size={72} invert />,
+        node: <BitScanner size={72} invert aria-hidden="true" />,
       },
     ];
   }
@@ -254,19 +254,19 @@ function flagshipExamples(meta: LoaderMeta): ExampleDef[] {
         title: 'COUNT',
         caption: 'the address space, running',
         jsx: '<MutatingMatrix mode="count" cells={9} />',
-        node: <MutatingMatrix mode="count" cells={9} size={24} />,
+        node: <MutatingMatrix mode="count" cells={9} size={24} aria-hidden="true" />,
       },
       {
         title: 'KING WEN',
         caption: 'the historical permutation',
         jsx: '<MutatingMatrix mode="kingwen" cells={9} />',
-        node: <MutatingMatrix mode="kingwen" cells={9} size={24} />,
+        node: <MutatingMatrix mode="kingwen" cells={9} size={24} aria-hidden="true" />,
       },
       {
         title: 'SEEDED RANDOM',
         caption: 'deterministic noise',
         jsx: '<MutatingMatrix mode="random" cells={4} seed={7} />',
-        node: <MutatingMatrix mode="random" cells={4} seed={7} size={28} />,
+        node: <MutatingMatrix mode="random" cells={4} seed={7} size={28} aria-hidden="true" />,
       },
     ];
   }
@@ -275,19 +275,19 @@ function flagshipExamples(meta: LoaderMeta): ExampleDef[] {
       title: 'COLORSPACE',
       caption: 'processing, signaled by violence',
       jsx: '<InversionPulse mode="colorspace" />',
-      node: <InversionPulse mode="colorspace" size={72} />,
+      node: <InversionPulse mode="colorspace" size={72} aria-hidden="true" />,
     },
     {
       title: 'BITWISE',
       caption: 'Yang opens, Yin closes',
       jsx: '<InversionPulse mode="bitwise" />',
-      node: <InversionPulse mode="bitwise" size={72} />,
+      node: <InversionPulse mode="bitwise" size={72} aria-hidden="true" />,
     },
     {
       title: 'CUSTOM RHYTHM',
       caption: 'morse for machines',
       jsx: '<InversionPulse pattern={[3,1,1,1]} />',
-      node: <InversionPulse pattern={[3, 1, 1, 1]} size={72} />,
+      node: <InversionPulse pattern={[3, 1, 1, 1]} size={72} aria-hidden="true" />,
     },
   ];
 }
@@ -311,20 +311,20 @@ function generatedExamples(meta: LoaderMeta): ExampleDef[] {
       title: 'DEFAULT STATE',
       caption: GENERATED_CAPTION[meta.mechanic],
       jsx: `<${name} value={${meta.value}} />`,
-      node: <G value={meta.value} size={64} />,
+      node: <G value={meta.value} size={64} aria-hidden="true" />,
     },
     {
       title: 'SLOW CLOCK',
       caption: 'step 240 · half speed',
       jsx: `<${name} value={${meta.value}} step={240} />`,
-      node: <G value={meta.value} size={64} step={240} />,
+      node: <G value={meta.value} size={64} step={240} aria-hidden="true" />,
     },
     {
       title: 'INVERTED',
       caption: 'negative space, free of charge',
       jsx: `<${name} value={${meta.value}} invert />`,
       dark: true,
-      node: <G value={meta.value} size={64} invert />,
+      node: <G value={meta.value} size={64} invert aria-hidden="true" />,
     },
   ];
 }
@@ -339,7 +339,6 @@ export default function LoaderDetail() {
   const [showSource, setShowSource] = useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     setShowSource(false);
     if (reducedMotion()) {
       setStag(3);

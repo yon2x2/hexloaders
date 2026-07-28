@@ -8,7 +8,7 @@
 import { memo, useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { Check as CheckIcon, Copy as CopyIcon } from 'iconoir-react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { LOADERS, MECHANICS } from '@/lib/registry';
 import type { LoaderMeta, Mechanic } from '@/lib/registry';
 import { LOADER_SOURCES } from '@/lib/sources';
@@ -255,38 +255,30 @@ const MechanicCycler = memo(function MechanicCycler() {
 /* --------------------------------- matrix --------------------------------- */
 
 function FlagshipLive({ slug }: { slug: string }) {
-  if (slug === 'bit-scanner') return <BitScanner size={56} showMeta={false} />;
-  if (slug === 'mutating-matrix') return <MutatingMatrix cells={9} size={12} showMeta={false} />;
-  return <InversionPulse size={56} />;
+  if (slug === 'bit-scanner') return <BitScanner size={56} showMeta={false} aria-hidden="true" />;
+  if (slug === 'mutating-matrix')
+    return <MutatingMatrix cells={9} size={12} showMeta={false} aria-hidden="true" />;
+  return <InversionPulse size={56} aria-hidden="true" />;
 }
 
 interface CellProps {
   meta: LoaderMeta;
-  order: number;
   revealed: boolean;
   matched: boolean;
   flash: boolean;
-  tabIx: number;
-  registerRef: (i: number, el: HTMLAnchorElement | null) => void;
-  onFocus: (i: number) => void;
 }
 
 const MatrixCell = memo(function MatrixCell({
   meta,
-  order,
   revealed,
   matched,
   flash,
-  tabIx,
-  registerRef,
-  onFocus,
 }: CellProps) {
   const [visible, setVisible] = useState(false);
   const ioRef = useRef<IntersectionObserver | null>(null);
 
-  const setRefs = useCallback(
+  const setVisibleRef = useCallback(
     (el: HTMLAnchorElement | null) => {
-      registerRef(order, el);
       ioRef.current?.disconnect();
       if (el) {
         ioRef.current = new IntersectionObserver(
@@ -296,7 +288,7 @@ const MatrixCell = memo(function MatrixCell({
         ioRef.current.observe(el);
       }
     },
-    [order, registerRef],
+    [],
   );
   useEffect(() => () => ioRef.current?.disconnect(), []);
 
@@ -310,18 +302,15 @@ const MatrixCell = memo(function MatrixCell({
 
   return (
     <div
-      role="gridcell"
-      aria-label={`n°${meta.value} ${meta.name} — ${meta.mechanic}`}
+      inert={matched ? undefined : true}
       className={`hexl-cell group relative aspect-square${
         meta.flagship ? ' border-2 border-hexl-fg' : ''
       }${flash ? ' hexl-cell-flash' : ''}`}
       style={{ opacity: !revealed ? 0 : matched ? 1 : 0.08 }}
     >
       <Link
-        ref={setRefs}
+        ref={setVisibleRef}
         to={`/loaders/${meta.slug}`}
-        tabIndex={tabIx}
-        onFocus={() => onFocus(order)}
         data-cell={meta.value}
         aria-label={`Open n°${meta.value} ${meta.name} details — ${meta.mechanic}`}
         className="absolute inset-x-0 top-0 bottom-11 cursor-pointer"
@@ -373,20 +362,16 @@ const MatrixCell = memo(function MatrixCell({
 type SortKey = 'fuxi' | 'kingwen' | 'mechanic';
 
 function Matrix() {
-  const navigate = useNavigate();
   const [sort, setSort] = useState<SortKey>('fuxi');
   const [mech, setMech] = useState<Mechanic | 'ALL'>('ALL');
   const [query, setQuery] = useState('');
   const [revealedCount, setRevealedCount] = useState(0);
   const [blank, setBlank] = useState(false);
-  const [focusIx, setFocusIx] = useState(0);
   const [flashValue, setFlashValue] = useState<number | null>(null);
   const [flashOn, setFlashOn] = useState(false);
-  const cellRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const sectionRef = useRef<HTMLElement | null>(null);
 
-  const order = useRef<LoaderMeta[]>([]);
-  order.current = (() => {
+  const order = (() => {
     if (sort === 'kingwen') return [...LOADERS].sort((a, b) => a.hexagram.kingwen - b.hexagram.kingwen);
     if (sort === 'mechanic')
       return [...LOADERS].sort(
@@ -401,7 +386,7 @@ function Matrix() {
     if (!q) return true;
     return m.name.toLowerCase().includes(q) || m.slug.includes(q) || m.binary.includes(q);
   };
-  const matchCount = order.current.filter(matches).length;
+  const matchCount = order.filter(matches).length;
 
   // CRT raster-order stepped assembly; re-scan on sort change (blank flash first).
   useEffect(() => {
@@ -447,30 +432,6 @@ function Matrix() {
     window.addEventListener('hexl:flash-cell', h);
     return () => window.removeEventListener('hexl:flash-cell', h);
   }, [flashCell]);
-
-  const registerRef = useCallback((i: number, el: HTMLAnchorElement | null) => {
-    cellRefs.current[i] = el;
-  }, []);
-
-  const onKeyDown = (e: React.KeyboardEvent) => {
-    const cols = window.innerWidth >= 1024 ? 8 : window.innerWidth >= 640 ? 4 : 2;
-    let next: number;
-    if (e.key === 'ArrowRight') next = Math.min(63, focusIx + 1);
-    else if (e.key === 'ArrowLeft') next = Math.max(0, focusIx - 1);
-    else if (e.key === 'ArrowDown') next = Math.min(63, focusIx + cols);
-    else if (e.key === 'ArrowUp') next = Math.max(0, focusIx - cols);
-    else if (e.key === 'Enter') {
-      navigate(`/loaders/${order.current[focusIx].slug}`);
-      return;
-    } else if (e.key.toLowerCase() === 'c') {
-      const command = order.current[focusIx].install;
-      if (command) void copyText(command);
-      return;
-    } else return;
-    e.preventDefault();
-    setFocusIx(next);
-    cellRefs.current[next]?.focus();
-  };
 
   const axisLabels = Array.from({ length: 8 }, (_, i) => i.toString(2).padStart(3, '0'));
 
@@ -530,9 +491,6 @@ function Matrix() {
 
       <div className="mx-auto max-w-[1440px] px-6 py-12 md:px-10">
         <div
-          role="grid"
-          aria-label={sort === 'fuxi' ? 'The 64 loaders, Fu Xi arrangement' : `The 64 loaders, sorted by ${sort}`}
-          onKeyDown={onKeyDown}
           className={`relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg sm:grid-cols-4${
             sort === 'fuxi' ? ' lg:grid-cols-[32px_repeat(8,minmax(0,1fr))]' : ' lg:grid-cols-8'
           }`}
@@ -543,7 +501,7 @@ function Matrix() {
                 ...axisLabels.map((label) => (
                   <span
                     key={`column-${label}`}
-                    role="columnheader"
+                    aria-hidden="true"
                     className="hidden h-8 items-center justify-center bg-hexl-bg font-mono text-mono-micro lg:flex"
                   >
                     {label}
@@ -555,25 +513,21 @@ function Matrix() {
             sort === 'fuxi' ? (
               <span
                 key={`row-${row}`}
-                role="rowheader"
+                aria-hidden="true"
                 className="hidden items-center justify-center bg-hexl-bg font-mono text-mono-micro lg:flex"
               >
                 {axisLabels[row]}
               </span>
             ) : null,
-            ...order.current.slice(row * 8, row * 8 + 8).map((m, column) => {
+            ...order.slice(row * 8, row * 8 + 8).map((m, column) => {
               const i = row * 8 + column;
               return (
                 <MatrixCell
                   key={m.slug}
                   meta={m}
-                  order={i}
                   revealed={i < revealedCount}
                   matched={matches(m)}
                   flash={flashValue === m.value && flashOn}
-                  tabIx={i === focusIx ? 0 : -1}
-                  registerRef={registerRef}
-                  onFocus={setFocusIx}
                 />
               );
             }),
@@ -635,9 +589,12 @@ function Hero() {
   };
 
   const rail = [
-    { tag: 'BESPOKE SOURCE 01 — SCAN', node: <BitScanner size={72} showMeta={false} /> },
-    { tag: 'BESPOKE SOURCE 02 — SEQUENCE', node: <MutatingMatrix cells={9} size={14} showMeta={false} /> },
-    { tag: 'BESPOKE SOURCE 03 — INVERT', node: <InversionPulse size={64} /> },
+    { tag: 'BESPOKE SOURCE 01 — SCAN', node: <BitScanner size={72} showMeta={false} aria-hidden="true" /> },
+    {
+      tag: 'BESPOKE SOURCE 02 — SEQUENCE',
+      node: <MutatingMatrix cells={9} size={14} showMeta={false} aria-hidden="true" />,
+    },
+    { tag: 'BESPOKE SOURCE 03 — INVERT', node: <InversionPulse size={64} aria-hidden="true" /> },
   ];
 
   return (
@@ -759,7 +716,7 @@ const FLAGSHIPS: {
     mech: 'SCAN',
     spec: 'STATE 26 · BINARY 011010 · CYCLE 960MS · DEPS 0',
     body: 'A static hexagram in a ledger block. One row snaps from dim to full per tick, moving top to bottom in six discrete steps. A readout, not an ornament.',
-    render: (size) => <BitScanner size={size} showMeta />,
+    render: (size) => <BitScanner size={size} showMeta aria-hidden="true" />,
   },
   {
     n: '02',
@@ -768,7 +725,9 @@ const FLAGSHIPS: {
     mech: 'SEQUENCE',
     spec: 'STATE 19 · BINARY 010011 · CLOCK 120MS · DEPS 0',
     body: 'A 3×3 bank of glyphs stepping through the state space every 120ms — counting, sequencing, or seeded-random. A system visibly computing configurations.',
-    render: (size) => <MutatingMatrix cells={9} size={Math.max(10, Math.round(size / 5))} showMeta />,
+    render: (size) => (
+      <MutatingMatrix cells={9} size={Math.max(10, Math.round(size / 5))} showMeta aria-hidden="true" />
+    ),
   },
   {
     n: '03',
@@ -777,7 +736,7 @@ const FLAGSHIPS: {
     mech: 'INVERT',
     spec: 'STATE 42 · BINARY 101010 · BASE 120MS · DEPS 0',
     body: 'The module snaps to negative on a programmable rhythm — colorspace, bitwise, or both. Zero transitions. Processing signaled by violence, not easing.',
-    render: (size) => <InversionPulse size={size} />,
+    render: (size) => <InversionPulse size={size} aria-hidden="true" />,
   },
 ];
 
