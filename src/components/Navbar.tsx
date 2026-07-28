@@ -57,8 +57,13 @@ export default function Navbar() {
     const logoLink = logoLinkRef.current;
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
+    const background = Array.from(document.querySelectorAll<HTMLElement>('main, footer'));
+    const previousInert = background.map((element) => element.inert);
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
+    background.forEach((element) => {
+      element.inert = true;
+    });
     const desktopQuery = window.matchMedia('(min-width: 1024px)');
 
     const firstLink = mobileNavRef.current?.querySelector<HTMLElement>('a[href]');
@@ -99,6 +104,9 @@ export default function Navbar() {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
+      background.forEach((element, index) => {
+        element.inert = previousInert[index];
+      });
       (menuButton?.getClientRects().length ? menuButton : logoLink)?.focus();
     };
   }, [open]);
@@ -115,6 +123,7 @@ export default function Navbar() {
         <Link
           ref={logoLinkRef}
           to="/"
+          inert={open ? true : undefined}
           className="flex items-center gap-3 px-4 hover:bg-hexl-fg hover:text-hexl-bg"
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
@@ -151,6 +160,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleInvert}
+            inert={open ? true : undefined}
             aria-pressed={inverted}
             aria-label="Invert page colors"
             className="flex items-center gap-2 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
@@ -164,6 +174,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleInvert}
+            inert={open ? true : undefined}
             aria-pressed={inverted}
             aria-label="Invert page colors"
             className="flex min-w-11 items-center justify-center border-l border-hexl-fg px-3 hover:bg-hexl-fg hover:text-hexl-bg"

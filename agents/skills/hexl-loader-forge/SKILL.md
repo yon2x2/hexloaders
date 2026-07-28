@@ -23,7 +23,7 @@ never "add loader #65". Growth means one of:
 | Request | Path |
 |---|---|
 | Rename/re-theme an existing row | A — edit its registry row (name/slug/mechanic) only |
-| Bespoke/flagship-quality loader for an existing value | B — new single file in `src/registry/loaders/`, flip `flagship: true` on that row, wire `loaderFilesFor` to the single file |
+| Bespoke/flagship-quality loader for an existing value | B — new single file in `src/registry/loaders/`, add the existing slug to `FLAGSHIP_SLUGS`, and wire `loaderFilesFor` to the single file |
 | New motion mechanic (9th+) | C — new template in `src/registry/loaders/generated/` + `Mechanic` type + `MechanicCell` variant + CLOCK entry, then RE-TAG appropriate existing rows to it |
 
 If a user asks to "add a new loader", clarify which existing state it replaces or
@@ -52,24 +52,25 @@ matrix and the Fu Xi map.
 // root: role="status" aria-label="Loading", spreads ...rest
 ```
 
-Track publication state only in `docs/internal/distribution-guide.md`; source
-headers are public through the loader Code panels.
+Track publication sequencing only in `docs/internal/distribution-guide.md`.
+Effective publication state must agree between `PUBLISHED_REGISTRY_COMPONENTS` and
+`registry.json`; source headers are public through the loader Code panels.
 
 Read `agents/skills/hexl-loader-forge/references/contracts.md` for the full API and
 registry-entry schema, and `references/mechanics.md` for the 8-mechanic taxonomy.
 
-## 4. Registration checklist (paths B & C; path A = step 1 only)
+## 4. Registration checklist
 
-1. `src/lib/registry.ts` — add LoaderMeta row (n° = value, slug kebab-case, name,
-   mechanic, flagship flag only if truly bespoke). Keep 8×8 grid order by value.
-2. `src/lib/sources.ts` — add the `?raw` import and wire `loaderFilesFor(slug)` so the
-   detail page Code tab shows the real source (flagship → single file; generated →
-   [template + hex-glyph]). Never hand-duplicate source.
-3. `src/components/loaders/MechanicCell.tsx` — only path C: add the mechanic's frame
-   branch + CLOCK entry so matrix/detail previews render it.
-4. Detail page (`/loaders/[slug]`) is data-driven — no edits needed beyond registry.
-5. Playground picks up new registry rows automatically; verify the loader renders in
-   its stage and the parameter panel offers `step/size/invert`.
+1. Edit the existing `TABLE` tuple only when its name, slug, or mechanic changes.
+   Never add a 65th row.
+2. For a bespoke promotion, add the existing slug to `FLAGSHIP_SLUGS`.
+3. Wire the exact raw source and manual file set in `src/lib/sources.ts`.
+4. If publishing the component, update both `PUBLISHED_REGISTRY_COMPONENTS` and
+   `registry.json`; they must remain identical.
+5. Detail routes and Playground are data-driven. Verify the component symbol,
+   installed path, preview, and parameters instead of adding route-specific metadata.
+6. Only for a new mechanic: extend `Mechanic`, its generated component,
+   `MechanicCell`, timing references, and the existing rows assigned to it.
 
 ## 5. Gates before committing
 

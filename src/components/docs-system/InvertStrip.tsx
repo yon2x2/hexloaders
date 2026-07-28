@@ -12,9 +12,12 @@ import MutatingMatrix from '@/registry/loaders/mutating-matrix';
 import InversionPulse from '@/registry/loaders/inversion-pulse';
 
 const CELLS = [
-  { label: 'BIT-SCANNER', node: <BitScanner size={48} showMeta={false} /> },
-  { label: 'MUTATING MATRIX', node: <MutatingMatrix cells={1} size={48} showMeta={false} /> },
-  { label: 'INVERSION PULSE', node: <InversionPulse size={48} /> },
+  { label: 'BIT-SCANNER', node: <BitScanner size={48} showMeta={false} aria-hidden="true" /> },
+  {
+    label: 'MUTATING MATRIX',
+    node: <MutatingMatrix cells={1} size={48} showMeta={false} aria-hidden="true" />,
+  },
+  { label: 'INVERSION PULSE', node: <InversionPulse size={48} aria-hidden="true" /> },
 ];
 
 export default function InvertStrip() {

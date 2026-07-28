@@ -1,3 +1,9 @@
+# Historical scaffold capture — non-authoritative
+
+This file preserves the original generator output. Do not use it for current
+versions, paths, dependencies, components, or repository architecture. Use
+`README.md`, `package.json`, and `docs/internal/core-spec.md` instead.
+
 Using Node.js 24, Tailwind CSS v3.4.19, and Vite v7.2.4
 
 Tailwind CSS has been set up with the shadcn theme

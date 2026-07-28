@@ -158,7 +158,7 @@ export default function DocsIntroduction() {
         {/* the page's single live motion moment */}
         <Reveal className="mt-8">
           <PreviewCard
-            preview={({ size, invert }) => <BitScanner size={size} invert={invert} />}
+            preview={({ size, invert }) => <BitScanner size={size} invert={invert} aria-hidden="true" />}
           />
           <div className="flex items-center justify-between gap-3 border border-t-0 border-hexl-fg px-3 py-2">
             <span className="font-mono text-mono-micro uppercase">

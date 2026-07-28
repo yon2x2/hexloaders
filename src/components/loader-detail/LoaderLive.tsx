@@ -18,18 +18,18 @@ export interface LoaderLiveProps {
 
 export default function LoaderLive({ meta, size, invert = false, showMeta = false }: LoaderLiveProps) {
   if (meta.slug === 'bit-scanner') {
-    return <BitScanner size={size} showMeta={showMeta} invert={invert} />;
+    return <BitScanner size={size} showMeta={showMeta} invert={invert} aria-hidden="true" />;
   }
   if (meta.slug === 'mutating-matrix') {
     return (
-      <span className={invert ? 'hexl-invert' : undefined} style={{ display: 'inline-block' }}>
+      <span aria-hidden="true" className={invert ? 'hexl-invert' : undefined} style={{ display: 'inline-block' }}>
         <MutatingMatrix cells={9} size={Math.max(8, Math.round(size / 3))} showMeta={showMeta} />
       </span>
     );
   }
   if (meta.slug === 'inversion-pulse') {
-    return <InversionPulse size={size} invert={invert} />;
+    return <InversionPulse size={size} invert={invert} aria-hidden="true" />;
   }
   const GeneratedLoader = GENERATED_LOADERS[meta.mechanic];
-  return <GeneratedLoader value={meta.value} size={size} invert={invert} />;
+  return <GeneratedLoader value={meta.value} size={size} invert={invert} aria-hidden="true" />;
 }

@@ -20,7 +20,7 @@ moment docs drift from code. Your job: enforce single-source-of-truth.
 | 64-state dictionary | `src/lib/hexagrams.ts` | everything (never edit constants without qa-sentinel validate) |
 | Loader metadata | `src/lib/registry.ts` | matrix, DocsShell sidebar, `/loaders/[slug]`, playground, footer |
 | Raw sources + tokens | `src/lib/sources.ts` (`?raw`) | every CodeBlock on the site |
-| Design laws | `design/design.md` | all pages (voice, tokens, motion) |
+| Design laws | `agents/skills/hexl-design-guardian/SKILL.md` + its audit script | all visible UI |
 
 **Golden rule:** docs NEVER hand-duplicate code. Every source block comes from a
 `?raw` import or a `sources.ts` aggregate. If you find a hand-copied listing, replace
@@ -50,7 +50,7 @@ dictionary excerpt that elides HEX_NAMES from the raw text).
 3. Code = `CodeBlock` fed from raw sources; commands = pkg-manager tab variant.
 4. Pager at bottom: PREV/NEXT ledger cards.
 
-## Voice (design.md §11)
+## Voice (public-copy contract)
 
 Technical, declarative, dry. Short sentences. No exclamation marks, no spirituality,
 no marketing adjectives. Binary/data metaphors only. Mono labels uppercase with

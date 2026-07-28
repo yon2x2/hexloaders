@@ -116,7 +116,7 @@ export default function PreviewCard({ preview, code, filename, language = 'tsx',
         role={code === undefined ? undefined : 'tabpanel'}
         aria-labelledby={code === undefined ? undefined : previewTabId}
         hidden={code !== undefined && tab !== 'PREVIEW'}
-        className={`flex min-h-[320px] items-center justify-center${invert ? ' hexl-invert bg-hexl-bg text-hexl-fg' : ''}`}
+        className={`${tab === 'PREVIEW' ? 'flex' : 'hidden'} min-h-[320px] items-center justify-center${invert ? ' hexl-invert bg-hexl-bg text-hexl-fg' : ''}`}
       >
         {tab === 'PREVIEW' && (typeof preview === 'function' ? preview({ size: SIZES[size], invert }) : preview)}
       </div>
