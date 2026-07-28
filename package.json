@@ -21,6 +21,7 @@
     "check": "npm run lint && npm run build && npm run check:integrity && npm run check:components && npm run check:design"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "iconoir-react": "7.11.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

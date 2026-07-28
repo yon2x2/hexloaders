@@ -124,13 +124,13 @@ export default function CodeBlock({
               ))}
             </div>
           ) : (
-            <span>{filename ?? 'SOURCE'}</span>
+            <span className="min-w-0 break-all text-[9px] tracking-normal">{filename ?? 'SOURCE'}</span>
           )}
         </div>
         <button
           type="button"
           onClick={onCopy}
-          className={`min-h-11 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${packageManager ? ' w-full border-l-0 border-t sm:w-auto sm:border-l sm:border-t-0' : ''}`}
+          className={`min-h-11 shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${packageManager ? ' w-full border-l-0 border-t sm:w-auto sm:border-l sm:border-t-0' : ''}`}
           aria-live="polite"
         >
           {copied ? 'COPIED' : 'COPY'}

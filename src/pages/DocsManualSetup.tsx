@@ -1,9 +1,8 @@
 /**
  * HEXLOADERS — DocsManualSetup `/docs/manual-setup`
  * The copy-paste workflow: no CLI, no registry — lift the files directly.
- * Every CodeBlock is fed from the ?raw aggregates (src/lib/sources.ts) or a
- * direct ?raw import of the canonical dictionary — never hand-duplicated
- * source. Pure #000/#FFF, steps() motion only, radius 0.
+ * Every CodeBlock is fed from the ?raw aggregates in src/lib/sources.ts —
+ * never hand-duplicated source.
  */
 
 import { useState } from 'react';
@@ -13,7 +12,6 @@ import Kicker from '@/components/Kicker';
 import CodeBlock from '@/components/CodeBlock';
 import BitScanner from '@/registry/loaders/bit-scanner';
 import { CSS_TOKENS_BLOCK, LOADER_SOURCES } from '@/lib/sources';
-import hexagramsSource from '@/lib/hexagrams.ts?raw';
 import Reveal from '@/components/docs-foundation/Reveal';
 import {
   DocMotionStyle,
@@ -26,10 +24,9 @@ import TypedCodeBlock from '@/components/docs-foundation/TypedCodeBlock';
 
 const TOC: TocItem[] = [
   { id: 'when-to-go-manual', label: 'When to go manual' },
-  { id: 'step-1-variables', label: 'Step 1 — Variables' },
-  { id: 'step-2-the-dictionary', label: 'Step 2 — The dictionary' },
-  { id: 'step-3-the-loader', label: 'Step 3 — The loader' },
-  { id: 'step-4-verify', label: 'Step 4 — Verify' },
+  { id: 'step-1-the-loader', label: 'Step 1 — Copy listed files' },
+  { id: 'step-2-variables', label: 'Step 2 — Theme overrides' },
+  { id: 'step-3-verify', label: 'Step 3 — Verify' },
 ];
 
 const WHEN_MANUAL: string[] = [
@@ -109,7 +106,8 @@ export default function DocsManualSetup() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-[18px] leading-[1.6]">
-            Everything the CLI does, by hand. Three files, five minutes, full ownership.
+            Copy the exact files listed on a loader page, keep their relative paths, and own every
+            line in your repository.
           </p>
         </Reveal>
       </header>
@@ -119,44 +117,15 @@ export default function DocsManualSetup() {
         <LedgerList items={WHEN_MANUAL} stagger={80} />
       </DocSection>
 
-      {/* SEC.02 — Step 1: Variables */}
-      <DocSection id="step-1-variables" index={2} title="Step 1: Variables">
-        <Reveal>
-          <p className="max-w-[62ch] text-body-sm">
-            Add the variable block to your global stylesheet. Every loader reads these and nothing
-            else.
-          </p>
-        </Reveal>
-        <Reveal className="mt-6">
-          <CodeBlock code={CSS_TOKENS_BLOCK} filename="globals.css" language="css" />
-        </Reveal>
-        <Reveal className="mt-6">
-          <LedgerNote>
-            {'NOTE — the last line of this block is the entire reduced-motion implementation: --hexl-step: 0ms parks every steps() animation on a static frame. Do not delete it.'}
-          </LedgerNote>
-        </Reveal>
-      </DocSection>
-
-      {/* SEC.03 — Step 2: The dictionary */}
-      <DocSection id="step-2-the-dictionary" index={3} title="Step 2: The dictionary">
-        <Reveal>
-          <p className="max-w-[62ch] text-body-sm">
-            Copy the encoding helpers and the dictionary. One file, no dependencies.
-          </p>
-        </Reveal>
-        <Reveal className="mt-6">
-          <CodeBlock code={hexagramsSource} filename="lib/hexagrams.ts" language="tsx" />
-        </Reveal>
-      </DocSection>
-
-      {/* SEC.04 — Step 3: The loader (reference implementation) */}
-      <DocSection id="step-3-the-loader" index={4} title="Step 3: The loader (reference implementation)">
+      {/* SEC.02 — Step 1: Copy the loader's listed files */}
+      <DocSection id="step-1-the-loader" index={2} title="Step 1: Copy the listed files">
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-8">
           <div className="min-w-0">
             <Reveal>
               <p className="max-w-[62ch] text-body-sm">
-                This is the entire component. Zero dependencies. The styles ship inside the file;
-                the motion is one CSS animation with steps(6). Read it — it is short on purpose.
+                A loader page lists its exact manual file set. Bit-Scanner is the single-file
+                example below; shared mechanic presets list both their component and hex-glyph
+                files, each with its own path and copy action.
               </p>
             </Reveal>
 
@@ -174,7 +143,7 @@ export default function DocsManualSetup() {
 
             <Reveal className="mt-8">
               <p className="max-w-[62ch] text-body-sm">
-                Shared glyph source — copy this file only when the loader's source panel lists it.
+                Shared glyph source — copy this only when the selected loader page lists it.
                 Bit-Scanner stays single-file and does not need it.
               </p>
             </Reveal>
@@ -201,8 +170,26 @@ export default function DocsManualSetup() {
         </div>
       </DocSection>
 
-      {/* SEC.05 — Step 4: Verify */}
-      <DocSection id="step-4-verify" index={5} title="Step 4: Verify">
+      {/* SEC.03 — Step 2: Optional theme overrides */}
+      <DocSection id="step-2-variables" index={3} title="Step 2: Theme overrides (optional)">
+        <Reveal>
+          <p className="max-w-[62ch] text-body-sm">
+            Every loader includes safe black-and-white defaults. Add this block only when you want
+            one shared place to override its color, spacing, or clock tokens.
+          </p>
+        </Reveal>
+        <Reveal className="mt-6">
+          <CodeBlock code={CSS_TOKENS_BLOCK} filename="globals.css" language="css" />
+        </Reveal>
+        <Reveal className="mt-6">
+          <LedgerNote>
+            {'REDUCED MOTION IS BUILT INTO EACH COMPONENT — keep its prefers-reduced-motion handling intact when editing the source.'}
+          </LedgerNote>
+        </Reveal>
+      </DocSection>
+
+      {/* SEC.04 — Step 3: Verify */}
+      <DocSection id="step-3-verify" index={4} title="Step 3: Verify">
         <Reveal>
           <Checklist items={CHECKLIST} />
         </Reveal>

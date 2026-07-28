@@ -30,6 +30,52 @@ const timedSources = [
 ];
 
 try {
+  const registryModule = await server.ssrLoadModule('/src/lib/registry.ts');
+  const sourcesModule = await server.ssrLoadModule('/src/lib/sources.ts');
+  const registryByName = new Map(registry.items.map((item) => [item.name, item]));
+
+  check('all 64 presets resolve to the public component symbol and installed path', () => {
+    assert.equal(registryModule.LOADERS.length, 64);
+    for (const meta of registryModule.LOADERS) {
+      const item = registryByName.get(meta.component);
+      assert.ok(item, `${meta.slug}: missing registry item ${meta.component}`);
+      const identity = registryModule.publicComponentFor(meta);
+      const entry = item.files[0];
+      const expectedImport = entry.target
+        .replace(/^@components\//, '@/components/')
+        .replace(/\.tsx$/, '');
+      const source = readFileSync(entry.path, 'utf8');
+      const exportedName = source.match(/export default function\s+(\w+)/)?.[1];
+
+      assert.equal(identity.importPath, expectedImport, `${meta.slug}: import path`);
+      assert.equal(identity.name, exportedName, `${meta.slug}: component symbol`);
+    }
+  });
+
+  check('all 64 manual file sets match their registry item', () => {
+    for (const meta of registryModule.LOADERS) {
+      const item = registryByName.get(meta.component);
+      const manualPaths = sourcesModule.loaderFilesFor(meta.slug).map((file) => file.path);
+      const installedPaths = item.files.map((file) => file.target.replace(/^@components\//, 'components/'));
+      assert.deepEqual(manualPaths, installedPaths, `${meta.slug}: manual file set`);
+    }
+  });
+
+  check('public previews use installed components instead of the matrix simulator', () => {
+    for (const path of [
+      'src/pages/Playground.tsx',
+      'src/components/loader-detail/LoaderLive.tsx',
+      'src/components/interactive/vignettes.tsx',
+    ]) {
+      assert.doesNotMatch(readFileSync(path, 'utf8'), /\bMechanicCell\b/, path);
+    }
+    const playground = readFileSync('src/pages/Playground.tsx', 'utf8');
+    assert.match(playground, /publicComponentFor\(meta\)/);
+    assert.match(playground, /const clock = flagship \? intervalMs : 120/);
+    assert.match(playground, /const effectiveInterval = held \? HOLD_INTERVAL : clock/);
+    assert.doesNotMatch(playground, /@\/loaders\//);
+  });
+
   for (const item of registry.items) {
     const entry = item.files[0];
     const module = await server.ssrLoadModule(`/${entry.path}`);

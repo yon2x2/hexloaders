@@ -10,7 +10,7 @@ import BitScanner from '@/registry/loaders/bit-scanner';
 import MutatingMatrix from '@/registry/loaders/mutating-matrix';
 import InversionPulse from '@/registry/loaders/inversion-pulse';
 import HexGlyph from '@/registry/loaders/hex-glyph';
-import MechanicCell from '@/components/loaders/MechanicCell';
+import { GENERATED_LOADERS } from '@/lib/generated-loaders';
 import { HEXAGRAMS } from '@/lib/hexagrams';
 import { reducedMotion } from './hooks';
 
@@ -199,10 +199,10 @@ export function DataTableRefresh({ active }: VignetteProps) {
                     <td key={c} className="border-b border-r border-hexl-fg px-2 py-1">
                       <span className="flex items-center gap-2">
                         <span aria-hidden="true" className="inline-flex w-7 justify-center">
-                          {locked ? (
+                          {locked || !active ? (
                             <HexGlyph value={TABLE_VALUES[k]} size={24} />
                           ) : (
-                            <MechanicCell value={34} mechanic="COUNT" size={24} active={active} />
+                            <GENERATED_LOADERS.COUNT value={34} size={24} aria-hidden="true" />
                           )}
                         </span>
                         <span className="tabular-nums">{locked ? `n°${TABLE_VALUES[k]}` : '——'}</span>
@@ -267,7 +267,11 @@ export function UploadCard({ active }: VignetteProps) {
       )}
       {phase === 'uploading' && (
         <>
-          <MechanicCell value={11} mechanic="STACK" size={48} active={active} aria-hidden="true" />
+          {active ? (
+            <GENERATED_LOADERS.STACK value={11} size={48} aria-hidden="true" />
+          ) : (
+            <HexGlyph value={11} size={48} aria-hidden="true" />
+          )}
           <span className="font-mono text-mono-data tabular-nums">{pct.toFixed(1)}%</span>
         </>
       )}
@@ -388,8 +392,8 @@ export function FormValidation({ active }: VignetteProps) {
             className="h-11 w-full bg-transparent px-3 font-mono text-mono-data placeholder:opacity-[0.55]"
           />
           <span aria-hidden="true" className="flex w-10 items-center justify-center border-l border-hexl-fg">
-            {strobe > 0 ? (
-              <MechanicCell value={17} mechanic="INVERT" size={20} active={active} />
+            {strobe > 0 && active ? (
+              <GENERATED_LOADERS.INVERT value={17} size={20} aria-hidden="true" />
             ) : (
               <HexGlyph value={17} size={20} dim={0.15} />
             )}
@@ -469,7 +473,11 @@ export function SkeletonLedger({ active }: VignetteProps) {
           </table>
         ) : (
           <div className="flex flex-col items-center justify-center gap-3 px-3 py-6">
-            <MechanicCell value={2} mechanic="CASCADE" size={96} active={active} aria-hidden="true" />
+            {active ? (
+              <GENERATED_LOADERS.CASCADE value={2} size={96} aria-hidden="true" />
+            ) : (
+              <HexGlyph value={2} size={96} aria-hidden="true" />
+            )}
             <span className="font-mono text-mono-micro uppercase opacity-[0.55]">LOADING LEDGER…</span>
           </div>
         )}
@@ -516,10 +524,10 @@ export function CliStatusLine({ active }: VignetteProps) {
             <span className="mt-1 block">[{cells.slice(32).map((c) => (c ? '■' : '□')).join('')}]</span>
           </span>
           <span aria-hidden="true" className="shrink-0">
-            {done ? (
+            {done || !active ? (
               <HexGlyph value={18} size={20} />
             ) : (
-              <MechanicCell value={18} mechanic="COUNT" size={20} active={active} />
+              <GENERATED_LOADERS.COUNT value={18} size={20} aria-hidden="true" />
             )}
           </span>
         </div>

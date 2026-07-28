@@ -143,3 +143,17 @@ export const byValue = (value: number): LoaderMeta => LOADERS[value & 63];
 
 export const loadersByMechanic = (mechanic: Mechanic): LoaderMeta[] =>
   LOADERS.filter((l) => l.mechanic === mechanic);
+
+const pascal = (slug: string): string =>
+  slug
+    .split('-')
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join('');
+
+/** Public symbol and import path produced by the shadcn registry install. */
+export const publicComponentFor = (meta: LoaderMeta): { name: string; importPath: string } => ({
+  name: pascal(meta.component),
+  importPath: meta.flagship
+    ? `@/components/loaders/${meta.component}`
+    : `@/components/loaders/generated/${meta.mechanic.toLowerCase()}`,
+});

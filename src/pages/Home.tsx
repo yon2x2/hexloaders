@@ -638,9 +638,9 @@ function Hero() {
   };
 
   const rail = [
-    { tag: '★ FLAGSHIP 01 — SCAN', node: <BitScanner size={72} showMeta={false} /> },
-    { tag: '★ FLAGSHIP 02 — SEQUENCE', node: <MutatingMatrix cells={9} size={14} showMeta={false} /> },
-    { tag: '★ FLAGSHIP 03 — INVERT', node: <InversionPulse size={64} /> },
+    { tag: 'BESPOKE SOURCE 01 — SCAN', node: <BitScanner size={72} showMeta={false} /> },
+    { tag: 'BESPOKE SOURCE 02 — SEQUENCE', node: <MutatingMatrix cells={9} size={14} showMeta={false} /> },
+    { tag: 'BESPOKE SOURCE 03 — INVERT', node: <InversionPulse size={64} /> },
   ];
 
   return (
@@ -760,7 +760,7 @@ const FLAGSHIPS: {
     slug: 'bit-scanner',
     name: 'BIT-SCANNER',
     mech: 'SCAN',
-    spec: 'STATE 26 · BINARY 011010 · CYCLE 960MS · DEPS 0 · SIZE 1.8KB',
+    spec: 'STATE 26 · BINARY 011010 · CYCLE 960MS · DEPS 0',
     body: 'A static hexagram in a ledger block. One row snaps from dim to full per tick, moving top to bottom in six discrete steps. A readout, not an ornament.',
     render: (size) => <BitScanner size={size} showMeta />,
   },
@@ -769,7 +769,7 @@ const FLAGSHIPS: {
     slug: 'mutating-matrix',
     name: 'MUTATING MATRIX',
     mech: 'SEQUENCE',
-    spec: 'STATE 19 · BINARY 010011 · CLOCK 120MS · DEPS 0 · SIZE 2.4KB',
+    spec: 'STATE 19 · BINARY 010011 · CLOCK 120MS · DEPS 0',
     body: 'A 3×3 bank of glyphs stepping through the state space every 120ms — counting, sequencing, or seeded-random. A system visibly computing configurations.',
     render: (size) => <MutatingMatrix cells={9} size={Math.max(10, Math.round(size / 5))} showMeta />,
   },
@@ -778,7 +778,7 @@ const FLAGSHIPS: {
     slug: 'inversion-pulse',
     name: 'INVERSION PULSE',
     mech: 'INVERT',
-    spec: 'STATE 42 · BINARY 101010 · BASE 120MS · DEPS 0 · SIZE 2.1KB',
+    spec: 'STATE 42 · BINARY 101010 · BASE 120MS · DEPS 0',
     body: 'The module snaps to negative on a programmable rhythm — colorspace, bitwise, or both. Zero transitions. Processing signaled by violence, not easing.',
     render: (size) => <InversionPulse size={size} />,
   },
@@ -800,7 +800,7 @@ function Flagships() {
             </Reveal>
             <div className="lg:col-span-7">
               <Reveal>
-                <Kicker>{`★ FLAGSHIP ${f.n} / 03 — MECHANIC: ${f.mech}`}</Kicker>
+                <Kicker>{`BESPOKE SOURCE ${f.n} / 03 — MECHANIC: ${f.mech}`}</Kicker>
               </Reveal>
               <Reveal delay={80}>
                 <h3 className="mt-6 font-grotesk text-display-md uppercase">{f.name}</h3>
@@ -1135,7 +1135,7 @@ function Distribution() {
 const FAQ = [
   {
     q: 'IS THIS AN NPM PACKAGE?',
-    a: 'No. HEXLOADERS is a registry of source files. The shadcn CLI copies a verified file into your repository. You own it — there is nothing to upgrade and nothing to break.',
+    a: 'No. HEXLOADERS is a registry of source files. The shadcn CLI copies a verified file set into your repository. You own it — there is nothing to upgrade and nothing to break.',
   },
   {
     q: 'DO THE LOADERS HAVE DEPENDENCIES?',

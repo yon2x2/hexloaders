@@ -43,8 +43,8 @@ if (tableMatch) {
 // ── generated source bundle — mechanic template + sibling primitive ──
 const sources = fs.readFileSync('src/lib/sources.ts', 'utf8');
 check(
-  sources.includes('loaders/generated/${meta.mechanic.toLowerCase()}.tsx') &&
-    sources.includes("'loaders/hex-glyph.tsx'"),
+  sources.includes('components/loaders/generated/${meta.mechanic.toLowerCase()}.tsx') &&
+    sources.includes("'components/loaders/hex-glyph.tsx'"),
   'generated manifests preserve template + primitive paths',
 );
 for (const mechanic of ['scan', 'sequence', 'invert', 'shift', 'count', 'stack', 'cascade', 'strobe']) {
