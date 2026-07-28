@@ -36,7 +36,7 @@
           "target": "@components/loaders/hex-glyph.tsx"
         }
       ],
-      "docs": "Import the default export from your components/loaders/generated/cascade file. It includes the shared HexGlyph source, reduced-motion behavior, and accessible status semantics."
+      "docs": "Import the default export from your components/loaders/generated/cascade file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
     },
     {
       "name": "mutating-matrix",
@@ -86,7 +86,7 @@
           "target": "@components/loaders/hex-glyph.tsx"
         }
       ],
-      "docs": "Import the default export from your components/loaders/generated/invert file. It includes the shared HexGlyph source, reduced-motion behavior, timer cleanup, and accessible status semantics."
+      "docs": "Import the default export from your components/loaders/generated/invert file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
     },
     {
       "name": "scan-loader",
@@ -106,7 +106,7 @@
           "target": "@components/loaders/hex-glyph.tsx"
         }
       ],
-      "docs": "Import the default export from your components/loaders/generated/scan file. It includes the shared HexGlyph source, reduced-motion behavior, timer cleanup, and accessible status semantics."
+      "docs": "Import the default export from your components/loaders/generated/scan file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
     },
     {
       "name": "sequence-loader",
@@ -126,7 +126,87 @@
           "target": "@components/loaders/hex-glyph.tsx"
         }
       ],
-      "docs": "Import the default export from your components/loaders/generated/sequence file. It includes the shared HexGlyph source, reduced-motion behavior, timer cleanup, and accessible status semantics."
+      "docs": "Import the default export from your components/loaders/generated/sequence file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "shift-loader",
+      "type": "registry:component",
+      "title": "Shift Loader",
+      "description": "A zero-extra-dependency React loader that rotates a six-line state by one position per step.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/shift.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/shift.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/shift file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "count-loader",
+      "type": "registry:component",
+      "title": "Count Loader",
+      "description": "A zero-extra-dependency React loader that increments a six-line state as a six-bit counter.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/count.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/count.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/count file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "stack-loader",
+      "type": "registry:component",
+      "title": "Stack Loader",
+      "description": "A zero-extra-dependency React loader that builds a six-line state from bottom to top.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/stack.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/stack.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/stack file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "strobe-loader",
+      "type": "registry:component",
+      "title": "Strobe Loader",
+      "description": "A zero-extra-dependency React loader that pulses a six-line state through full and empty beats.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/strobe.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/strobe.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/strobe file. It includes all required source files, reduced-motion behavior, timer cleanup, and accessible status semantics."
     }
   ]
 }

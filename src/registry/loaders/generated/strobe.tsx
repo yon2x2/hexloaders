@@ -4,8 +4,9 @@
  * Binary blink: the register strobes around its resting value in hard 0/1
  * beats — REST → full flash (STATE 63 · 111111) → REST → empty flash
  * (STATE 0 · 000000). No fades; every beat is a hard cut.
- * A four-segment beat bar under the glyph tallies the pattern.
- * Cycle: 4 ticks × var(--hexl-step) = 480ms @ 120ms.
+ * A four-segment beat bar under the glyph tallies the pattern. Each beat
+ * holds for two clock ticks to remain below three flashes per second.
+ * Cycle: 8 ticks × var(--hexl-step) = 960ms @ 120ms.
  *
  * No extra packages beyond React. MIT License.
  */
@@ -70,7 +71,7 @@ export default function StrobeLoader({
   }, [safeStep]);
 
   const v = value & 63;
-  const beat = tick % 4; // 0 REST · 1 full 63 · 2 REST · 3 empty 0
+  const beat = Math.floor(tick / 2) % 4; // each visual beat holds two clock ticks
   const shown = still || beat % 2 === 0 ? v : beat === 1 ? 63 : 0;
 
   const rootStyle: CSSProperties = {

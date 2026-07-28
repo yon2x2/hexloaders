@@ -64,7 +64,7 @@ const MECHANIC_CYCLE: Record<Mechanic, number> = {
   COUNT: 7680,
   STACK: 960,
   CASCADE: 960,
-  STROBE: 480,
+  STROBE: 960,
 };
 
 type GeneratedComponent = ComponentType<{

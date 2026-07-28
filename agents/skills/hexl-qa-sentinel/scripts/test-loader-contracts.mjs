@@ -89,6 +89,20 @@ try {
     });
   }
 
+  const strobeSource = readFileSync('src/registry/loaders/generated/strobe.tsx', 'utf8');
+  const loaderDetailSource = readFileSync('src/pages/LoaderDetail.tsx', 'utf8');
+  const mechanicCellSource = readFileSync('src/components/loaders/MechanicCell.tsx', 'utf8');
+  const mechanicsReference = readFileSync(
+    'agents/skills/hexl-loader-forge/references/mechanics.md',
+    'utf8',
+  );
+  check('strobe keeps its safe 960ms cycle in sync', () => {
+    assert.match(strobeSource, /Math\.floor\(tick\s*\/\s*2\)\s*%\s*4/);
+    assert.match(mechanicCellSource, /Math\.floor\(t\s*\/\s*2\)\s*%\s*4/);
+    assert.match(loaderDetailSource, /STROBE:\s*960/);
+    assert.match(mechanicsReference, /\| STROBE \|[^\n]+\| 960ms \|/);
+  });
+
   for (const item of registry.items) {
     const entry = item.files[0];
     const module = await server.ssrLoadModule(`/${entry.path}`);

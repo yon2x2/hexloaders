@@ -92,7 +92,8 @@ function frame(mechanic: Mechanic, value: number, t: number): { v: number; rows:
       break;
     }
     case 'STROBE': {
-      rows.forEach((r) => (r.o = (t + r.bit) % 2 === 0 ? 1 : DIM));
+      const beat = Math.floor(t / 2) % 4;
+      v = beat % 2 === 0 ? v : beat === 1 ? 63 : 0;
       break;
     }
   }

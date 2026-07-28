@@ -12,7 +12,7 @@ Each mechanic is one template in `src/registry/loaders/generated/` and one branc
 | COUNT | odometer: `(value + tick) & 63` | 7680ms full sweep |
 | STACK | rows build up 1→6, hold, instant reset | 960ms |
 | CASCADE | propagation wave: rows light full→mid→dim in sequence | 960ms |
-| STROBE | binary blink beats: REST→63→REST→0 patterns | 480ms |
+| STROBE | binary blink beats: REST→63→REST→0 patterns, two ticks per visual beat | 960ms |
 
 ## Inventing a 9th mechanic — rules
 
