@@ -127,13 +127,13 @@ interface PanelHeaderProps {
 /** Ledger panel header — a collapse toggle on mobile, static row on desktop. */
 function PanelHeader({ title, right, open, onToggle, controls, className }: PanelHeaderProps) {
   return (
-    <div className={`flex min-h-10 shrink-0 items-stretch justify-between border-b border-hexl-fg${className ? ` ${className}` : ''}`}>
+    <div className={`flex min-h-11 shrink-0 items-stretch justify-between border-b border-hexl-fg lg:min-h-10${className ? ` ${className}` : ''}`}>
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
         aria-controls={controls}
-        className="flex items-center gap-2 px-3 py-2 font-mono text-mono-label uppercase lg:hidden"
+        className="flex min-h-11 min-w-11 items-center gap-2 px-3 py-2 font-mono text-mono-label uppercase lg:hidden"
       >
         <span aria-hidden="true">{open ? '−' : '+'}</span>
         {title}
@@ -164,7 +164,7 @@ function MicroButton({
       onClick={onClick}
       aria-label={ariaLabel}
       aria-pressed={active}
-      className={`flex h-8 items-center border border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+      className={`flex h-11 min-w-11 items-center border border-hexl-fg px-3 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg${
         active ? ' bg-hexl-fg text-hexl-bg' : ' bg-hexl-bg text-hexl-fg'
       }${className ? ` ${className}` : ''}`}
     >
@@ -595,7 +595,7 @@ export default function Playground() {
               autoCapitalize="off"
               autoCorrect="off"
               aria-label="Search loaders"
-              className="h-8 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data uppercase text-hexl-fg placeholder:opacity-[0.55]"
+              className="h-11 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data uppercase text-hexl-fg placeholder:opacity-[0.55]"
             />
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto max-h-72 lg:max-h-none">
@@ -620,7 +620,7 @@ export default function Playground() {
                         type="button"
                         onClick={() => selectLoader(l.slug)}
                         aria-pressed={l.slug === slug}
-                        className={`animate-hexl-snap flex w-full items-center justify-between gap-2 border-t border-hexl-fg px-3 py-2 text-left font-mono hover:bg-hexl-fg hover:text-hexl-bg${
+                        className={`flex min-h-11 min-w-11 w-full animate-hexl-snap items-center justify-between gap-2 border-t border-hexl-fg px-3 py-2 text-left font-mono hover:bg-hexl-fg hover:text-hexl-bg${
                           l.slug === slug ? ' bg-hexl-fg text-hexl-bg' : ''
                         }`}
                         style={{ animationDelay: `${Math.min(i * 4, 240)}ms` }}
@@ -667,7 +667,7 @@ export default function Playground() {
         <div id="playground-state-panel" className={open.state ? '' : 'hidden lg:block'}>
           <BitEditor value={value} onChange={setValue} size={128} className="border-0" />
           {/* 6-cell binary strip — a second way to edit the same word (print order top→bottom). */}
-          <div className="grid grid-cols-4 border-t border-hexl-fg min-[240px]:flex" role="group" aria-label="Binary strip — click a cell to toggle its bit">
+          <div className="grid grid-cols-4 border-t border-hexl-fg sm:flex" role="group" aria-label="Binary strip — click a cell to toggle its bit">
             {[5, 4, 3, 2, 1, 0].map((bitIdx, i) => {
               const on = ((value >> bitIdx) & 1) === 1;
               return (
@@ -677,8 +677,9 @@ export default function Playground() {
                   onClick={() => setValue(value ^ (1 << bitIdx))}
                   aria-pressed={on}
                   aria-label={`Bit ${bitIdx} — ${on ? '1 Yang' : '0 Yin'}. Toggle.`}
-                  className={`flex min-h-12 flex-1 flex-col items-center justify-center gap-1 hover:bg-hexl-fg hover:text-hexl-bg${i > 0 ? ' border-l border-hexl-fg' : ''}${
-                    i >= 4 ? ' border-t border-hexl-fg min-[240px]:border-t-0' : ''
+                  className={`flex min-h-12 min-w-11 flex-1 flex-col items-center justify-center gap-1 hover:bg-hexl-fg hover:text-hexl-bg${i > 0 && i !== 4 ? ' border-l border-hexl-fg' : ''}${
+                    i === 4 ? ' sm:border-l sm:border-hexl-fg' : ''
+                  }${i >= 4 ? ' border-t border-hexl-fg sm:border-t-0' : ''
                   }`}
                 >
                   <span aria-hidden="true" className={`block h-3 w-3${on ? ' bg-hexl-fg' : ' border border-hexl-fg'}`} />
@@ -690,7 +691,7 @@ export default function Playground() {
               type="button"
               onClick={randomizeSlot}
               aria-label="Random state — steps through 6 rapid states before settling"
-              className="flex min-h-12 flex-1 flex-col items-center justify-center gap-1 border-l border-t border-hexl-fg font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg min-[240px]:border-t-0"
+              className="flex min-h-12 min-w-11 flex-1 flex-col items-center justify-center gap-1 border-l border-t border-hexl-fg font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg sm:border-t-0"
             >
               <span aria-hidden="true" className="block h-3 w-3 border border-current" />
               RND
@@ -965,7 +966,7 @@ export default function Playground() {
                 <button
                   type="button"
                   onClick={copyInstall}
-                  className="shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+                  className="min-h-11 min-w-11 shrink-0 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
                   aria-live="polite"
                 >
                   {copiedInstall ? 'COPIED' : 'COPY'}
@@ -974,7 +975,7 @@ export default function Playground() {
             </div>
             <Link
               to={`/loaders/${slug}`}
-              className="block border-t border-hexl-fg px-3 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+              className="flex min-h-11 min-w-11 items-center border-t border-hexl-fg px-3 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
             >
               OPEN DOCUMENTATION →
             </Link>

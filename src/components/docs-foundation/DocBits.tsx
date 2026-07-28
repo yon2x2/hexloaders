@@ -225,7 +225,7 @@ export function DocsFooterStrip() {
           <Link
             key={l.to}
             to={l.to}
-            className="font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+            className="inline-flex min-h-11 min-w-11 items-center font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg lg:min-h-0 lg:min-w-0"
           >
             {l.label}
           </Link>
@@ -253,7 +253,7 @@ export function CopyChip({ command, label = 'COPY COMMAND' }: { command: string;
       type="button"
       onClick={onCopy}
       aria-live="polite"
-      className="shrink-0 border border-hexl-fg px-2 py-1 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+      className="min-h-11 min-w-11 shrink-0 border border-hexl-fg px-2 py-1 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
     >
       {copied ? 'COPIED' : label}
     </button>

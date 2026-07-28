@@ -25,7 +25,7 @@ function InvButton({ children, onClick, ariaLabel }: { children: string; onClick
       type="button"
       onClick={onClick}
       aria-label={ariaLabel}
-      className="shrink-0 border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+      className="min-h-11 min-w-11 shrink-0 border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
     >
       {children}
     </button>
@@ -113,7 +113,7 @@ export function BootSequence({ active }: VignetteProps) {
 
   return (
     <div data-invert="" className="w-full max-w-md border border-hexl-fg bg-hexl-bg text-hexl-fg">
-      <div className="flex h-9 items-center justify-between border-b border-hexl-fg px-3">
+      <div className="flex min-h-11 items-center justify-between border-b border-hexl-fg px-3">
         <span className="font-mono text-mono-micro uppercase">TTY0 — BOOT</span>
         <InvButton onClick={() => setChars(0)} ariaLabel="Reboot the boot sequence">
           REBOOT
@@ -175,13 +175,13 @@ export function DataTableRefresh({ active }: VignetteProps) {
 
   return (
     <div className="w-full max-w-md border border-hexl-fg">
-      <div className="flex h-9 items-center justify-between border-b border-hexl-fg px-3">
+      <div className="flex min-h-11 items-center justify-between border-b border-hexl-fg px-3">
         <span className="font-mono text-mono-micro uppercase">STATES.TABLE — 4 ROWS</span>
         <button
           type="button"
           onClick={refresh}
           disabled={phase === 'running'}
-          className="border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg disabled:opacity-[0.15]"
+          className="min-h-11 min-w-11 border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg disabled:opacity-[0.15]"
         >
           {phase === 'running' ? 'COUNTING…' : 'REFRESH'}
         </button>
@@ -315,7 +315,7 @@ export function PageTransition({ active }: VignetteProps) {
 
   return (
     <div data-invert="" className="w-full max-w-md border border-hexl-fg bg-hexl-bg text-hexl-fg">
-      <div className="flex h-9 items-center justify-between border-b border-hexl-fg px-3">
+      <div className="flex min-h-11 items-center justify-between border-b border-hexl-fg px-3">
         <span className="font-mono text-mono-micro uppercase">ROUTE — /states/{page === 0 ? '26' : '42'}</span>
         <InvButton onClick={() => tick === null && setTick(0)} ariaLabel="Navigate to the next page">
           NAVIGATE
@@ -445,12 +445,12 @@ export function SkeletonLedger({ active }: VignetteProps) {
 
   return (
     <div className="w-full max-w-sm border border-hexl-fg">
-      <div className="flex h-9 items-center justify-between border-b border-hexl-fg px-3">
+      <div className="flex min-h-11 items-center justify-between border-b border-hexl-fg px-3">
         <span className="font-mono text-mono-micro uppercase">LEDGER — ACCOUNT 042</span>
         <button
           type="button"
           onClick={() => setTick(0)}
-          className="border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+          className="min-h-11 min-w-11 border border-hexl-fg px-3 py-1 font-mono text-mono-micro uppercase hover:bg-hexl-fg hover:text-hexl-bg"
         >
           REPLAY
         </button>
@@ -510,7 +510,7 @@ export function CliStatusLine({ active }: VignetteProps) {
 
   return (
     <div data-invert="" className="w-full max-w-md border border-hexl-fg bg-hexl-bg text-hexl-fg">
-      <div className="flex min-h-9 items-center justify-between gap-3 border-b border-hexl-fg px-3 py-2">
+      <div className="flex min-h-11 items-center justify-between gap-3 border-b border-hexl-fg px-3 py-2">
         <span className="min-w-0 break-all font-mono text-mono-micro uppercase">CI — REGISTRY INTEGRITY</span>
         <InvButton onClick={() => setTick(0)} ariaLabel="Rerun the integrity check">
           RERUN

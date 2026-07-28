@@ -74,13 +74,13 @@ function CommunityStrip() {
                 href="https://github.com/yon2x2/hexloaders/issues/new?title=Showcase%20specimen%3A%20"
                 target="_blank"
                 rel="noreferrer"
-                className="border border-hexl-fg px-6 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center border border-hexl-fg px-6 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
               >
                 PROPOSE A SPECIMEN
               </a>
               <a
                 href="/#matrix"
-                className="border border-hexl-fg px-6 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center border border-hexl-fg px-6 py-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
               >
                 BROWSE THE 64
               </a>
@@ -144,7 +144,7 @@ export default function Showcase() {
                 type="button"
                 onClick={() => setFilter(f)}
                 aria-pressed={filter === f}
-                className={`animate-hexl-snap border border-hexl-fg px-3 py-2 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+                className={`min-h-11 min-w-11 animate-hexl-snap border border-hexl-fg px-3 py-2 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
                   filter === f ? ' bg-hexl-fg text-hexl-bg' : ''
                 }`}
                 style={{ animationDelay: `${i * 40}ms` }}

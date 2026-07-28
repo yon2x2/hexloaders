@@ -77,7 +77,7 @@ function Checklist({ items }: { items: string[] }) {
             type="button"
             aria-pressed={done[i]}
             onClick={() => setDone((d) => d.map((x, j) => (j === i ? !x : x)))}
-            className="flex w-full items-center gap-3 px-3 py-3 text-left hover:bg-hexl-fg hover:text-hexl-bg"
+            className="flex min-h-11 min-w-11 w-full items-center gap-3 px-3 py-3 text-left hover:bg-hexl-fg hover:text-hexl-bg"
           >
             <span
               aria-hidden="true"

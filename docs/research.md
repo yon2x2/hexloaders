@@ -23,5 +23,7 @@ A shadcn-style loader registry. Observed conventions to emulate:
 - Same registry/docs skeleton, but the design language is STRICTER: pure #000/#FFF only (no grays —
   hairline borders are solid 1px black, or white on inverted blocks), monospace + grotesk type,
   ledger/grid layout, stepped mechanical motion everywhere (marquee tickers, counters, loaders).
+- HEXLOADERS consolidates the public navigation to Docs · Playground · Showcase. The complete
+  documentation index remains available inside the docs shell and footer.
 - Signature motif: the 6-bit hexagram glyph (six stacked rows; solid bar = 1, split bar = 0) used as
   logo mark, bullets, dividers, section indices, and the loaders themselves.

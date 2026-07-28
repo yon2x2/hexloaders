@@ -42,12 +42,14 @@ Completed safeguards:
 - Public setup and reduced-motion documentation describe the shipped source.
 - The dense 64-cell catalogue keeps its lightweight renderer; public detail and
   configuration surfaces are covered by the installed-component contract gate.
+- Public mobile controls meet the 44px target, including dense maps through
+  contained horizontal scrolling where the full grid cannot fit.
+- The primary navigation is consolidated to Docs, Playground, and Showcase;
+  the full documentation index remains available inside the docs surfaces.
 
 Next:
 
-1. Audit the remaining public interactive controls against the 44px mobile
-   target, then verify representative routes at 390px and desktop width.
-2. Reassess discovery or CLI work only from measured demand.
+1. Reassess discovery or CLI work only from measured demand.
 
 ## Public-copy boundary
 

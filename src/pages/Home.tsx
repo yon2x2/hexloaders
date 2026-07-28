@@ -214,7 +214,7 @@ const MiniMap = memo(function MiniMap({ onPick }: { onPick?: (v: number) => void
   };
 
   return (
-    <div className="grid w-[204px] max-w-full grid-cols-8 gap-px border border-hexl-fg bg-hexl-fg p-px" role="group" aria-label="Choose a state in the 8×8 address map">
+    <div className="grid w-max grid-cols-[repeat(8,44px)] gap-px border border-hexl-fg bg-hexl-fg p-px lg:grid-cols-[repeat(8,24px)]" role="group" aria-label="Choose a state in the 8×8 address map">
       {Array.from({ length: 64 }, (_, v) => (
         <button
           ref={(element) => {
@@ -229,7 +229,7 @@ const MiniMap = memo(function MiniMap({ onPick }: { onPick?: (v: number) => void
             onPick?.(v);
           }}
           onKeyDown={(event) => moveFocus(event, v)}
-          className={`aspect-square min-h-6 w-full ${v === active ? 'bg-hexl-fg' : 'bg-hexl-bg'}`}
+          className={`h-11 w-11 lg:h-6 lg:w-6 ${v === active ? 'bg-hexl-fg' : 'bg-hexl-bg'}`}
         />
       ))}
     </div>
@@ -324,19 +324,11 @@ const MatrixCell = memo(function MatrixCell({
         onFocus={() => onFocus(order)}
         data-cell={meta.value}
         aria-label={`Open n°${meta.value} ${meta.name} details — ${meta.mechanic}`}
-        className="absolute inset-0 cursor-pointer"
+        className="absolute inset-x-0 top-0 bottom-11 cursor-pointer"
       >
         <span className="absolute left-1.5 top-1.5 font-mono text-mono-micro">
           n°{String(meta.value).padStart(2, '0')}
           {meta.flagship ? ' ★' : ''}
-        </span>
-        <span className="absolute bottom-1.5 left-1.5 font-mono text-mono-micro">{meta.binary}</span>
-        <span
-          className={`absolute bottom-1.5 right-1.5 font-mono text-mono-micro${
-            meta.install ? ' hexl-cell-action-meta' : ''
-          }`}
-        >
-          {meta.mechanic}
         </span>
         <span className="flex h-full w-full items-center justify-center">
           {meta.flagship ? (
@@ -348,6 +340,15 @@ const MatrixCell = memo(function MatrixCell({
           )}
         </span>
       </Link>
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-x-0 bottom-0 flex h-11 items-center gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 font-mono text-mono-micro${
+          meta.install ? ' pr-12' : ''
+        }`}
+      >
+        <span>{meta.binary}</span>
+        <span className="ml-auto truncate text-right">{meta.mechanic}</span>
+      </div>
       {meta.install ? (
         <button
           type="button"
@@ -364,11 +365,7 @@ const MatrixCell = memo(function MatrixCell({
             {copied ? `Install command for ${meta.name} copied` : ''}
           </span>
         </button>
-      ) : (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex min-h-11 items-center border-t border-hexl-fg bg-hexl-bg px-1.5 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
-          <span className="truncate font-mono text-mono-micro">MANUAL SOURCE</span>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 });
@@ -499,7 +496,7 @@ function Matrix() {
 
       {/* filter bar — sticky under the navbar */}
       <div className="sticky top-14 z-40 mt-12 border-y border-hexl-fg bg-hexl-bg">
-        <div className="mx-auto flex h-12 max-w-[1440px] items-stretch justify-between px-6 md:px-10">
+        <div className="mx-auto flex h-14 max-w-[1440px] items-stretch justify-between px-6 md:px-10 lg:h-12">
           <div className="flex items-stretch overflow-x-auto">
             {(['ALL', ...MECHANICS] as const).map((m) => (
               <button
@@ -507,7 +504,7 @@ function Matrix() {
                 type="button"
                 onClick={() => setMech(m)}
                 aria-pressed={mech === m}
-                className={`border-r border-hexl-fg px-3 font-mono text-mono-label uppercase first:border-l hover:bg-hexl-fg hover:text-hexl-bg${
+                className={`min-h-11 border-r border-hexl-fg px-3 font-mono text-mono-label uppercase first:border-l hover:bg-hexl-fg hover:text-hexl-bg${
                   mech === m ? ' bg-hexl-fg text-hexl-bg' : ''
                 }`}
               >
@@ -522,7 +519,7 @@ function Matrix() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="SEARCH STATES…"
               aria-label="Search states by name, slug or binary"
-              className="w-44 border border-hexl-fg bg-hexl-bg px-2 py-1 font-mono text-mono-data uppercase placeholder:opacity-[0.55]"
+              className="min-h-11 w-44 border border-hexl-fg bg-hexl-bg px-2 py-1 font-mono text-mono-data uppercase placeholder:opacity-[0.55]"
             />
             <span className="font-mono text-mono-micro uppercase tabular-nums">
               n° {String(matchCount).padStart(2, '0')}/64
@@ -589,7 +586,7 @@ function Matrix() {
             href="https://github.com/yon2x2/hexloaders/issues"
             target="_blank"
             rel="noreferrer"
-            className="uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+            className="inline-flex min-h-11 min-w-11 items-center uppercase hover:bg-hexl-fg hover:text-hexl-bg"
           >
             IMPROVE A LOADER → OPEN AN ISSUE
           </a>
@@ -598,7 +595,7 @@ function Matrix() {
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortKey)}
-              className="border border-hexl-fg bg-hexl-bg px-2 py-1 font-mono text-mono-data uppercase"
+              className="min-h-11 min-w-11 border border-hexl-fg bg-hexl-bg px-2 py-1 font-mono text-mono-data uppercase"
             >
               <option value="fuxi">FU XI (BINARY)</option>
               <option value="kingwen">KING WEN (SEQUENCE)</option>
@@ -824,7 +821,7 @@ function Flagships() {
               <Reveal delay={400}>
                 <Link
                   to={`/loaders/${f.slug}`}
-                  className="mt-6 inline-block font-mono text-mono-label uppercase underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg"
+                  className="mt-6 inline-flex min-h-11 min-w-11 items-center font-mono text-mono-label uppercase underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg"
                 >
                   FULL DOCUMENTATION →
                 </Link>
@@ -1011,7 +1008,7 @@ function Architecture() {
             <div className="flex h-full flex-col p-6">
               <div className="font-mono text-mono-label uppercase">ENCODE</div>
               <div className="mt-2 font-mono text-mono-data">bitsOf(26) → [0,1,0,1,1,0]</div>
-              <div className="mt-4">
+              <div className="mt-4 overflow-x-auto">
                 <BitEditor size={96} />
               </div>
             </div>
@@ -1020,7 +1017,7 @@ function Architecture() {
             <div className="flex h-full flex-col p-6">
               <div className="font-mono text-mono-label uppercase">ADDRESS</div>
               <div className="mt-2 font-mono text-mono-data">value = (upper &lt;&lt; 3) | lower</div>
-              <div className="mt-4">
+              <div className="mt-4 overflow-x-auto">
                 <MiniMap onPick={flash} />
               </div>
             </div>
@@ -1042,7 +1039,7 @@ function Architecture() {
         <Reveal delay={120}>
           <Link
             to="/docs/architecture"
-            className="mt-6 inline-block font-mono text-mono-label uppercase underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg"
+            className="mt-6 inline-flex min-h-11 min-w-11 items-center font-mono text-mono-label uppercase underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg"
           >
             READ THE ARCHITECTURE →
           </Link>
@@ -1109,7 +1106,7 @@ function Distribution() {
                       <button
                         type="button"
                         onClick={() => void copyRow(i, r.copy!)}
-                        className="mt-2 font-mono text-mono-data hover:bg-hexl-fg hover:text-hexl-bg"
+                        className="mt-2 inline-flex min-h-11 min-w-11 items-center font-mono text-mono-data hover:bg-hexl-fg hover:text-hexl-bg"
                         title="Copy"
                       >
                         {copiedRow === i ? 'COPIED' : r.body}
@@ -1243,7 +1240,6 @@ function Cta() {
 export default function Home() {
   const tickerItems = LOADERS.map((l) => ({
     label: `${l.name.toUpperCase()} ${l.binary}`,
-    value: l.value,
   }));
 
   return (
@@ -1254,9 +1250,6 @@ export default function Home() {
         duration={36}
         steps={240}
         ariaLabel="All 64 loader names with their binary strings"
-        onItemClick={(item) =>
-          window.dispatchEvent(new CustomEvent('hexl:flash-cell', { detail: item.value }))
-        }
       />
       <Matrix />
       <Flagships />

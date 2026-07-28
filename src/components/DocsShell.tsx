@@ -27,7 +27,7 @@ export interface DocsShellProps {
 
 function SidebarNav() {
   const linkCls = ({ isActive }: { isActive: boolean }) =>
-    `block px-3 py-1 font-mono text-mono-data hover:bg-hexl-fg hover:text-hexl-bg${isActive ? ' bg-hexl-fg text-hexl-bg' : ''}`;
+    `flex min-h-11 items-center px-3 py-2 font-mono text-mono-data hover:bg-hexl-fg hover:text-hexl-bg lg:min-h-0 lg:py-1${isActive ? ' bg-hexl-fg text-hexl-bg' : ''}`;
   return (
     <nav aria-label="Docs" className="font-mono">
       <div className="px-3 pb-2 pt-4 text-mono-label uppercase">GETTING STARTED</div>
@@ -56,7 +56,7 @@ function SidebarNav() {
             {l.label}
           </NavLink>
         ) : (
-          <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="block px-3 py-1 font-mono text-mono-data hover:bg-hexl-fg hover:text-hexl-bg">
+          <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="flex min-h-11 items-center px-3 py-2 font-mono text-mono-data hover:bg-hexl-fg hover:text-hexl-bg lg:min-h-0 lg:py-1">
             {l.label}
           </a>
         ),

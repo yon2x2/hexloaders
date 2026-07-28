@@ -77,7 +77,7 @@ export default function Specimen({ title, context, slug, dimmed = false, childre
         disabled={!meta?.install}
         title={meta?.install ? 'Copy install command' : 'Manual source available on the loader page'}
         aria-live="polite"
-        className="flex min-h-9 shrink-0 items-center justify-between gap-3 border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase enabled:hover:bg-hexl-fg enabled:hover:text-hexl-bg"
+        className="flex min-h-11 min-w-11 shrink-0 items-center justify-between gap-3 border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase enabled:hover:bg-hexl-fg enabled:hover:text-hexl-bg"
       >
         <span className="shrink-0">{copied ? 'COPIED' : slug}</span>
         <span className="truncate opacity-[0.55]">{meta?.install ?? 'MANUAL SOURCE'}</span>

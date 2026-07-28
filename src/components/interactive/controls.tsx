@@ -79,7 +79,7 @@ export function SteppedSlider({ label, values, value, onChange, format, hint }: 
         aria-valuemax={values[values.length - 1]}
         aria-valuenow={value}
         aria-valuetext={format ? format(value) : String(value)}
-        className="mt-2 flex h-9 cursor-ew-resize touch-none select-none border border-hexl-fg"
+        className="mt-2 flex h-11 min-w-11 cursor-ew-resize touch-none select-none border border-hexl-fg"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -121,7 +121,7 @@ export function Segmented<T extends string | number>({ label, options, value, on
             type="button"
             aria-pressed={o.value === value}
             onClick={() => onChange(o.value)}
-            className={`min-h-9 flex-1 font-mono text-mono-label uppercase${i % 2 > 0 ? ' border-l border-hexl-fg' : ''}${
+            className={`min-h-11 min-w-11 flex-1 font-mono text-mono-label uppercase${i % 2 > 0 ? ' border-l border-hexl-fg' : ''}${
               i > 1 ? ' border-t border-hexl-fg min-[240px]:border-t-0' : ''
             }${i > 0 ? ' min-[240px]:border-l min-[240px]:border-hexl-fg' : ''}${
               o.value === value ? ' bg-hexl-fg text-hexl-bg' : ' bg-hexl-bg text-hexl-fg hover:bg-hexl-fg hover:text-hexl-bg'
@@ -273,7 +273,7 @@ export function SequenceInput({ label, sequence, onChange }: SequenceInputProps)
         inputMode="numeric"
         aria-label={`${label} — comma-separated states 0 to 63`}
         placeholder="0,17,34,42"
-        className="mt-2 h-9 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data text-hexl-fg placeholder:opacity-[0.55]"
+        className="mt-2 h-11 w-full border border-hexl-fg bg-hexl-bg px-2 font-mono text-mono-data text-hexl-fg placeholder:opacity-[0.55]"
       />
     </div>
   );
