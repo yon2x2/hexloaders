@@ -1,7 +1,7 @@
 /**
  * HEXLOADERS — hex-glyph
- * n° 00–63 · binary 000000–111111 · mechanic: PRIMITIVE
- * The pure-SVG 6-bit glyph every loader is composed from. Zero dependencies.
+ * n° 00–63 · binary 000000–111111
+ * Pure-SVG renderer for a 6-bit state. No extra packages beyond React.
  * Sized by CSS custom properties (--hexl-line-h, --hexl-gap) or the `size` prop.
  *
  * MIT License
@@ -17,7 +17,7 @@ export interface HexGlyphProps extends Omit<SVGProps<SVGSVGElement>, 'width' | '
   size?: number;
   /** Resting opacity of the bars (dim state is opacity on solid ink, never gray). */
   dim?: number;
-  /** 'none' static · 'scan' rows light top→bottom · 'cycle' random states. */
+  /** 'none' static · 'scan' rows light top→bottom · 'cycle' walks a deterministic state permutation. */
   animated?: 'none' | 'scan' | 'cycle';
   /** Base clock in ms for animated modes. Default 120. */
   step?: number;
@@ -51,7 +51,9 @@ export default function HexGlyph({
   ...rest
 }: HexGlyphProps) {
   const [frame, setFrame] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
     if (animated === 'none' || reducedMotion()) return;
@@ -59,8 +61,7 @@ export default function HexGlyph({
     return () => window.clearInterval(id);
   }, [animated, safeStep]);
 
-  const shown =
-    animated === 'cycle' ? Math.floor(Math.random() * 64) : value & 63;
+  const shown = animated === 'cycle' ? (value + frame * 17) & 63 : value & 63;
   const activeRow = animated === 'scan' ? 5 - (frame % 6) : -1;
 
   const bars: { x: number; y: number; w: number; o: number }[] = [];

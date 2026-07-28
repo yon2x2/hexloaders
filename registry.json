@@ -52,6 +52,81 @@
         }
       ],
       "docs": "Import the default export from your components/loaders/mutating-matrix file. The component requires React and includes its own CSS, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "inversion-pulse",
+      "type": "registry:component",
+      "title": "Inversion Pulse",
+      "description": "A zero-extra-dependency React loader that snaps colors or bits through a programmable stepped rhythm.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/inversion-pulse.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/inversion-pulse.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/inversion-pulse file. The component requires React and includes its own CSS, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "invert-loader",
+      "type": "registry:component",
+      "title": "Invert Loader",
+      "description": "A zero-extra-dependency React loader that alternates a six-line state with its bitwise complement.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/invert.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/invert.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/invert file. It includes the shared HexGlyph source, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "scan-loader",
+      "type": "registry:component",
+      "title": "Scan Loader",
+      "description": "A zero-extra-dependency React loader that scans a six-line state from top to bottom in discrete steps.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/scan.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/scan.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/scan file. It includes the shared HexGlyph source, reduced-motion behavior, timer cleanup, and accessible status semantics."
+    },
+    {
+      "name": "sequence-loader",
+      "type": "registry:component",
+      "title": "Sequence Loader",
+      "description": "A zero-extra-dependency React loader that advances a six-line state through the King Wen sequence.",
+      "author": "yon2x2",
+      "files": [
+        {
+          "path": "src/registry/loaders/generated/sequence.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/generated/sequence.tsx"
+        },
+        {
+          "path": "src/registry/loaders/hex-glyph.tsx",
+          "type": "registry:component",
+          "target": "@components/loaders/hex-glyph.tsx"
+        }
+      ],
+      "docs": "Import the default export from your components/loaders/generated/sequence file. It includes the shared HexGlyph source, reduced-motion behavior, timer cleanup, and accessible status semantics."
     }
   ]
 }

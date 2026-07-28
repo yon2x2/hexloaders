@@ -1,13 +1,11 @@
 /**
- * HEXLOADERS — scan (generated mechanic template)
+ * HEXLOADERS — scan-loader
  * mechanic: SCAN
- * serves states 07 09 15 23 31 39 47 55 (+ 01 via the bespoke flagship bit-scanner)
  * The active row crosses the hexagram top→bottom in six discrete steps;
  * every row snaps from dim to full for exactly one step, then back.
  * Cycle: 6 sweep steps + 2 hold steps = 8 × var(--hexl-step) = 960ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -51,11 +49,6 @@ function rowClip(r: number): string {
   return `inset(${top}% 0% ${bottom}% 0%)`;
 }
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function ScanLoader({
   value = 7,
   size = 96,
@@ -65,15 +58,21 @@ export default function ScanLoader({
   style,
   ...rest
 }: ScanLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static glyph
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static glyph
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const frame = tick % 8; // 0–5 sweep (top→bottom) · 6–7 hold · instant reset
@@ -94,10 +93,10 @@ export default function ScanLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-scan-stage" style={{ width: size, height: size * H_OVER_W }}>
-        <HexGlyph value={v} size={size} dim={still ? 1 : 0.15} />
+        <HexGlyph value={v} size={size} dim={still ? 1 : 0.15} aria-hidden="true" />
         {active >= 0 && (
           <span className="hexl-g-layer" style={{ clipPath: rowClip(active) }} aria-hidden="true">
-            <HexGlyph value={v} size={size} />
+            <HexGlyph value={v} size={size} aria-hidden="true" />
           </span>
         )}
       </div>

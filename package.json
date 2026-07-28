@@ -15,9 +15,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "check:integrity": "node agents/skills/hexl-qa-sentinel/scripts/validate-hexagrams.mjs",
+    "check:components": "node agents/skills/hexl-qa-sentinel/scripts/test-loader-contracts.mjs",
     "check:registry:consumer": "node agents/skills/hexl-qa-sentinel/scripts/test-registry-consumer.mjs",
     "check:design": "bash agents/skills/hexl-design-guardian/scripts/audit-design-laws.sh",
-    "check": "npm run lint && npm run build && npm run check:integrity && npm run check:design"
+    "check": "npm run lint && npm run build && npm run check:integrity && npm run check:components && npm run check:design"
   },
   "dependencies": {
     "iconoir-react": "7.11.1",

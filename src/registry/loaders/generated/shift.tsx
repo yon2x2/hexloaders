@@ -1,14 +1,12 @@
 /**
- * HEXLOADERS — shift (generated mechanic template)
+ * HEXLOADERS — shift-loader
  * mechanic: SHIFT
- * serves states 36 44 46 52 53 54 60 62
  * Barrel rotation: the 6-bit register rotates left one position per clock
  * tick — bit 5 wraps to bit 0 — a hard cut per frame, like a relay bank
  * stepping. The rail prints the rotation offset and live binary.
  * Cycle: 6 ticks × var(--hexl-step) = 720ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -53,11 +51,6 @@ const CSS = `
 }
 `;
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 /** Barrel-rotate a 6-bit register left by k positions (bit 5 wraps to bit 0). */
 const rotl6 = (v: number, k: number): number => ((v << k) | (v >> (6 - k))) & 63;
 
@@ -70,15 +63,21 @@ export default function ShiftLoader({
   style,
   ...rest
 }: ShiftLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static register, offset 0
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static register, offset 0
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const k = still ? 0 : tick % 6;
@@ -100,7 +99,7 @@ export default function ShiftLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-shf-stage">
-        <HexGlyph value={shown} size={size} />
+        <HexGlyph value={shown} size={size} aria-hidden="true" />
       </div>
       <div className="hexl-g-rail" aria-hidden="true">
         <span>ROT −{k}</span>
