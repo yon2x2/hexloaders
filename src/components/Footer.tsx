@@ -18,7 +18,7 @@ const RESOURCE_LINKS: ({ to: string; label: string } | { href: string; label: st
 ];
 
 export default function Footer() {
-  const binaryItems = HEXAGRAMS.map((h) => ({ label: h.binary, value: h.value }));
+  const binaryItems = HEXAGRAMS.map((h) => ({ label: h.binary }));
 
   return (
     <footer data-invert="" className="border-t border-hexl-fg bg-hexl-bg text-hexl-fg">
@@ -45,7 +45,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {DOCS_LINKS.map((l) => (
                 <li key={l.to}>
-                  <Link to={l.to} className="font-mono text-mono-data underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg">
+                  <Link to={l.to} className="inline-flex min-h-11 min-w-11 items-center font-mono text-mono-data underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg lg:min-h-0 lg:min-w-0">
                     {l.label}
                   </Link>
                 </li>
@@ -58,11 +58,11 @@ export default function Footer() {
               {RESOURCE_LINKS.map((l) => (
                 <li key={l.label}>
                   {'to' in l ? (
-                    <Link to={l.to} className="font-mono text-mono-data underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg">
+                    <Link to={l.to} className="inline-flex min-h-11 min-w-11 items-center font-mono text-mono-data underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg lg:min-h-0 lg:min-w-0">
                       {l.label}
                     </Link>
                   ) : (
-                    <a href={l.href} target="_blank" rel="noreferrer" className="font-mono text-mono-data underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg">
+                    <a href={l.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 min-w-11 items-center font-mono text-mono-data underline-offset-4 hover:bg-hexl-fg hover:text-hexl-bg lg:min-h-0 lg:min-w-0">
                       {l.label}
                     </a>
                   )}

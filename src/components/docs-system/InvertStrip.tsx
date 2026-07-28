@@ -22,7 +22,7 @@ export default function InvertStrip() {
 
   return (
     <div className="border border-hexl-fg">
-      <div className="flex h-10 items-stretch justify-between border-b border-hexl-fg">
+      <div className="flex min-h-11 items-stretch justify-between border-b border-hexl-fg">
         <span className="flex items-center px-3 font-mono text-mono-micro uppercase">
           LIVE — THREE LOADERS AT 48PX
         </span>
@@ -30,7 +30,7 @@ export default function InvertStrip() {
           type="button"
           onClick={() => setInvert(!invert)}
           aria-pressed={invert}
-          className={`border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+          className={`min-h-11 min-w-11 border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
             invert ? ' bg-hexl-fg text-hexl-bg' : ''
           }`}
         >

@@ -1,24 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import HexGlyph from '@/registry/loaders/hex-glyph';
 
 const LINKS = [
-  { to: '/docs/introduction', label: 'INTRODUCTION' },
-  { to: '/docs/usage', label: 'USAGE' },
-  { to: '/docs/manual-setup', label: 'MANUAL SETUP' },
+  { to: '/docs/introduction', label: 'DOCS' },
   { to: '/playground', label: 'PLAYGROUND' },
   { to: '/showcase', label: 'SHOWCASE' },
 ];
 
-const MENU_LINKS = [
-  { to: '/', label: 'HOME' },
-  { to: '/docs/introduction', label: 'INTRODUCTION' },
-  { to: '/docs/architecture', label: 'ARCHITECTURE' },
-  { to: '/docs/usage', label: 'USAGE' },
-  { to: '/docs/manual-setup', label: 'MANUAL SETUP' },
-  { to: '/playground', label: 'PLAYGROUND' },
-  { to: '/showcase', label: 'SHOWCASE' },
-];
+const isLinkActive = (pathname: string, to: string) =>
+  to.startsWith('/docs/') ? pathname.startsWith('/docs/') : pathname === to;
 
 function GitHubMark() {
   return (
@@ -39,6 +30,7 @@ function InvertIcon() {
 }
 
 export default function Navbar() {
+  const { pathname } = useLocation();
   const [logoValue, setLogoValue] = useState(63);
   const [hover, setHover] = useState(false);
   const [open, setOpen] = useState(false);
@@ -132,19 +124,21 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden items-stretch lg:flex" aria-label="Primary">
-          {LINKS.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className={({ isActive }) =>
-                `flex items-center border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
-                  isActive ? ' bg-hexl-fg text-hexl-bg' : ''
-                }`
-              }
-            >
-              {l.label}
-            </NavLink>
-          ))}
+          {LINKS.map((l) => {
+            const active = isLinkActive(pathname, l.to);
+            return (
+              <Link
+                key={l.to}
+                to={l.to}
+                aria-current={active ? 'page' : undefined}
+                className={`flex items-center border-l border-hexl-fg px-4 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+                  active ? ' bg-hexl-fg text-hexl-bg' : ''
+                }`}
+              >
+                {l.label}
+              </Link>
+            );
+          })}
           <a
             href="https://github.com/yon2x2/hexloaders"
             target="_blank"
@@ -197,24 +191,30 @@ export default function Navbar() {
           className="fixed inset-0 top-14 z-50 flex flex-col overflow-y-auto overscroll-contain border-t border-hexl-fg bg-hexl-bg pb-[env(safe-area-inset-bottom)] lg:hidden"
           aria-label="Mobile"
         >
-          {MENU_LINKS.map((l, i) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              onClick={() => setOpen(false)}
-              className="hexl-reveal is-on flex items-center justify-between border-b border-hexl-fg px-6 py-5 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-              style={{ transitionDelay: `${i * 40}ms` }}
-            >
-              <span>{l.label}</span>
-              <span className="text-mono-micro">0{i + 1}</span>
-            </NavLink>
-          ))}
+          {LINKS.map((l, i) => {
+            const active = isLinkActive(pathname, l.to);
+            return (
+              <Link
+                key={l.to}
+                to={l.to}
+                aria-current={active ? 'page' : undefined}
+                onClick={() => setOpen(false)}
+                className={`hexl-reveal is-on flex items-center justify-between border-b border-hexl-fg px-6 py-5 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg${
+                  active ? ' bg-hexl-fg text-hexl-bg' : ''
+                }`}
+                style={{ transitionDelay: `${i * 40}ms` }}
+              >
+                <span>{l.label}</span>
+                <span className="text-mono-micro">0{i + 1}</span>
+              </Link>
+            );
+          })}
           <a
             href="https://github.com/yon2x2/hexloaders"
             target="_blank"
             rel="noreferrer"
             className="hexl-reveal is-on flex items-center justify-between border-b border-hexl-fg px-6 py-5 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-            style={{ transitionDelay: `${MENU_LINKS.length * 40}ms` }}
+            style={{ transitionDelay: `${LINKS.length * 40}ms` }}
           >
             <span>GITHUB</span>
             <GitHubMark />

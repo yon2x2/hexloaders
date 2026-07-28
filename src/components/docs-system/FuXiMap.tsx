@@ -78,11 +78,11 @@ export default function FuXiMap() {
       </div>
 
       <div className="overflow-x-auto p-3">
-        <div className="grid w-max cursor-crosshair grid-cols-[repeat(9,28px)] gap-px border border-hexl-fg bg-hexl-fg p-px">
+        <div className="grid w-max cursor-crosshair grid-cols-[repeat(9,44px)] gap-px border border-hexl-fg bg-hexl-fg p-px lg:grid-cols-[repeat(9,28px)]">
           {/* top-left corner registration mark */}
           <div
             aria-hidden="true"
-            className="flex h-[28px] w-[28px] items-center justify-center bg-hexl-bg font-mono text-mono-micro opacity-[0.55]"
+            className="flex h-11 w-11 items-center justify-center bg-hexl-bg font-mono text-mono-micro opacity-[0.55] lg:h-7 lg:w-7"
           >
             +
           </div>
@@ -91,7 +91,7 @@ export default function FuXiMap() {
             <div
               key={`col-${b}`}
               aria-hidden="true"
-              className={`flex h-[28px] w-[28px] items-center justify-center font-mono text-mono-micro${
+              className={`flex h-11 w-11 items-center justify-center font-mono text-mono-micro lg:h-7 lg:w-7${
                 c === lower ? ' bg-hexl-fg text-hexl-bg' : ' bg-hexl-bg'
               }`}
             >
@@ -103,7 +103,7 @@ export default function FuXiMap() {
             <Fragment key={`row-${rb}`}>
               <div
                 aria-hidden="true"
-                className={`flex h-[28px] w-[28px] items-center justify-center font-mono text-mono-micro${
+                className={`flex h-11 w-11 items-center justify-center font-mono text-mono-micro lg:h-7 lg:w-7${
                   r === upper ? ' bg-hexl-fg text-hexl-bg' : ' bg-hexl-bg'
                 }`}
               >
@@ -119,7 +119,7 @@ export default function FuXiMap() {
                     onFocus={() => setHover(v)}
                     onClick={() => void onPick(v)}
                     aria-label={`State ${v} — ${LOADERS[v].name}. Activate to copy the value.`}
-                    className="hexl-cell flex h-[28px] w-[28px] cursor-crosshair items-center justify-center"
+                    className="hexl-cell flex h-11 w-11 cursor-crosshair items-center justify-center lg:h-7 lg:w-7"
                     style={{ opacity: v < shown ? 1 : 0 }}
                   >
                     <HexGlyph value={v} size={14} aria-hidden="true" />

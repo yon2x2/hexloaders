@@ -2,8 +2,6 @@ import type { CSSProperties, ReactNode } from 'react';
 
 export interface TickerItem {
   label: string;
-  /** Optional payload returned by onItemClick (e.g. loader value). */
-  value?: number;
 }
 
 export interface TickerProps {
@@ -14,13 +12,12 @@ export interface TickerProps {
   duration?: number;
   /** steps() count per loop — the visible tick jumps. Default 240. */
   steps?: number;
-  onItemClick?: (item: TickerItem) => void;
   className?: string;
   ariaLabel?: string;
 }
 
 /**
- * Full-bleed stepped marquee band (h-10, hairlines top/bottom).
+ * Full-bleed stepped marquee band (h-11, hairlines top/bottom).
  * Content duplicated ×2; translateX 0→-50% in hard steps. Pauses on hover.
  */
 export default function Ticker({
@@ -28,7 +25,6 @@ export default function Ticker({
   variant = 'band',
   duration = 36,
   steps = 240,
-  onItemClick,
   className,
   ariaLabel,
 }: TickerProps) {
@@ -37,26 +33,13 @@ export default function Ticker({
   };
 
   const half = (key: string): ReactNode => (
-    <span className="flex h-10 shrink-0 items-center" aria-hidden="true" key={key}>
-      {items.map((item, i) =>
-        onItemClick ? (
-          <button
-            key={i}
-            type="button"
-            tabIndex={-1}
-            onClick={() => onItemClick(item)}
-            className="flex h-10 items-center px-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
-          >
-            {item.label}
-            <span aria-hidden="true" className="px-3">·</span>
-          </button>
-        ) : (
-          <span key={i} className="flex h-10 items-center px-3 font-mono text-mono-label uppercase">
-            {item.label}
-            <span aria-hidden="true" className="px-3">·</span>
-          </span>
-        ),
-      )}
+    <span className="flex h-11 shrink-0 items-center" aria-hidden="true" key={key}>
+      {items.map((item, i) => (
+        <span key={i} className="flex h-11 items-center px-3 font-mono text-mono-label uppercase">
+          {item.label}
+          <span aria-hidden="true" className="px-3">·</span>
+        </span>
+      ))}
     </span>
   );
 

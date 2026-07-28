@@ -155,23 +155,13 @@
   .hexl-hover-reveal {
     opacity: 1;
   }
-  .hexl-cell-action-meta {
-    opacity: 0;
-  }
   @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
     .hexl-hover-reveal {
       opacity: 0;
     }
-    .hexl-cell-action-meta {
-      opacity: 1;
-    }
     .group:hover .hexl-hover-reveal,
     .group:focus-within .hexl-hover-reveal {
       opacity: 1;
-    }
-    .group:hover .hexl-cell-action-meta,
-    .group:focus-within .hexl-cell-action-meta {
-      opacity: 0;
     }
   }
 
