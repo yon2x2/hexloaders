@@ -1,14 +1,12 @@
 /**
- * HEXLOADERS — invert (generated mechanic template)
+ * HEXLOADERS — invert-loader
  * mechanic: INVERT
- * serves states 17 25 33 41 48 49 56 (+ 40 via the bespoke flagship inversion-pulse)
  * Periodic bitwise complement: every clock tick all six lines negate —
  * Yang⇄Yin, a hard 0ms cut, no transition anywhere. A two-segment beat bar
  * under the glyph tallies the NORMAL / COMPLEMENT phases.
  * Cycle: 2 ticks × var(--hexl-step) = 240ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -45,11 +43,6 @@ const CSS = `
 .hexl-g-seg-on { background: var(--hexl-fg, #000000); }
 `;
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function InvertLoader({
   value = 17,
   size = 96,
@@ -59,15 +52,21 @@ export default function InvertLoader({
   style,
   ...rest
 }: InvertLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static glyph, beat bar full
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static glyph, beat bar full
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const phase = tick % 2; // 0 = NORMAL · 1 = COMPLEMENT
@@ -88,7 +87,7 @@ export default function InvertLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-not-stage">
-        <HexGlyph value={shown} size={size} />
+        <HexGlyph value={shown} size={size} aria-hidden="true" />
       </div>
       <div className="hexl-g-bar" aria-hidden="true">
         {[0, 1].map((j) => (

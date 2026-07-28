@@ -144,7 +144,9 @@ export default function MutatingMatrix({
 }: MutatingMatrixProps) {
   const seq = useMemo(() => buildSequence(mode, sequence, seed), [mode, sequence, seed]);
   const [tick, setTick] = useState(0);
-  const safeInterval = Math.max(120, interval);
+  const safeInterval = Number.isFinite(interval)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(interval)))
+    : 120;
 
   useEffect(() => {
     if (reducedMotion()) return; // static first state

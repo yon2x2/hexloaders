@@ -16,7 +16,7 @@ import type { HTMLAttributes } from 'react';
 export interface InversionPulseProps extends HTMLAttributes<HTMLDivElement> {
   /** 'colorspace' flips color · 'bitwise' flips bits · 'both' alternates. Default 'both'. */
   mode?: 'colorspace' | 'bitwise' | 'both';
-  /** Counts of base intervals per phase. Default [7,1,7,1,3,3]. */
+  /** Positive base-interval counts per phase. Empty input falls back to the default [7,1,7,1,3,3]. */
   pattern?: number[];
   /** Base interval in ms. Default 120. */
   interval?: number;
@@ -67,11 +67,6 @@ const H = 6 * LINE_H + 5 * GAP;
 
 const DEFAULT_PATTERN = [7, 1, 7, 1, 3, 3];
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function InversionPulse({
   mode = 'both',
   pattern = DEFAULT_PATTERN,
@@ -84,21 +79,31 @@ export default function InversionPulse({
   ...rest
 }: InversionPulseProps) {
   const [tick, setTick] = useState(0);
-  const [still] = useState(reducedMotion);
-  const safeInterval = Math.max(120, interval);
+  const [still, setStill] = useState(true);
+  const safeInterval = Number.isFinite(interval)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(interval)))
+    : 120;
+  const safePattern =
+    pattern.length > 0
+      ? pattern.map((count) => (Number.isFinite(count) ? Math.max(1, Math.floor(count)) : 1))
+      : DEFAULT_PATTERN;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static glyph, bar full
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static glyph, bar full
     const id = window.setInterval(() => setTick((t) => t + 1), safeInterval);
     return () => window.clearInterval(id);
-  }, [safeInterval, still]);
+  }, [safeInterval]);
 
-  const total = pattern.reduce((a, b) => a + b, 0);
+  const total = safePattern.reduce((a, b) => a + b, 0);
   const t = tick % total;
   let phase = 0;
   let acc = 0;
-  for (let p = 0; p < pattern.length; p++) {
-    acc += pattern[p];
+  for (let p = 0; p < safePattern.length; p++) {
+    acc += safePattern[p];
     if (t < acc) {
       phase = p;
       break;
@@ -145,7 +150,7 @@ export default function InversionPulse({
         </svg>
       </div>
       <div className="hexl-ip-bar" aria-hidden="true">
-        {pattern.map((_, j) => (
+        {safePattern.map((_, j) => (
           <div key={j} className={`hexl-ip-seg${still || j <= phase ? ' hexl-ip-seg-on' : ''}`} />
         ))}
       </div>

@@ -1,14 +1,12 @@
 /**
- * HEXLOADERS — count (generated mechanic template)
+ * HEXLOADERS — count-loader
  * mechanic: COUNT
- * serves states 18 26 34 42 45 50 57 59
  * Binary counting: the state increments by one per clock tick —
  * (value + tick) mod 64 — rolling over at 64 like a six-bit odometer.
  * Every carry is a hard cut; the rail prints the live state and binary.
  * Cycle: 64 ticks × var(--hexl-step) = 7680ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -53,11 +51,6 @@ const CSS = `
 }
 `;
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function CountLoader({
   value = 18,
   size = 96,
@@ -67,15 +60,21 @@ export default function CountLoader({
   style,
   ...rest
 }: CountLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static starting state
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static starting state
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const shown = still ? v : (v + tick) & 63;
@@ -96,7 +95,7 @@ export default function CountLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-cnt-stage">
-        <HexGlyph value={shown} size={size} />
+        <HexGlyph value={shown} size={size} aria-hidden="true" />
       </div>
       <div className="hexl-g-rail" aria-hidden="true">
         <span>n°{shown}</span>

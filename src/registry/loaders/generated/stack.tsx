@@ -1,14 +1,12 @@
 /**
- * HEXLOADERS — stack (generated mechanic template)
+ * HEXLOADERS — stack-loader
  * mechanic: STACK
- * serves states 04 11 14 20 28 30 38
  * Build-up: lines stack bottom→top one row per clock tick out of the dim
  * field, hold one tick fully built, then reset to dim and start over.
  * A six-segment ledger bar under the glyph fills as the stack rises.
  * Cycle: 6 build steps + 1 hold + 1 reset = 8 × var(--hexl-step) = 960ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -54,11 +52,6 @@ function stackClip(top: number): string {
   return `inset(${((60 - 12 * top) / 68) * 100}% 0% 0% 0%)`;
 }
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function StackLoader({
   value = 4,
   size = 96,
@@ -68,15 +61,21 @@ export default function StackLoader({
   style,
   ...rest
 }: StackLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static fully-built stack
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static fully-built stack
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const frame = tick % 8; // 0–5 build · 6 hold · 7 reset
@@ -97,10 +96,10 @@ export default function StackLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-stk-stage" style={{ width: size, height: size * H_OVER_W }}>
-        <HexGlyph value={v} size={size} dim={still ? 1 : 0.15} />
+        <HexGlyph value={v} size={size} dim={still ? 1 : 0.15} aria-hidden="true" />
         {top >= 0 && (
           <span className="hexl-g-layer" style={{ clipPath: stackClip(top) }} aria-hidden="true">
-            <HexGlyph value={v} size={size} />
+            <HexGlyph value={v} size={size} aria-hidden="true" />
           </span>
         )}
       </div>

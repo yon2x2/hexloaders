@@ -55,7 +55,7 @@ function SubLabel({ children }: { children: ReactNode }) {
 
 /* ------------------------------ registry data ------------------------------ */
 
-/** Cycle length (ms at the 120ms base clock) of each generated mechanic template. */
+/** Cycle length (ms at the 120ms base clock) of each loader mechanic. */
 const MECHANIC_CYCLE: Record<Mechanic, number> = {
   SCAN: 960,
   SEQUENCE: 7680,
@@ -426,7 +426,7 @@ export default function LoaderDetail() {
 
   const files = loaderFilesFor(meta.slug);
   const code = files.map((f) => `/* ── ${f.path} ── */\n\n${f.source}`).join('\n');
-  const codeFilename = files.length > 1 ? `${files.length} FILES · ${meta.mechanic} TEMPLATE + PRIMITIVE` : files[0].path;
+  const codeFilename = files.length > 1 ? 'SOURCE FILES' : files[0].path;
   const kb = `${(code.length / 1024).toFixed(1)} KB`;
 
   const prev = byValue((meta.value + 63) % 64);
@@ -536,7 +536,7 @@ export default function LoaderDetail() {
                 type="button"
                 onClick={() => setShowSource(!showSource)}
                 aria-expanded={showSource}
-                className="flex h-10 w-full items-center justify-between px-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
+                className="flex min-h-11 w-full items-center justify-between px-3 font-mono text-mono-label uppercase hover:bg-hexl-fg hover:text-hexl-bg"
               >
                 <span>{showSource ? 'HIDE FULL SOURCE' : 'SHOW FULL SOURCE'}</span>
                 <span>{showSource ? '−' : '+'}</span>
@@ -545,8 +545,7 @@ export default function LoaderDetail() {
                 <div className="border-t border-hexl-fg">
                   <CodeBlock code={code} language="tsx" className="border-0" />
                   <div className="border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase opacity-[0.55]">
-                    {files.length} {files.length === 1 ? 'FILE' : 'FILES'} · 0 DEPENDENCIES · MIT
-                    {meta.flagship ? ' · DICTIONARY INLINED' : ' · IMPORTS ../hex-glyph'}
+                    SOURCE INCLUDED · 0 DEPENDENCIES · MIT
                   </div>
                 </div>
               )}

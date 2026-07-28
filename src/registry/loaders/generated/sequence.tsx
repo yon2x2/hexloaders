@@ -1,14 +1,12 @@
 /**
- * HEXLOADERS — sequence (generated mechanic template)
+ * HEXLOADERS — sequence-loader
  * mechanic: SEQUENCE
- * serves states 27 35 43 51 58 61 63 (+ 19 via the bespoke flagship mutating-matrix)
  * King Wen stepping: the glyph starts at the King Wen position of `value` and
  * advances one sequence position per clock tick — a hard steps(1) cut per
  * frame, the historical permutation running as a loader.
  * Cycle: 64 ticks × var(--hexl-step) = 7680ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -65,11 +63,6 @@ const CSS = `
 }
 `;
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function SequenceLoader({
   value = 27,
   size = 96,
@@ -79,15 +72,21 @@ export default function SequenceLoader({
   style,
   ...rest
 }: SequenceLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static first state
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static first state
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const start = Math.max(0, KING_WEN.indexOf(v));
@@ -110,7 +109,7 @@ export default function SequenceLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-seq-stage">
-        <HexGlyph value={shown} size={size} />
+        <HexGlyph value={shown} size={size} aria-hidden="true" />
       </div>
       <div className="hexl-g-rail" aria-hidden="true">
         <span>KW n°{pos + 1}</span>

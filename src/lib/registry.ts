@@ -34,7 +34,15 @@ export interface LoaderMeta {
 }
 
 const FLAGSHIP_SLUGS = new Set(['bit-scanner', 'mutating-matrix', 'inversion-pulse']);
-const PUBLISHED_REGISTRY_COMPONENTS = new Set(['bit-scanner', 'cascade-loader', 'mutating-matrix']);
+const PUBLISHED_REGISTRY_COMPONENTS = new Set([
+  'bit-scanner',
+  'cascade-loader',
+  'mutating-matrix',
+  'inversion-pulse',
+  'invert-loader',
+  'scan-loader',
+  'sequence-loader',
+]);
 export const GITHUB_REGISTRY = 'yon2x2/hexloaders';
 
 /** [name, slug, mechanic] in value order 0–63 (row = upper 000→111, col = lower 000→111). */

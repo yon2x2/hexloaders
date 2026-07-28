@@ -4,13 +4,17 @@ HEXLOADERS is a collection of 64 free and open-source React loaders built from
 the I Ching hexagrams as six-bit states. Preview them live, copy the source, and
 make one yours.
 
-`bit-scanner`, `cascade-loader`, and `mutating-matrix` install from the public GitHub registry.
-Every loader also exposes its source for manual installation.
+The verified components below install from the public GitHub registry. Every
+loader also exposes its source for manual installation.
 
 ```bash
 npx shadcn@latest add yon2x2/hexloaders/bit-scanner
 npx shadcn@latest add yon2x2/hexloaders/cascade-loader
 npx shadcn@latest add yon2x2/hexloaders/mutating-matrix
+npx shadcn@latest add yon2x2/hexloaders/inversion-pulse
+npx shadcn@latest add yon2x2/hexloaders/invert-loader
+npx shadcn@latest add yon2x2/hexloaders/scan-loader
+npx shadcn@latest add yon2x2/hexloaders/sequence-loader
 ```
 
 ## Requirements
@@ -38,6 +42,7 @@ npm run dev              # Start the local Vite server on port 4317
 npm run lint             # Run ESLint
 npm run build            # Type-check and create the production build
 npm run check:integrity  # Validate the 64-state dictionary and registry
+npm run check:components # Render every public registry entry and verify runtime contracts
 npm run check:registry:consumer # Install every public registry item into a clean Vite app
 npm run check:design     # Audit the HEXLOADERS design laws
 npm run check            # Run the complete non-browser gate sequence

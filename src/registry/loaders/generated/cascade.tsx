@@ -1,14 +1,12 @@
 /**
- * HEXLOADERS — cascade (generated mechanic template)
+ * HEXLOADERS — cascade-loader
  * mechanic: CASCADE
- * serves states 02 03 06 10 13 22 29 37
  * Propagation wave: a front travels bottom→top one row per clock tick —
  * rows behind the front are full, the leading row rides at mid opacity,
  * rows ahead stay dim. The wave arrives, holds one tick, then breaks.
  * Cycle: 6 propagation steps + 1 arrive + 1 break = 8 × var(--hexl-step) = 960ms @ 120ms.
  *
- * Parameterized — one template serves 8 states.
- * Zero dependencies beyond React and the shared hex-glyph primitive. MIT License.
+ * No extra packages beyond React. MIT License.
  */
 
 import { useEffect, useState } from 'react';
@@ -56,11 +54,6 @@ function rowsClip(lo: number, hi: number): string {
   return `inset(${top}% 0% ${bottom}% 0%)`;
 }
 
-const reducedMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 export default function CascadeLoader({
   value = 2,
   size = 96,
@@ -70,15 +63,21 @@ export default function CascadeLoader({
   style,
   ...rest
 }: CascadeLoaderProps) {
-  const [still] = useState(reducedMotion);
+  const [still, setStill] = useState(true);
   const [tick, setTick] = useState(0);
-  const safeStep = Math.max(120, step);
+  const safeStep = Number.isFinite(step)
+    ? Math.min(2_147_483_647, Math.max(120, Math.floor(step)))
+    : 120;
 
   useEffect(() => {
-    if (still) return; // reduced motion: static glyph, wave arrived
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setStill(reduce);
+    if (reduce) return; // reduced motion: static glyph, wave arrived
     const id = window.setInterval(() => setTick((t) => t + 1), safeStep);
     return () => window.clearInterval(id);
-  }, [safeStep, still]);
+  }, [safeStep]);
 
   const v = value & 63;
   const frame = tick % 8; // 0–5 wave at row p · 6 arrive (all full) · 7 break (all dim)
@@ -99,14 +98,14 @@ export default function CascadeLoader({
     >
       <style>{CSS}</style>
       <div className="hexl-g-csc-stage" style={{ width: size, height: size * H_OVER_W }}>
-        <HexGlyph value={v} size={size} dim={still ? 1 : 0.15} />
+        <HexGlyph value={v} size={size} dim={still ? 1 : 0.15} aria-hidden="true" />
         {!still && p <= 6 && (
           <span
             className="hexl-g-layer"
             style={{ clipPath: rowsClip(0, Math.min(p, 5)) }}
             aria-hidden="true"
           >
-            <HexGlyph value={v} size={size} />
+            <HexGlyph value={v} size={size} aria-hidden="true" />
           </span>
         )}
         {!still && p <= 5 && (
@@ -115,7 +114,7 @@ export default function CascadeLoader({
             style={{ clipPath: rowsClip(p, p), opacity: 'var(--hexl-mid, 0.45)' }}
             aria-hidden="true"
           >
-            <HexGlyph value={v} size={size} />
+            <HexGlyph value={v} size={size} aria-hidden="true" />
           </span>
         )}
       </div>
