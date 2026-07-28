@@ -8,13 +8,13 @@
 
 import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
-import { LOADERS, MECHANICS, bySlug, loadersByMechanic } from '@/lib/registry';
+import { LOADERS, MECHANICS, bySlug, loadersByMechanic, publicComponentFor } from '@/lib/registry';
+import { GENERATED_LOADERS } from '@/lib/generated-loaders';
 import { HEXAGRAMS } from '@/lib/hexagrams';
 import BitScanner from '@/registry/loaders/bit-scanner';
 import MutatingMatrix from '@/registry/loaders/mutating-matrix';
 import InversionPulse from '@/registry/loaders/inversion-pulse';
 import HexGlyph from '@/registry/loaders/hex-glyph';
-import MechanicCell from '@/components/loaders/MechanicCell';
 import BitEditor from '@/components/BitEditor';
 import { copyText } from '@/components/CodeBlock';
 import { PatternEditor, Segmented, SequenceInput, SteppedSlider, Toggle } from '@/components/interactive/controls';
@@ -30,16 +30,9 @@ const ZOOMS = [0.5, 1, 2];
 const HOLD_INTERVAL = 3_600_000; // hold = clock stretched to 1h — a hard freeze
 const DEFAULT_PATTERN = [7, 1, 7, 1, 3, 3, 0, 0];
 const DEFAULT_SEQUENCE = [0, 17, 34, 42];
-const MECHANIC_CLOCK: Record<string, number> = { INVERT: 240 }; // others 120 (MechanicCell CLOCK)
 
 type MmMode = 'count' | 'kingwen' | 'random' | 'custom';
 type IpMode = 'colorspace' | 'bitwise' | 'both';
-
-const pascal = (slug: string): string =>
-  slug
-    .split('-')
-    .map((p) => p[0].toUpperCase() + p.slice(1))
-    .join('');
 
 const clampState = (n: number): number => ((Math.floor(n) % 64) + 64) % 64;
 
@@ -220,6 +213,7 @@ export default function Playground() {
   const feedbackTimer = useRef<number | undefined>(undefined);
 
   const meta = bySlug(slug) ?? LOADERS[1];
+  const { name: componentName, importPath: componentImportPath } = publicComponentFor(meta);
   const hex = HEXAGRAMS[value];
   const isMm = slug === 'mutating-matrix';
   const isBs = slug === 'bit-scanner';
@@ -228,8 +222,8 @@ export default function Playground() {
 
   const sizePx = (isMm ? SIZES_MATRIX : SIZES_DEFAULT)[sizeIdx];
   const trimmedPattern = useMemo(() => trimPattern(ipPattern), [ipPattern]);
-  const clock = flagship ? intervalMs : (MECHANIC_CLOCK[meta.mechanic] ?? 120);
-  const effectiveInterval = held ? HOLD_INTERVAL : intervalMs;
+  const clock = flagship ? intervalMs : 120;
+  const effectiveInterval = held ? HOLD_INTERVAL : clock;
 
   /* ------------------------------ URL serialization ------------------------------ */
 
@@ -437,11 +431,10 @@ export default function Playground() {
   }
 
   const jsxLines = useMemo((): JLine[] => {
-    const name = pascal(slug);
     const out: JLine[] = [
-      { text: `import ${name} from '@/loaders/${slug}';`, changed: false },
+      { text: `import ${componentName} from '${componentImportPath}';`, changed: false },
       { text: '', changed: false },
-      { text: `<${name}`, changed: false },
+      { text: `<${componentName}`, changed: false },
     ];
     const push = (prop: string, changed: boolean) => out.push({ text: `  ${prop}`, changed });
     const pushInvert = () => (invert ? push('invert', true) : push('invert={false}', false));
@@ -473,7 +466,24 @@ export default function Playground() {
     }
     out.push({ text: '/>', changed: false });
     return out;
-  }, [slug, value, sizePx, intervalMs, invert, showMeta, mmMode, mmCells, mmSeq, ipMode, trimmedPattern, isBs, isMm, isIp, meta.value]);
+  }, [
+    componentName,
+    componentImportPath,
+    value,
+    sizePx,
+    intervalMs,
+    invert,
+    showMeta,
+    mmMode,
+    mmCells,
+    mmSeq,
+    ipMode,
+    trimmedPattern,
+    isBs,
+    isMm,
+    isIp,
+    meta.value,
+  ]);
 
   const jsxText = useMemo(() => jsxLines.map((l) => l.text).join('\n'), [jsxLines]);
 
@@ -555,7 +565,8 @@ export default function Playground() {
           invert={invert}
         />
       );
-    return <MechanicCell value={value} mechanic={meta.mechanic} size={sizePx} invert={invert} active={!held} />;
+    const GeneratedLoader = GENERATED_LOADERS[meta.mechanic];
+    return <GeneratedLoader value={value} size={sizePx} step={effectiveInterval} invert={invert} />;
   })();
 
   const rulerPos = ruler % 60;
@@ -911,7 +922,7 @@ export default function Playground() {
           <div className="border-b border-hexl-fg">
             <div className="flex min-h-10 flex-col items-stretch justify-between border-b border-hexl-fg min-[240px]:flex-row">
               <span className="flex min-h-10 min-w-0 items-center break-all px-3 py-2 font-mono text-mono-micro uppercase">
-                {pascal(slug)}.tsx — GENERATED JSX
+                {componentName}.tsx — GENERATED JSX
               </span>
               <button
                 type="button"

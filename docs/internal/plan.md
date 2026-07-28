@@ -1,4 +1,8 @@
-# PLAN — "HEX" — I Ching Binary Loader Library (shadcn-style registry)
+# PLAN — "HEX" — I Ching Binary Loader Library (COMPLETE / HISTORICAL)
+
+> Status: all five stages are complete. This file records the original build plan;
+> current release policy and remaining quality work live in
+> `docs/internal/distribution-guide.md`.
 
 ## Goal
 Open-source, scalable UI library ecosystem of 64 animated presets based on I Ching hexagrams
@@ -36,10 +40,10 @@ Deliverable: a production-grade React+TS+Tailwind webapp = landing page + live c
   architecture section, install/source ownership section.
 - Output: complete pages wired to Stage 2 components.
 
-## Stage 4 — Validate, build, deliver
+## Stage 4 — Validate, build, deliver (superseded delivery tooling)
 - `npm run build` must pass; visual check (screenshot) for strict B/W compliance.
 - Fix loop via reviewer subagent if needed.
-- Deliver: `mshtools-website_version_manager` build_version (type: static).
+- Delivery now runs through the Vercel project and exact-SHA production checks.
 
 ## Stage 5 — Internal distribution guide
 - Keep roadmap and release sequencing internal in `docs/internal/distribution-guide.md`.

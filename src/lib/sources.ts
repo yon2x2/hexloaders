@@ -1,8 +1,8 @@
 /**
  * HEXLOADERS — sources.ts
  * Aggregates raw loader sources via Vite `?raw` imports (always in sync, never
- * duplicated), the distributable CSS token block, and a registry-entry JSON
- * builder for the copy-paste UX. Page agents import from here.
+ * duplicated), the optional CSS token block, and preset metadata used by the
+ * documentation UI.
  */
 
 import hexGlyphSource from '@/registry/loaders/hex-glyph.tsx?raw';
@@ -20,8 +20,8 @@ import strobeSource from '@/registry/loaders/generated/strobe.tsx?raw';
 import { bySlug } from './registry';
 import type { Mechanic } from './registry';
 
-/** globals.css — required block (design.md §9), shipped via registry cssVars. */
-export const CSS_TOKENS_BLOCK = `/* globals.css — required block */
+/** globals.css — optional shared overrides; every component includes fallbacks. */
+export const CSS_TOKENS_BLOCK = `/* globals.css — optional shared overrides */
 :root {
   --hexl-bg: #FFFFFF;
   --hexl-fg: #000000;
@@ -32,8 +32,7 @@ export const CSS_TOKENS_BLOCK = `/* globals.css — required block */
   --hexl-line-h: 8px;
   --hexl-gap: 4px;
 }
-[data-invert], .hexl-invert { --hexl-bg: #000000; --hexl-fg: #FFFFFF; }
-@media (prefers-reduced-motion: reduce) { :root { --hexl-step: 0ms; } }`;
+[data-invert], .hexl-invert { --hexl-bg: #000000; --hexl-fg: #FFFFFF; }`;
 
 /** Raw single-file sources, keyed by slug. Flagships + shared primitive only. */
 export const LOADER_SOURCES: Record<string, string> = {
@@ -77,19 +76,19 @@ export function loaderFilesFor(slug: string): LoaderFile[] {
   const meta = bySlug(slug);
   if (!meta) throw new Error(`Unknown loader slug: ${slug}`);
   if (meta.flagship) {
-    return [{ path: `loaders/${meta.slug}.tsx`, source: LOADER_SOURCES[meta.slug] }];
+    return [{ path: `components/loaders/${meta.slug}.tsx`, source: LOADER_SOURCES[meta.slug] }];
   }
   return [
     {
-      path: `loaders/generated/${meta.mechanic.toLowerCase()}.tsx`,
+      path: `components/loaders/generated/${meta.mechanic.toLowerCase()}.tsx`,
       source: GENERATED_SOURCES[meta.mechanic],
     },
-    { path: 'loaders/hex-glyph.tsx', source: hexGlyphSource },
+    { path: 'components/loaders/hex-glyph.tsx', source: hexGlyphSource },
   ];
 }
 
-/** registry/index.json entry for a slug, as a formatted JSON string. */
-export function registryEntryFor(slug: string): string {
+/** Documentation metadata for a preset, as a formatted JSON string. */
+export function presetMetadataFor(slug: string): string {
   const meta = bySlug(slug);
   if (!meta) throw new Error(`Unknown loader slug: ${slug}`);
   const entry = {
@@ -104,10 +103,10 @@ export function registryEntryFor(slug: string): string {
     registry: meta.registry,
     distribution: meta.registry ? 'github-registry' : 'manual-source',
     files: meta.flagship
-      ? [`loaders/${meta.slug}.tsx`]
+      ? [`components/loaders/${meta.slug}.tsx`]
       : [
-          `loaders/generated/${meta.mechanic.toLowerCase()}.tsx`,
-          'loaders/hex-glyph.tsx',
+          `components/loaders/generated/${meta.mechanic.toLowerCase()}.tsx`,
+          'components/loaders/hex-glyph.tsx',
         ],
     dependencies: [],
     cssVars: ['--hexl-fg', '--hexl-bg', '--hexl-step', '--hexl-dim'],

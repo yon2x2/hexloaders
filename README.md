@@ -49,9 +49,12 @@ npm run check:integrity  # Validate the 64-state dictionary and registry
 npm run check:components # Render every public registry entry and verify runtime contracts
 npm run check:registry:consumer # Install every public registry item into a clean Vite app
 npm run check:design     # Audit the HEXLOADERS design laws
-npm run check            # Run the complete non-browser gate sequence
+npm run check            # Run the complete local non-browser gate sequence
 npm run preview          # Preview the production build
 ```
+
+Release verification also runs `npm run check:registry:consumer`, which creates
+a clean external app and may download the pinned shadcn CLI.
 
 ## Product surface
 

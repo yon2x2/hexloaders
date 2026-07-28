@@ -2,14 +2,14 @@
  * HEXLOADERS — LoaderDetail `/loaders/:slug`
  * The preset page template instantiated for all 64 named states (loader-detail.md).
  * Data-driven from registry.ts + hexagrams.ts: header ledger block, live
- * PreviewCard (flagship component / MechanicCell), genuine copy-pasteable
+ * PreviewCard (the same component delivered by install), genuine copy-pasteable
  * sources via loaderFilesFor, install block, props, CSS vars, examples,
  * related states, prev/next pager. Flagships get the MECHANIC deep-dive
  * (cycle diagrams, rhythm patterns, reduced-motion frames).
  */
 
 import { useEffect, useState } from 'react';
-import type { ComponentType, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Link, useParams } from 'react-router';
 import DocsShell from '@/components/DocsShell';
 import type { TocItem } from '@/components/DocsShell';
@@ -22,7 +22,9 @@ import type { PropRow } from '@/components/PropsTable';
 import { bySlug, byValue } from '@/lib/registry';
 import type { LoaderMeta, Mechanic } from '@/lib/registry';
 import { HEX_NAMES, kingwenOf } from '@/lib/hexagrams';
-import { loaderFilesFor, registryEntryFor } from '@/lib/sources';
+import { loaderFilesFor, presetMetadataFor } from '@/lib/sources';
+import { GENERATED_LOADERS } from '@/lib/generated-loaders';
+import { publicComponentFor } from '@/lib/registry';
 import LoaderLive from '@/components/loader-detail/LoaderLive';
 import InstallStrip from '@/components/loader-detail/InstallStrip';
 import ExampleCell from '@/components/loader-detail/ExampleCell';
@@ -33,14 +35,6 @@ import DeepDive from '@/components/loader-detail/DeepDive';
 import BitScanner from '@/registry/loaders/bit-scanner';
 import MutatingMatrix from '@/registry/loaders/mutating-matrix';
 import InversionPulse from '@/registry/loaders/inversion-pulse';
-import ScanLoader from '@/registry/loaders/generated/scan';
-import SequenceLoader from '@/registry/loaders/generated/sequence';
-import InvertLoader from '@/registry/loaders/generated/invert';
-import ShiftLoader from '@/registry/loaders/generated/shift';
-import CountLoader from '@/registry/loaders/generated/count';
-import StackLoader from '@/registry/loaders/generated/stack';
-import CascadeLoader from '@/registry/loaders/generated/cascade';
-import StrobeLoader from '@/registry/loaders/generated/strobe';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -65,37 +59,6 @@ const MECHANIC_CYCLE: Record<Mechanic, number> = {
   STACK: 960,
   CASCADE: 960,
   STROBE: 960,
-};
-
-type GeneratedComponent = ComponentType<{
-  value?: number;
-  size?: number;
-  step?: number;
-  invert?: boolean;
-  className?: string;
-}>;
-
-/** The real distributable component behind each non-flagship page. */
-const GENERATED: Record<Mechanic, GeneratedComponent> = {
-  SCAN: ScanLoader,
-  SEQUENCE: SequenceLoader,
-  INVERT: InvertLoader,
-  SHIFT: ShiftLoader,
-  COUNT: CountLoader,
-  STACK: StackLoader,
-  CASCADE: CascadeLoader,
-  STROBE: StrobeLoader,
-};
-
-const GENERATED_NAME: Record<Mechanic, string> = {
-  SCAN: 'ScanLoader',
-  SEQUENCE: 'SequenceLoader',
-  INVERT: 'InvertLoader',
-  SHIFT: 'ShiftLoader',
-  COUNT: 'CountLoader',
-  STACK: 'StackLoader',
-  CASCADE: 'CascadeLoader',
-  STROBE: 'StrobeLoader',
 };
 
 const GENERATED_DEFAULT: Record<Mechanic, number> = {
@@ -341,8 +304,8 @@ const GENERATED_CAPTION: Record<Mechanic, string> = {
 };
 
 function generatedExamples(meta: LoaderMeta): ExampleDef[] {
-  const G = GENERATED[meta.mechanic];
-  const name = GENERATED_NAME[meta.mechanic];
+  const G = GENERATED_LOADERS[meta.mechanic];
+  const name = publicComponentFor(meta).name;
   return [
     {
       title: 'DEFAULT STATE',
@@ -425,9 +388,8 @@ export default function LoaderDetail() {
   const [chinese, pinyin, wilhelm] = HEX_NAMES[kw - 1];
 
   const files = loaderFilesFor(meta.slug);
-  const code = files.map((f) => `/* ── ${f.path} ── */\n\n${f.source}`).join('\n');
-  const codeFilename = files.length > 1 ? 'SOURCE FILES' : files[0].path;
-  const kb = `${(code.length / 1024).toFixed(1)} KB`;
+  const previewFile = files[0];
+  const kb = `${(files.reduce((total, file) => total + file.source.length, 0) / 1024).toFixed(1)} KB`;
 
   const prev = byValue((meta.value + 63) % 64);
   const next = byValue((meta.value + 1) % 64);
@@ -457,7 +419,7 @@ export default function LoaderDetail() {
             <Badge variant="solid">{meta.mechanic}</Badge>
             <Badge>0 DEPS</Badge>
             <Badge>{kb}</Badge>
-            {meta.flagship && <Badge>★ FLAGSHIP</Badge>}
+            {meta.flagship && <Badge>BESPOKE SOURCE</Badge>}
           </div>
         </div>
 
@@ -494,8 +456,8 @@ export default function LoaderDetail() {
         <div className="mt-6">
           <PreviewCard
             preview={({ size, invert }) => <LoaderLive meta={meta} size={size} invert={invert} showMeta />}
-            code={code}
-            filename={codeFilename}
+            code={previewFile.source}
+            filename={previewFile.path}
             language="tsx"
           />
         </div>
@@ -543,7 +505,17 @@ export default function LoaderDetail() {
               </button>
               {showSource && (
                 <div className="border-t border-hexl-fg">
-                  <CodeBlock code={code} language="tsx" className="border-0" />
+                  <div className="space-y-px bg-hexl-fg">
+                    {files.map((file) => (
+                      <CodeBlock
+                        key={file.path}
+                        code={file.source}
+                        filename={file.path}
+                        language="tsx"
+                        className="border-0"
+                      />
+                    ))}
+                  </div>
                   <div className="border-t border-hexl-fg px-3 py-2 font-mono text-mono-micro uppercase opacity-[0.55]">
                     SOURCE INCLUDED · 0 DEPENDENCIES · MIT
                   </div>
@@ -552,8 +524,8 @@ export default function LoaderDetail() {
             </div>
           </div>
           <div>
-            <SubLabel>{'// DISTRIBUTION MANIFEST'}</SubLabel>
-            <CodeBlock code={registryEntryFor(meta.slug)} filename="registry-status.json" language="json" />
+            <SubLabel>{'// PRESET METADATA'}</SubLabel>
+            <CodeBlock code={presetMetadataFor(meta.slug)} filename="preset-metadata.json" language="json" />
           </div>
         </div>
       </section>
@@ -573,7 +545,7 @@ export default function LoaderDetail() {
           <CssVarsTable rows={cssVarRowsFor(meta)} />
         </div>
         <p className="mt-2 font-mono text-mono-micro uppercase opacity-[0.55]">
-          REQUIRED ONCE IN globals.css — THE FULL TOKEN BLOCK SHIPS IN MANUAL SETUP.
+          OPTIONAL OVERRIDES — EACH COMPONENT INCLUDES SAFE FALLBACK VALUES.
         </p>
       </section>
 

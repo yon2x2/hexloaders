@@ -12,7 +12,7 @@ import Kicker from '@/components/Kicker';
 import CodeBlock from '@/components/CodeBlock';
 import BitEditor from '@/components/BitEditor';
 import hexagramsRaw from '@/lib/hexagrams.ts?raw';
-import { registryEntryFor } from '@/lib/sources';
+import { presetMetadataFor } from '@/lib/sources';
 import Reveal from '@/components/docs-foundation/Reveal';
 import {
   SectionHead,
@@ -60,8 +60,8 @@ const HEXAGRAMS_EXCERPT = (() => {
 ${hexagramsRaw.slice(end).trim()}`.trimEnd();
 })();
 
-/* registry/index.json — the Bit-Scanner entry, built from the registry meta. */
-const BIT_SCANNER_ENTRY = registryEntryFor('bit-scanner');
+/* Documentation metadata for Bit-Scanner, built from the preset source of truth. */
+const BIT_SCANNER_ENTRY = presetMetadataFor('bit-scanner');
 
 const REGISTRY_FIELDS: string[][] = [
   ['slug', 'named preset + route'],
@@ -166,13 +166,13 @@ export default function DocsArchitecture() {
         <SectionHead index={3} title="THE REGISTRY" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Every loader has a stable identity, route, and source manifest. The shadcn CLI copies
-            declared files for installable loaders, and every loader page exposes its manual source.
+            Every preset has a stable identity, route, component mapping, and manual file list. The
+            shadcn CLI copies the component files declared by the public registry.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">
           <CodeBlock
-            filename="registry-status.json — bit-scanner"
+            filename="preset-metadata.json — bit-scanner"
             language="json"
             code={BIT_SCANNER_ENTRY}
           />

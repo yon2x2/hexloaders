@@ -1,15 +1,13 @@
 /**
  * HEXLOADERS — LoaderLive (loader-detail local)
- * Resolves a registry entry to its live renderer: the bespoke flagship
- * component for the 3 flagships, MechanicCell (site-internal) for the other
- * 61 — always running, never a screenshot.
+ * Resolves a preset to the same component its install command delivers.
  */
 
 import type { LoaderMeta } from '@/lib/registry';
 import BitScanner from '@/registry/loaders/bit-scanner';
 import MutatingMatrix from '@/registry/loaders/mutating-matrix';
 import InversionPulse from '@/registry/loaders/inversion-pulse';
-import MechanicCell from '@/components/loaders/MechanicCell';
+import { GENERATED_LOADERS } from '@/lib/generated-loaders';
 
 export interface LoaderLiveProps {
   meta: LoaderMeta;
@@ -32,5 +30,6 @@ export default function LoaderLive({ meta, size, invert = false, showMeta = fals
   if (meta.slug === 'inversion-pulse') {
     return <InversionPulse size={size} invert={invert} />;
   }
-  return <MechanicCell value={meta.value} mechanic={meta.mechanic} size={size} invert={invert} />;
+  const GeneratedLoader = GENERATED_LOADERS[meta.mechanic];
+  return <GeneratedLoader value={meta.value} size={size} invert={invert} />;
 }

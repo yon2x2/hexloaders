@@ -68,9 +68,10 @@ src/components/loaders/MechanicCell.tsx    # SITE-INTERNAL generic live cell: gi
 ## 5. Source-exposure contract (copy-paste UX)
 - Registry loader sources are shown in Code tabs via Vite raw imports, e.g.:
   `import bitScannerSource from "@/registry/loaders/bit-scanner.tsx?raw"` — ALWAYS in sync, never duplicated.
-- A `src/lib/sources.ts` (scaffold) aggregates: the 3 flagship raw sources + 8 mechanic-template raw sources
-  + hex-glyph raw + the CSS token block string + a `registryEntryFor(slug)` JSON-string builder.
-  Generated manifests preserve `loaders/generated/<mechanic>.tsx` beside `loaders/hex-glyph.tsx`.
+- `src/lib/sources.ts` aggregates the 3 bespoke raw sources + 8 mechanic-template raw sources,
+  hex-glyph raw, the optional CSS token block, and `presetMetadataFor(slug)`.
+  Manual file sets preserve `components/loaders/generated/<mechanic>.tsx` beside
+  `components/loaders/hex-glyph.tsx`, matching the registry install targets.
   Page agents import from here.
 
 ## 6. Motion & color enforcement (build-team lint of honor)

@@ -44,7 +44,7 @@ function SidebarNav() {
             <NavLink key={l.slug} to={`/loaders/${l.slug}`} className={linkCls}>
               <span className="mr-2 opacity-[0.55]">{String(l.value).padStart(2, '0')}</span>
               {l.name}
-              {l.flagship ? ' ★' : ''}
+              {l.flagship ? ' · BESPOKE' : ''}
             </NavLink>
           ))}
         </div>

@@ -9,7 +9,6 @@
 import DocsShell from '@/components/DocsShell';
 import Kicker from '@/components/Kicker';
 import CodeBlock from '@/components/CodeBlock';
-import PropsTable from '@/components/PropsTable';
 import { CSS_TOKENS_BLOCK } from '@/lib/sources';
 import Reveal from '@/components/docs-foundation/Reveal';
 import {
@@ -85,8 +84,6 @@ const INVERT_HTML = `<section data-invert> <!-- everything inside renders negati
   <InversionPulse mode="colorspace" />
 </section>`;
 
-const REDUCED_CSS = `@media (prefers-reduced-motion: reduce) { :root { --hexl-step: 0ms; } }`;
-
 const STATIC_FRAMES: string[][] = [
   ['Bit-Scanner', 'full glyph, no active row'],
   ['Mutating Matrix', 'first sequence state'],
@@ -106,8 +103,9 @@ export default function DocsUsage() {
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-[62ch] text-body">
-            Install Bit-Scanner in one command, copy the code, and make it yours. The shadcn CLI
-            copies its source into your repository without adding a HEXLOADERS package dependency.
+            Choose any of 64 presets and install its reusable motion component in one command. The
+            shadcn CLI copies the source into your repository without adding a HEXLOADERS package
+            dependency.
           </p>
         </Reveal>
       </header>
@@ -185,27 +183,12 @@ export default function DocsUsage() {
         <SectionHead index={5} title="REDUCED MOTION" />
         <Reveal delay={80}>
           <p className="mt-6 max-w-[62ch] text-body-sm">
-            Every loader ships a static frame. When prefers-reduced-motion is detected, --hexl-step
-            resolves to 0ms and animations collapse to their representative frame. You can also
-            force it:
+            Every loader handles prefers-reduced-motion inside its own source. CSS-driven loaders
+            disable their animation, and timer-driven loaders skip their interval so the first
+            representative frame stays visible. No extra prop or global CSS rule is required.
           </p>
         </Reveal>
         <Reveal delay={160} className="mt-6">
-          <CodeBlock filename="globals.css" language="css" code={REDUCED_CSS} />
-        </Reveal>
-        <Reveal delay={240} className="mt-6">
-          <PropsTable
-            rows={[
-              {
-                prop: 'reducedMotion',
-                type: '"static" | "auto"',
-                default: '"auto"',
-                description: '"static" forces the representative frame; "auto" follows the media query.',
-              },
-            ]}
-          />
-        </Reveal>
-        <Reveal delay={320} className="mt-6">
           <LedgerTable columns={['LOADER', 'STATIC FRAME']} rows={STATIC_FRAMES} />
         </Reveal>
       </section>

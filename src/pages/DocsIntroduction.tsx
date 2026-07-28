@@ -62,7 +62,7 @@ type StartCard =
 const START_CARDS: StartCard[] = [
   { to: '/docs/usage', label: 'USAGE', desc: 'Install your first loader in under a minute.' },
   { to: '/docs/architecture', label: 'ARCHITECTURE', desc: 'How 64 states become one dictionary.' },
-  { href: '/#matrix', label: 'THE MATRIX', desc: 'Preview all 64 loaders live.' },
+  { href: '/#matrix', label: 'THE MATRIX', desc: 'Preview all 64 presets live.' },
 ];
 
 const INSTALL_CMD = bySlug('bit-scanner')?.install ?? 'npx shadcn@latest add yon2x2/hexloaders/bit-scanner';
@@ -113,9 +113,9 @@ export default function DocsIntroduction() {
       <DocSection id="what-this-project-is" index={1} title="What this project is">
         <Reveal>
           <p className="max-w-[62ch] text-body-sm">
-            Choose from 64 live loaders, bring the source into your codebase, and edit it like
-            local code. Each one stays compact on purpose so loading states blend into your UI
-            language instead of forcing a separate aesthetic.
+            Choose from 64 live presets built from reusable motion components, bring the source
+            into your codebase, and edit it like local code. Each preset stays compact on purpose
+            so loading states blend into your UI language instead of forcing a separate aesthetic.
           </p>
         </Reveal>
 
