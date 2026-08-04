@@ -255,10 +255,11 @@ const MechanicCycler = memo(function MechanicCycler() {
 /* --------------------------------- matrix --------------------------------- */
 
 function FlagshipLive({ slug }: { slug: string }) {
-  if (slug === 'bit-scanner') return <BitScanner size={56} showMeta={false} aria-hidden="true" />;
+  if (slug === 'bit-scanner')
+    return <BitScanner size={56} showMeta={false} className="translate-y-1 scale-[0.7]" aria-hidden="true" />;
   if (slug === 'mutating-matrix')
-    return <MutatingMatrix cells={9} size={12} showMeta={false} aria-hidden="true" />;
-  return <InversionPulse size={56} aria-hidden="true" />;
+    return <MutatingMatrix cells={9} size={12} showMeta={false} className="translate-y-1 scale-[0.7]" aria-hidden="true" />;
+  return <InversionPulse size={56} className="translate-y-1 scale-[0.6]" aria-hidden="true" />;
 }
 
 interface CellProps {
@@ -331,12 +332,10 @@ const MatrixCell = memo(function MatrixCell({
       </Link>
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-x-0 bottom-0 flex h-11 items-center gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 font-mono text-mono-micro${
-          meta.install ? ' pr-12' : ''
-        }`}
+        className="pointer-events-none absolute inset-x-0 bottom-0 flex h-11 items-center gap-2 border-t border-hexl-fg bg-hexl-bg px-1.5 pr-12 font-mono text-mono-micro"
       >
         <span>{meta.binary}</span>
-        <span className="ml-auto truncate text-right">{meta.mechanic}</span>
+        <span className="ml-auto text-right">{meta.mechanic.slice(0, 3)}</span>
       </div>
       {meta.install ? (
         <button
@@ -491,18 +490,18 @@ function Matrix() {
 
       <div className="mx-auto max-w-[1440px] px-6 py-12 md:px-10">
         <div
-          className={`relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg sm:grid-cols-4${
-            sort === 'fuxi' ? ' lg:grid-cols-[32px_repeat(8,minmax(0,1fr))]' : ' lg:grid-cols-8'
+          className={`relative grid grid-cols-2 gap-px border border-hexl-fg bg-hexl-fg md:grid-cols-4${
+            sort === 'fuxi' ? ' xl:grid-cols-[32px_repeat(8,minmax(0,1fr))]' : ' xl:grid-cols-8'
           }`}
         >
           {sort === 'fuxi'
             ? [
-                <span key="axis-corner" className="hidden h-8 bg-hexl-bg lg:block" aria-hidden="true" />,
+                <span key="axis-corner" className="hidden h-8 bg-hexl-bg xl:block" aria-hidden="true" />,
                 ...axisLabels.map((label) => (
                   <span
                     key={`column-${label}`}
                     aria-hidden="true"
-                    className="hidden h-8 items-center justify-center bg-hexl-bg font-mono text-mono-micro lg:flex"
+                    className="hidden h-8 items-center justify-center bg-hexl-bg font-mono text-mono-micro xl:flex"
                   >
                     {label}
                   </span>
@@ -514,7 +513,7 @@ function Matrix() {
               <span
                 key={`row-${row}`}
                 aria-hidden="true"
-                className="hidden items-center justify-center bg-hexl-bg font-mono text-mono-micro lg:flex"
+                className="hidden items-center justify-center bg-hexl-bg font-mono text-mono-micro xl:flex"
               >
                 {axisLabels[row]}
               </span>
