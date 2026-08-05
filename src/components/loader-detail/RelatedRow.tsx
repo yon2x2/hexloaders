@@ -33,7 +33,7 @@ export default function RelatedRow({ meta }: RelatedRowProps) {
           <Link
             key={m.slug}
             to={`/loaders/${m.slug}`}
-            className="hexl-cell relative flex aspect-square items-center justify-center bg-hexl-bg"
+            className="hexl-cell relative flex aspect-square min-w-0 items-center justify-center overflow-hidden bg-hexl-bg"
             aria-label={`n°${m.value} ${m.name}`}
           >
             <span aria-hidden="true" className="absolute left-1 top-1 font-mono text-mono-micro opacity-[0.55]">
@@ -44,7 +44,7 @@ export default function RelatedRow({ meta }: RelatedRowProps) {
                 ¬63
               </span>
             )}
-            <LoaderLive meta={m} size={32} />
+            <LoaderLive meta={m} size={32} compact />
           </Link>
         ))}
       </div>
