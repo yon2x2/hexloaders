@@ -2,8 +2,8 @@
  * HEXLOADERS — LoaderDetail `/loaders/:slug`
  * The preset page template instantiated for all 64 named states (loader-detail.md).
  * Data-driven from registry.ts + hexagrams.ts: header ledger block, live
- * PreviewCard (the same component delivered by install), genuine copy-pasteable
- * sources via loaderFilesFor, install block, props, CSS vars, examples,
+ * PreviewCard (the exact preset visual shown in the Home matrix), genuine
+ * copy-pasteable mechanic sources via loaderFilesFor, install block, props, CSS vars, examples,
  * related states, prev/next pager. Flagships get the MECHANIC deep-dive
  * (cycle diagrams, rhythm patterns, reduced-motion frames).
  */

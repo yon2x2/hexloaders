@@ -171,6 +171,19 @@
     height: auto;
   }
 
+  /* Same distributable loader, reduced to its glyph stage for related cards. */
+  [data-hexl-compact='true'] {
+    border: 0 !important;
+    background: transparent !important;
+  }
+  [data-hexl-compact='true'] > .hexl-ip-bar {
+    display: none !important;
+  }
+  [data-hexl-compact='true'] > :is(.hexl-bs-stage, .hexl-ip-stage),
+  [data-hexl-compact='true'] .hexl-mm-cell {
+    padding: 0 !important;
+  }
+
   /* Inline hero glyph rides at cap-height. */
   .hexl-hero-glyph svg {
     height: 0.68em;

@@ -61,10 +61,9 @@ try {
     }
   });
 
-  check('public previews use installed components instead of the matrix simulator', () => {
+  check('playground and vignettes use installed components', () => {
     for (const path of [
       'src/pages/Playground.tsx',
-      'src/components/loader-detail/LoaderLive.tsx',
       'src/components/interactive/vignettes.tsx',
     ]) {
       assert.doesNotMatch(readFileSync(path, 'utf8'), /\bMechanicCell\b/, path);
@@ -74,6 +73,25 @@ try {
     assert.match(playground, /const clock = flagship \? intervalMs : 120/);
     assert.match(playground, /const effectiveInterval = held \? HOLD_INTERVAL : clock/);
     assert.doesNotMatch(playground, /@\/loaders\//);
+  });
+
+  const { default: LoaderLive } = await server.ssrLoadModule('/src/components/loader-detail/LoaderLive.tsx');
+  check('detail reuses the Home preset visual and related previews stay contained', () => {
+    const home = readFileSync('src/pages/Home.tsx', 'utf8');
+    const live = readFileSync('src/components/loader-detail/LoaderLive.tsx', 'utf8');
+    const related = readFileSync('src/components/loader-detail/RelatedRow.tsx', 'utf8');
+    assert.match(home, /<MechanicCell value=\{meta\.value\} mechanic=\{meta\.mechanic\}/);
+    assert.doesNotMatch(home, /\bLoaderLive\b/);
+    assert.equal(count(live, /key=\{meta\.slug\}/g), 4);
+    assert.match(live, /<MechanicCell[\s\S]+value=\{meta\.value\}[\s\S]+mechanic=\{meta\.mechanic\}/);
+    assert.doesNotMatch(live, /GENERATED_LOADERS/);
+    assert.match(related, /<LoaderLive meta=\{m\} size=\{32\} compact/);
+    assert.match(related, /overflow-hidden/);
+
+    const frames = registryModule.LOADERS.map((meta) =>
+      renderToStaticMarkup(createElement(LoaderLive, { meta, size: 64 })),
+    );
+    assert.equal(new Set(frames).size, 64);
   });
 
   for (const item of registry.items) {
